@@ -1,8 +1,26 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { Play, Pause, SkipForward, Heart, Radio as RadioIcon } from 'lucide-react';
-import { useState } from 'react';
+import { Volume2, VolumeX } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { PhoneShell } from '@/components/herd/phone-shell';
 import { Button } from '@/components/ui/button';
-import { getArtist, studio, live, pageHead } from '@/components/herd/data';
-export const Route=createFileRoute('/radio')({head:()=>pageHead('Live radio','Tune into Herd Radio for independent music and fresh discoveries.'),component:Radio});
-function Radio(){const [playing,setPlaying]=useState(false);const [index,setIndex]=useState(1);const [liked,setLiked]=useState(false);const a=getArtist(index);return <PhoneShell><div className="page-inner"><span className="eyebrow flex items-center gap-2"><RadioIcon size={13}/> On air</span><h1 className="page-title mt-2">Herd Radio<span className="text-primary">.</span></h1><div className="flex justify-between items-center mt-3"><span className="text-xs text-muted-foreground">The Independent Hour</span><span className="text-[10px] text-primary">● LIVE</span></div><img className="radio-art" src={a.image} alt={`${a.name} album artwork`}/><h2 className="radio-title">{a.song}</h2><span className="text-sm text-muted-foreground">{a.name}</span><div className="radio-controls"><Button variant="ghost" size="icon" aria-label={liked?'Unlike song':'Like song'} onClick={()=>setLiked(!liked)} className={liked?'text-primary':''}><Heart fill={liked?'currentColor':'none'}/></Button><Button className="play-control" aria-label={playing?'Pause radio':'Play radio'} onClick={()=>setPlaying(!playing)}>{playing?<Pause fill="currentColor"/>:<Play fill="currentColor"/>}</Button><Button variant="ghost" size="icon" aria-label="Next radio song" onClick={()=>setIndex(i=>1-i)}><SkipForward/></Button></div><div className="text-center text-[10px] text-muted-foreground">{playing?'Now playing · Sample broadcast':'Paused · Sample broadcast'}</div><h2 className="section-title">Up next <span>Curated by Herd</span></h2>{['Backroad summer','Velvet skies','Nothing to lose'].map((s,i)=><div className="chart-row" key={s} onClick={()=>{setIndex(i%2);setPlaying(true);}} role="button" tabIndex={0} onKeyDown={e=>{if(e.key==='Enter'){setIndex(i%2);setPlaying(true);}}}><span className="text-xs text-muted-foreground">0{i+1}</span><img className="track-thumb" src={i%2?studio:live} alt=""/><div className="min-w-0"><div className="track-name">{s}</div><div className="track-artist">{['June Wilder','Nova Lane','The Slow Days'][i]}</div></div><span className="text-[10px] text-muted-foreground">3:0{i+1}</span></div>)}</div></PhoneShell>;}
+import { pageHead } from '@/components/herd/data';
+import mp4 from '@/assets/react-win.mp4.asset.json';
+import webm from '@/assets/react-win.webm.asset.json';
+import poster from '@/assets/react-win.jpg.asset.json';
+
+export const Route = createFileRoute('/radio')({ head: () => pageHead('React & Win', 'React & Win on Herd: watch, react and win.'), component: ReactWin });
+
+function ReactWin() {
+  const main = useRef<HTMLVideoElement>(null); const bg = useRef<HTMLVideoElement>(null);
+  const [soundOn, setSoundOn] = useState(false);
+  useEffect(() => { if (main.current) main.current.muted = !soundOn; }, [soundOn]);
+  // keep the blurred backdrop in step with the main video
+  const sync = () => { const m = main.current, b = bg.current; if (m && b && Math.abs(b.currentTime - m.currentTime) > 0.3) b.currentTime = m.currentTime; };
+  const sources = <><source src={webm.url} type="video/webm" /><source src={mp4.url} type="video/mp4" /></>;
+  return <PhoneShell><div className="rw-stage">
+    <video ref={bg} className="rw-backdrop" autoPlay muted loop playsInline poster={poster.url} aria-hidden="true">{sources}</video>
+    <div className="rw-shade" />
+    <video ref={main} className="rw-video" autoPlay muted loop playsInline poster={poster.url} onTimeUpdate={sync} onClick={() => setSoundOn(v => !v)} aria-label="React & Win video">{sources}</video>
+    <Button variant="secondary" size="icon" className="rw-sound" aria-label={soundOn ? 'Mute video' : 'Turn sound on'} onClick={() => setSoundOn(v => !v)}>{soundOn ? <Volume2 /> : <VolumeX />}</Button>
+  </div></PhoneShell>;
+}
