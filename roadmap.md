@@ -5,3 +5,4 @@
 - [x] Add the uploaded clip as a playable feed video
 - [x] Add the second uploaded clip as a feed video
 - [x] Add and verify the supplied opening video on fresh loads, without replaying during tab navigation.
+- [x] Use the supplied badge mark, background removed, as the Radio tab icon.
