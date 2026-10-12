@@ -6,7 +6,7 @@ import { artists } from './data';
 import herdLogoUrl from '@/assets/herd-logo.png';
 import herdRadio from '@/assets/herd-radio.png.asset.json';
 import { OpeningVideo, useOpeningVideo } from './opening-video';
-const tabs = [{to:'/',label:'Discovery',icon:AudioLines},{to:'/charts',label:'Charts',icon:BarChart3},{to:'/radio',label:'Radio',icon:Radio},{to:'/upload',label:'Upload',icon:CirclePlus},{to:'/profile',label:'Profile',icon:UserRound}] as const;
+const tabs = [{to:'/',label:'Discovery',icon:AudioLines},{to:'/charts',label:'Charts',icon:BarChart3},{to:'/radio',label:'React & Win',icon:Radio},{to:'/upload',label:'Upload',icon:CirclePlus},{to:'/profile',label:'Profile',icon:UserRound}] as const;
 export function PhoneShell({children}:{children:ReactNode}) {
  const opening = useOpeningVideo();
  const path=useLocation({select:l=>l.pathname}); const [search,setSearch]=useState(false); const [query,setQuery]=useState('');
