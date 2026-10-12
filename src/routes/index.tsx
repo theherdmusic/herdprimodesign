@@ -1,24 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
-
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
-export const Route = createFileRoute("/")({
-  component: Index,
+import { createFileRoute } from '@tanstack/react-router';
+import { FeedScreen } from '@/components/herd/feed-screen';
+import { pageHead } from '@/components/herd/data';
+export const Route = createFileRoute('/')({
+  head:()=>pageHead('For you','Find your next favorite independent artist in the Herd music video feed.'),
+  validateSearch:(s:Record<string,unknown>):{track?:number}=>({track:Math.max(0,Number(s['track'])||0)}),
+  component:Index,
 });
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
+function Index() { const {track}=Route.useSearch(); return <FeedScreen initialTrack={track??0}/>; }
