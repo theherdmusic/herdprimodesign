@@ -17,7 +17,7 @@
 }
 :root {
  --background: oklch(.13 .005 250); --foreground: oklch(.97 .002 250); --card: oklch(.18 .006 250);
- --primary: oklch(.9 .21 126); --primary-foreground: oklch(.14 .02 126);
+ --primary: oklch(.72 .17 55); --primary-foreground: oklch(.15 .03 55);
  --secondary: oklch(.235 .006 250); --muted-foreground: oklch(.63 .01 250); --border: oklch(.28 .005 250);
  --destructive: oklch(.7 .2 25); --stage: oklch(.105 .003 250); --overlay: oklch(.08 .005 250 / .9);
  --phone-shadow: 0 28px 100px oklch(0 0 0 / .55); --radius: 8px;
