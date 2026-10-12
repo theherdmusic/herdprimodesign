@@ -11,5 +11,6 @@
 
 - Herd uses a shared phone-shell component with separate content routes for its five tabs, keeping the mockup visually consistent.
 - All mockup actions use client state and sample assets, with no backend or production uploads, because this is a design-only prototype.
+- Opening-video state lives in a root provider, not storage, so each fresh page load plays it once while tab navigation does not replay it.
 - Video duration validation lives in a browser-safe helper with boundary tests so the upload limit remains enforceable.
 - Sample feed video is served from CDN asset pointers in two formats (H.264 MP4 first, VP9 WebM fallback) because the sandbox test browser has no H.264 decoder, so an MP4-only clip cannot be verified there.

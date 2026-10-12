@@ -4,3 +4,4 @@
 - [x] Verify navigation, feed actions and upload duration limit.
 - [x] Add the uploaded clip as a playable feed video
 - [x] Add the second uploaded clip as a feed video
+- [ ] Add and verify the supplied opening video on fresh loads, without replaying during tab navigation.
