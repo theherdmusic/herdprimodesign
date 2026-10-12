@@ -1,5 +1,5 @@
 import { Link, useLocation } from '@tanstack/react-router';
-import { AudioLines, BarChart3, Radio, CirclePlus, UserRound, Search, Signal, Wifi, BatteryFull, X } from 'lucide-react';
+import { AudioLines, BarChart3, Radio, CirclePlus, UserRound, Search, X } from 'lucide-react';
 import { useState, type ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { artists } from './data';
