@@ -3,17 +3,17 @@ import { Heart, Plus, Check, Send, Music2, BadgeCheck, ChevronDown, Pause, Play,
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { PhoneShell } from './phone-shell';
-import { artists } from './data';
+import { artists, getArtist } from './data';
 export function FeedScreen({initialTrack=0}:{initialTrack?:number}) {
  const [index,setIndex]=useState(initialTrack%artists.length); const [liked,setLiked]=useState<number[]>([]); const [following,setFollowing]=useState<number[]>([]); const [mode,setMode]=useState('For you'); const [share,setShare]=useState(false); const [paused,setPaused]=useState(false); const [note,setNote]=useState(''); const touch=useRef(0); const wheel=useRef(0);
  useEffect(()=>setIndex(initialTrack%artists.length),[initialTrack]);
  useEffect(()=>{ if(!note)return;const timer=setTimeout(()=>setNote(''),2200);return()=>clearTimeout(timer); },[note]);
- const artist=artists[index]??artists[0]; const isLiked=liked.includes(index);const isFollowing=following.includes(index);
+ const artist=getArtist(index); const isLiked=liked.includes(index);const isFollowing=following.includes(index);
  const next=()=>{setIndex(i=>(i+1)%artists.length);setPaused(false);};
  const toggleLike=()=>setLiked(v=>v.includes(index)?v.filter(i=>i!==index):[...v,index]);
- return <PhoneShell><div className="feed" onTouchStart={e=>{touch.current=e.touches[0].clientY;}} onTouchEnd={e=>{const distance=touch.current-e.changedTouches[0].clientY;if(Math.abs(distance)>45)next();}} onWheel={e=>{if(Math.abs(e.deltaY)>20&&Date.now()-wheel.current>700){wheel.current=Date.now();next();}}}>
+ return <PhoneShell><div className="feed" onTouchStart={e=>{touch.current=(e.touches[0]?.clientY??0);}} onTouchEnd={e=>{const distance=touch.current-(e.changedTouches[0]?.clientY??0);if(Math.abs(distance)>45)next();}} onWheel={e=>{if(Math.abs(e.deltaY)>20&&Date.now()-wheel.current>700){wheel.current=Date.now();next();}}}>
  <img key={artist.image} className="feed-photo" src={artist.image} width={1024} height={1536} alt={`${artist.name} performing ${artist.song}`}/><div className="feed-shade"/>
- <div className="feed-top">{['Following','For you'].map(m=><Button key={m} variant="ghost" className={`feed-mode ${mode===m?'selected':''}`} onClick={()=>{setMode(m);if(m==='Following'&&following.length)setIndex(following[0]);if(m==='Following'&&!following.length)setNote('Follow an artist to start your own lineup.');}}>{m}</Button>)}</div>
+ <div className="feed-top">{['Following','For you'].map(m=><Button key={m} variant="ghost" className={`feed-mode ${mode===m?'selected':''}`} onClick={()=>{setMode(m);if(m==='Following'&&following.length)setIndex(following[0]??0);if(m==='Following'&&!following.length)setNote('Follow an artist to start your own lineup.');}}>{m}</Button>)}</div>
  <Button variant="ghost" size="icon" aria-label={paused?'Play video preview':'Pause video preview'} className="absolute left-5 top-16 opacity-60" onClick={()=>setPaused(!paused)}>{paused?<Play size={15}/>:<Pause size={15}/>}</Button>
  <div className="feed-actions"><div className="feed-action"><Button variant="ghost" className={`action-button ${isLiked?'text-primary':''}`} aria-label={isLiked?'Unlike video':'Like video'} onClick={toggleLike}><Heart fill={isLiked?'currentColor':'none'}/></Button><span>{isLiked?'12.9K':artist.hearts}</span></div>
  <div className="feed-action avatar-follow"><Link to="/profile" search={{artist:index}} aria-label={`View ${artist.name}'s profile`}><img src={artist.image} className="feed-avatar" alt={artist.name}/></Link><Button className="follow-plus" aria-label={isFollowing?'Unfollow artist':'Follow artist'} onClick={()=>setFollowing(v=>v.includes(index)?v.filter(i=>i!==index):[...v,index])}>{isFollowing?<Check/>:<Plus/>}</Button></div>
