@@ -27,7 +27,7 @@ function ReactWin() {
   // keep the blurred backdrop in step with the main video
   const sync = () => { const m = main.current, b = bg.current; if (m && b && Math.abs(b.currentTime - m.currentTime) > 0.3) b.currentTime = m.currentTime; };
   const sources = <><source src={webm.url} type="video/webm" /><source src={mp4.url} type="video/mp4" /></>;
-  return <PhoneShell>
+  return <PhoneShell landscape={flipped}>
     {!flipped && <div className="rw-flip">
       <div className="rw-flip-icon" aria-hidden="true"><Smartphone /></div>
       <h2>Flip your screen</h2>
