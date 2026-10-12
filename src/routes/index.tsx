@@ -6,4 +6,4 @@ export const Route = createFileRoute('/')({
   validateSearch:(s:Record<string,unknown>):{track?:number}=>({track:Math.max(0,Number(s['track'])||0)}),
   component:Index,
 });
-function Index() { const {track}=Route.useSearch(); return <FeedScreen initialTrack={track}/>; }
+function Index() { const {track}=Route.useSearch(); return <FeedScreen initialTrack={track??0}/>; }
