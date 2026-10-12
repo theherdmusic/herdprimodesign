@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { Heart, Plus, Check, Send, Music2, BadgeCheck, ChevronDown, Pause, Play, X, Link2 } from 'lucide-react';
+import { Heart, Plus, Check, Send, Music2, BadgeCheck, ChevronDown, Pause, Play, X, Link2, Volume2, VolumeX } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { PhoneShell } from './phone-shell';
@@ -7,7 +7,7 @@ import { artists, getArtist } from './data';
 import { useOpeningVideo } from './opening-video';
 export function FeedScreen({initialTrack=0}:{initialTrack?:number}) {
  const { active: openingActive } = useOpeningVideo();
- const [index,setIndex]=useState(initialTrack%artists.length); const [liked,setLiked]=useState<number[]>([]); const [following,setFollowing]=useState<number[]>([]); const [mode,setMode]=useState('For you'); const [share,setShare]=useState(false); const [paused,setPaused]=useState(false); const [note,setNote]=useState(''); const touch=useRef(0); const wheel=useRef(0); const clip=useRef<HTMLVideoElement|null>(null);
+ const [index,setIndex]=useState(initialTrack%artists.length); const [liked,setLiked]=useState<number[]>([]); const [following,setFollowing]=useState<number[]>([]); const [mode,setMode]=useState('For you'); const [share,setShare]=useState(false); const [paused,setPaused]=useState(false); const [soundOn,setSoundOn]=useState(false); const [note,setNote]=useState(''); const touch=useRef(0); const wheel=useRef(0); const clip=useRef<HTMLVideoElement|null>(null);
  useEffect(()=>setIndex(initialTrack%artists.length),[initialTrack]);
  useEffect(()=>{ if(!note)return;const timer=setTimeout(()=>setNote(''),2200);return()=>clearTimeout(timer); },[note]);
  useEffect(()=>{const v=clip.current;if(!v)return;if(paused||openingActive)v.pause();else void v.play().catch(()=>{});},[paused,index,openingActive]);
