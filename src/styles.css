@@ -29,7 +29,7 @@
 .status-icons { display:flex;align-items:center; gap:5px; }
 .brand-header { height:64px; display:flex;align-items:center;justify-content:space-between; padding:0 23px; flex-shrink:0; z-index:20; }
 .brand { font-size:31px; font-weight:900; display:flex;align-items:center; gap:8px; }
-.herd-logo { width:34px; height:34px; object-fit:contain; }
+.herd-logo { width:46px; height:46px; object-fit:contain; }
 .brand-dot { width:7px; height:7px; border-radius:50%; background:var(--primary); }
 .header-label { display:flex;align-items:center;gap:6px; font-size:10px; color:var(--muted-foreground); text-transform:uppercase; letter-spacing:1.5px; }
 .screen-content { flex:1; min-height:0; overflow-y:auto; scrollbar-width:none; position:relative; }
