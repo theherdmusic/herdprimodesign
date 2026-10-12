@@ -25,8 +25,6 @@
 @layer base { * { border-color: var(--border); } body { margin:0; background:var(--stage); color:var(--foreground); font-family:'DM Sans',sans-serif; letter-spacing:0; } button,a,input,select { -webkit-tap-highlight-color:transparent; } button { cursor:pointer; } }
 .prototype-stage { min-height:100svh; display:flex; align-items:center; justify-content:center; padding:36px 20px; background-image:radial-gradient(var(--border) .65px,transparent .65px); background-size:22px 22px; }
 .phone { width:414px; height:852px; position:relative; overflow:hidden; background:var(--background); border:7px solid var(--secondary); border-radius:46px; box-shadow:var(--phone-shadow); display:flex; flex-direction:column; }
-.status-bar { height:37px; flex-shrink:0; display:flex; align-items:center; justify-content:space-between; padding:9px 24px 0; font-size:12px; font-weight:700; z-index:20; }
-.status-icons { display:flex;align-items:center; gap:5px; }
 .brand-header { height:64px; display:flex;align-items:center;justify-content:space-between; padding:0 23px; flex-shrink:0; z-index:20; }
 .brand { font-size:31px; font-weight:900; display:flex;align-items:center; gap:8px; }
 .herd-logo { width:46px; height:46px; object-fit:contain; }
