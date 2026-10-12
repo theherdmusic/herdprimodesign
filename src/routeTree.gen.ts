@@ -11,9 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ChartsRouteImport } from './routes/charts'
+import { Route as JoinRouteImport } from './routes/join'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RadioRouteImport } from './routes/radio'
 import { Route as UploadRouteImport } from './routes/upload'
+import { Route as YouRouteImport } from './routes/you'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -23,6 +25,11 @@ const IndexRoute = IndexRouteImport.update({
 const ChartsRoute = ChartsRouteImport.update({
   id: '/charts',
   path: '/charts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JoinRoute = JoinRouteImport.update({
+  id: '/join',
+  path: '/join',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
@@ -40,43 +47,65 @@ const UploadRoute = UploadRouteImport.update({
   path: '/upload',
   getParentRoute: () => rootRouteImport,
 } as any)
+const YouRoute = YouRouteImport.update({
+  id: '/you',
+  path: '/you',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/charts': typeof ChartsRoute
+  '/join': typeof JoinRoute
   '/profile': typeof ProfileRoute
   '/radio': typeof RadioRoute
   '/upload': typeof UploadRoute
+  '/you': typeof YouRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/charts': typeof ChartsRoute
+  '/join': typeof JoinRoute
   '/profile': typeof ProfileRoute
   '/radio': typeof RadioRoute
   '/upload': typeof UploadRoute
+  '/you': typeof YouRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/charts': typeof ChartsRoute
+  '/join': typeof JoinRoute
   '/profile': typeof ProfileRoute
   '/radio': typeof RadioRoute
   '/upload': typeof UploadRoute
+  '/you': typeof YouRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/charts' | '/profile' | '/radio' | '/upload'
+  fullPaths:
+    '/' | '/charts' | '/join' | '/profile' | '/radio' | '/upload' | '/you'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/charts' | '/profile' | '/radio' | '/upload'
-  id: '__root__' | '/' | '/charts' | '/profile' | '/radio' | '/upload'
+  to: '/' | '/charts' | '/join' | '/profile' | '/radio' | '/upload' | '/you'
+  id:
+    | '__root__'
+    | '/'
+    | '/charts'
+    | '/join'
+    | '/profile'
+    | '/radio'
+    | '/upload'
+    | '/you'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ChartsRoute: typeof ChartsRoute
+  JoinRoute: typeof JoinRoute
   ProfileRoute: typeof ProfileRoute
   RadioRoute: typeof RadioRoute
   UploadRoute: typeof UploadRoute
+  YouRoute: typeof YouRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -93,6 +122,13 @@ declare module '@tanstack/react-router' {
       path: '/charts'
       fullPath: '/charts'
       preLoaderRoute: typeof ChartsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/join': {
+      id: '/join'
+      path: '/join'
+      fullPath: '/join'
+      preLoaderRoute: typeof JoinRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -116,15 +152,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UploadRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/you': {
+      id: '/you'
+      path: '/you'
+      fullPath: '/you'
+      preLoaderRoute: typeof YouRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ChartsRoute: ChartsRoute,
+  JoinRoute: JoinRoute,
   ProfileRoute: ProfileRoute,
   RadioRoute: RadioRoute,
   UploadRoute: UploadRoute,
+  YouRoute: YouRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -13,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { OpeningVideoProvider } from '@/components/herd/opening-video';
+import { MeProvider } from '@/components/herd/me';
 
 function NotFoundComponent() {
   return (
@@ -122,7 +123,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-       <OpeningVideoProvider><Outlet /></OpeningVideoProvider>
+       <OpeningVideoProvider><MeProvider><Outlet /></MeProvider></OpeningVideoProvider>
     </QueryClientProvider>
   );
 }
