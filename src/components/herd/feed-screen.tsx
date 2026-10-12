@@ -7,7 +7,7 @@ import { artists, getArtist } from './data';
 import { useOpeningVideo } from './opening-video';
 export function FeedScreen({initialTrack=0}:{initialTrack?:number}) {
  const { active: openingActive } = useOpeningVideo();
- const [index,setIndex]=useState(initialTrack%artists.length); const [liked,setLiked]=useState<number[]>([]); const [following,setFollowing]=useState<number[]>([]); const [mode,setMode]=useState('For you'); const [share,setShare]=useState(false); const [paused,setPaused]=useState(false); const [soundOn,setSoundOn]=useState(false); const [note,setNote]=useState(''); const [commentsOpen,setCommentsOpen]=useState(false); const [draft,setDraft]=useState(''); const [comments,setComments]=useState<Record<number,{user:string;text:string}[]>>({}); const touch=useRef(0); const wheel=useRef(0); const clip=useRef<HTMLVideoElement|null>(null);
+ const [index,setIndex]=useState(initialTrack%artists.length); const [liked,setLiked]=useState<number[]>([]); const [following,setFollowing]=useState<number[]>([]); const [mode,setMode]=useState('For you'); const [share,setShare]=useState(false); const [paused,setPaused]=useState(false); const [soundOn,setSoundOn]=useState(true); const [note,setNote]=useState(''); const [commentsOpen,setCommentsOpen]=useState(false); const [draft,setDraft]=useState(''); const [comments,setComments]=useState<Record<number,{user:string;text:string}[]>>({}); const touch=useRef(0); const wheel=useRef(0); const clip=useRef<HTMLVideoElement|null>(null);
  useEffect(()=>setIndex(initialTrack%artists.length),[initialTrack]);
  useEffect(()=>{ if(!note)return;const timer=setTimeout(()=>setNote(''),2200);return()=>clearTimeout(timer); },[note]);
  useEffect(()=>{const v=clip.current;if(!v)return;if(paused||openingActive){v.pause();return;}
@@ -16,7 +16,6 @@ export function FeedScreen({initialTrack=0}:{initialTrack?:number}) {
   return()=>v.removeEventListener('canplay',start);
  },[paused,index,openingActive]);
  useEffect(()=>{const v=clip.current;if(v)v.muted=!soundOn;},[soundOn]);
- useEffect(()=>{const unlock=()=>setSoundOn(true);window.addEventListener('pointerdown',unlock,{once:true});return()=>window.removeEventListener('pointerdown',unlock);},[]);
  const artist=getArtist(index); const isLiked=liked.includes(index);const isFollowing=following.includes(index);
  const sample=[{user:'@riffqueen',text:'This chorus lives in my head now 🔥'},{user:'@backroadkid',text:'Finally real indie music on my feed.'},{user:'@nightowl',text:'Need the full song ASAP'}]; const currentComments=[...sample,...(comments[index]??[])];
  const postComment=()=>{const t=draft.trim();if(!t)return;setComments(c=>({...c,[index]:[...(c[index]??[]),{user:'@you',text:t}]}));setDraft('');};
