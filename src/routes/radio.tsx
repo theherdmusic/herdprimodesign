@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { Volume2, VolumeX } from 'lucide-react';
+import { RotateCcw, Smartphone, Volume2, VolumeX } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { PhoneShell } from '@/components/herd/phone-shell';
 import { Button } from '@/components/ui/button';
