@@ -1,0 +1,23 @@
+import { Link } from '@tanstack/react-router';
+import { Heart, Plus, Check, Send, Music2, BadgeCheck, ChevronDown, Pause, Play, X, Link2 } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { PhoneShell } from './phone-shell';
+import { artists } from './data';
+export function FeedScreen({initialTrack=0}:{initialTrack?:number}) {
+ const [index,setIndex]=useState(initialTrack%artists.length); const [liked,setLiked]=useState<number[]>([]); const [following,setFollowing]=useState<number[]>([]); const [mode,setMode]=useState('For you'); const [share,setShare]=useState(false); const [paused,setPaused]=useState(false); const [note,setNote]=useState(''); const touch=useRef(0); const wheel=useRef(0);
+ useEffect(()=>setIndex(initialTrack%artists.length),[initialTrack]);
+ useEffect(()=>{ if(!note)return;const timer=setTimeout(()=>setNote(''),2200);return()=>clearTimeout(timer); },[note]);
+ const artist=artists[index]??artists[0]; const isLiked=liked.includes(index);const isFollowing=following.includes(index);
+ const next=()=>{setIndex(i=>(i+1)%artists.length);setPaused(false);};
+ const toggleLike=()=>setLiked(v=>v.includes(index)?v.filter(i=>i!==index):[...v,index]);
+ return <PhoneShell><div className="feed" onTouchStart={e=>{touch.current=e.touches[0].clientY;}} onTouchEnd={e=>{const distance=touch.current-e.changedTouches[0].clientY;if(Math.abs(distance)>45)next();}} onWheel={e=>{if(Math.abs(e.deltaY)>20&&Date.now()-wheel.current>700){wheel.current=Date.now();next();}}}>
+ <img key={artist.image} className="feed-photo" src={artist.image} width={1024} height={1536} alt={`${artist.name} performing ${artist.song}`}/><div className="feed-shade"/>
+ <div className="feed-top">{['Following','For you'].map(m=><Button key={m} variant="ghost" className={`feed-mode ${mode===m?'selected':''}`} onClick={()=>{setMode(m);if(m==='Following'&&following.length)setIndex(following[0]);if(m==='Following'&&!following.length)setNote('Follow an artist to start your own lineup.');}}>{m}</Button>)}</div>
+ <Button variant="ghost" size="icon" aria-label={paused?'Play video preview':'Pause video preview'} className="absolute left-5 top-16 opacity-60" onClick={()=>setPaused(!paused)}>{paused?<Play size={15}/>:<Pause size={15}/>}</Button>
+ <div className="feed-actions"><div className="feed-action"><Button variant="ghost" className={`action-button ${isLiked?'text-primary':''}`} aria-label={isLiked?'Unlike video':'Like video'} onClick={toggleLike}><Heart fill={isLiked?'currentColor':'none'}/></Button><span>{isLiked?'12.9K':artist.hearts}</span></div>
+ <div className="feed-action avatar-follow"><Link to="/profile" search={{artist:index}} aria-label={`View ${artist.name}'s profile`}><img src={artist.image} className="feed-avatar" alt={artist.name}/></Link><Button className="follow-plus" aria-label={isFollowing?'Unfollow artist':'Follow artist'} onClick={()=>setFollowing(v=>v.includes(index)?v.filter(i=>i!==index):[...v,index])}>{isFollowing?<Check/>:<Plus/>}</Button></div>
+ <div className="feed-action"><Button variant="ghost" className="action-button" aria-label="Share video" onClick={()=>setShare(true)}><Send/></Button><span>Share</span></div></div>
+ <div className="feed-bottom"><Link to="/profile" search={{artist:index}} className="artist-line">{artist.name}<BadgeCheck size={17} className="text-primary"/></Link><p className="song-title">{artist.song}</p><span className="genre-tag"><Music2 size={11}/>{artist.genre}</span><div className="sound-line"><div className={`equalizer ${paused?'invisible':''}`}><i/><i/><i/><i/></div><span>Original sound · {artist.name}</span></div></div><Button variant="ghost" size="icon" className="feed-next" aria-label="Next video" onClick={next}><ChevronDown/></Button><div className="feed-progress"/>
+ </div>{share&&<div className="share-panel" role="dialog" aria-label="Share this song"><div className="share-top"><strong>Good music travels.</strong><Button variant="ghost" size="icon" aria-label="Close share" onClick={()=>setShare(false)}><X/></Button></div><p className="text-sm text-muted-foreground mb-5">{artist.song} · {artist.name}</p><Button className="share-link" onClick={async()=>{try{await navigator.clipboard.writeText(`${location.origin}/?track=${index}`);setNote('Link copied. Pass it on.');}catch{setNote('Share link: '+location.origin+'/?track='+index);}setShare(false);}}><Link2/>Copy link</Button></div>}{note&&<div className="toast-note" role="status">{note}</div>}</PhoneShell>;
+}
