@@ -28,7 +28,7 @@ function ReactWin() {
   return <PhoneShell><div className="rw-stage">
     <video ref={bg} className="rw-backdrop" autoPlay muted loop playsInline poster={poster.url} aria-hidden="true">{sources}</video>
     <div className="rw-shade" />
-    <video ref={main} className="rw-video" autoPlay muted loop playsInline poster={poster.url} onTimeUpdate={sync} onClick={() => setSoundOn(v => !v)} aria-label="React & Win video">{sources}</video>
+    <video ref={main} className="rw-video" autoPlay loop playsInline muted={!soundOn} poster={poster.url} onTimeUpdate={sync} onClick={() => setSoundOn(v => !v)} aria-label="React & Win video">{sources}</video>
     <Button variant="secondary" size="icon" className="rw-sound" aria-label={soundOn ? 'Mute video' : 'Turn sound on'} onClick={() => setSoundOn(v => !v)}>{soundOn ? <Volume2 /> : <VolumeX />}</Button>
   </div></PhoneShell>;
 }
