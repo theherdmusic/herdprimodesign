@@ -12,8 +12,16 @@ export const Route = createFileRoute('/radio')({ head: () => pageHead('React & W
 
 function ReactWin() {
   const main = useRef<HTMLVideoElement>(null); const bg = useRef<HTMLVideoElement>(null);
-  const [soundOn, setSoundOn] = useState(false);
-  useEffect(() => { if (main.current) main.current.muted = !soundOn; }, [soundOn]);
+  const [soundOn, setSoundOn] = useState(true);
+  // the tab click counts as a user gesture, so try to start with sound right away;
+  // if the browser refuses (e.g. opened directly without a tap), fall back to muted
+  useEffect(() => {
+    const v = main.current;
+    if (!v) return;
+    v.muted = !soundOn;
+    const p = v.play();
+    if (p) p.catch(() => setSoundOn(false));
+  }, [soundOn]);
   // keep the blurred backdrop in step with the main video
   const sync = () => { const m = main.current, b = bg.current; if (m && b && Math.abs(b.currentTime - m.currentTime) > 0.3) b.currentTime = m.currentTime; };
   const sources = <><source src={webm.url} type="video/webm" /><source src={mp4.url} type="video/mp4" /></>;
