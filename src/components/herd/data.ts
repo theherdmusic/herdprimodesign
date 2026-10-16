@@ -15,7 +15,7 @@ import brittCover from '@/assets/britt-poster.jpg.asset.json';
 export { live, studio };
 export type HerdArtist = { name: string; song: string; genre: string; image: string; hearts: string; bio: string; handle: string; video?: string; videoWebm?: string; poster?: string };
 export const artists: HerdArtist[] = [
- { name:'Grace Maher', song:'Running out of daylight', genre:'Indie Rock', image:runningCover.url, poster:runningCover.url, video:runningClip.url, videoWebm:runningClipWebm.url, hearts:'12.8K', bio:'A little grit. A lot of heart. Independent artist making noise out of Austin, TX.', handle:'@lunahhayes' },
+ { name:'Chris Moreno', song:'Running out of daylight', genre:'Indie Rock', image:runningCover.url, poster:runningCover.url, video:runningClip.url, videoWebm:runningClipWebm.url, hearts:'12.8K', bio:'A little grit. A lot of heart. Independent artist making noise out of Austin, TX.', handle:'@lunahhayes' },
  { name:'Miles Carter', song:'Something real', genre:'Rap', image:elcaminoCover.url, poster:elcaminoCover.url, video:elcaminoClip.url, videoWebm:elcaminoClipWebm.url, hearts:'9.6K', bio:'Late nights, honest verses. Making music on my own terms. Chicago, IL.', handle:'@milescarter' },
  { name:'Grace', song:'Uneasy', genre:'Pop', image:graceCover.url, poster:graceCover.url, video:graceClip.url, videoWebm:graceClipWebm.url, hearts:'7.4K', bio:'Songs for the feelings you can\'t name. Nashville, TN.', handle:'@grace' },
  { name:'Brittany Elise', song:'YLL', genre:'Country', image:brittCover.url, poster:brittCover.url, video:brittClip.url, videoWebm:brittClipWebm.url, hearts:'6.1K', bio:'Small-town stories with a big voice. Tennessee backroads and honest country. Nashville, TN.', handle:'@brittanyelise' },
