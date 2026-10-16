@@ -82,6 +82,7 @@
 @media(prefers-reduced-motion:reduce) { *,*::before,*::after {animation:none!important;transition:none!important;} }
 
 .comments-panel { position:absolute;left:0;right:0;bottom:var(--keyboard-inset,0px);max-height:calc((100% - var(--keyboard-inset,0px)) * .78);height:58%;z-index:40;display:flex;flex-direction:column;background:color-mix(in oklab,var(--card) 94%,transparent);backdrop-filter:blur(10px);padding:18px 18px 22px;border-radius:18px 18px 0 0;border-top:1px solid var(--border);box-shadow:var(--phone-shadow);animation:reveal .2s ease; }
+@media(max-width:480px){ .comments-panel { position:fixed;top:calc(var(--vv-top,0px) + var(--vv-height,100svh) * .3);bottom:auto;height:calc(var(--vv-height,100svh) * .7);max-height:none;padding-bottom:calc(14px + env(safe-area-inset-bottom,0px)); } }
 .comments-panel .share-top { margin-bottom:12px; }
 .comments-list { flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px; }
 .comments-list li { display:flex;gap:10px;font-size:13px; } .comments-list b { font-size:12px;color:var(--muted-foreground);font-weight:600; } .comments-list p { margin-top:2px; }
