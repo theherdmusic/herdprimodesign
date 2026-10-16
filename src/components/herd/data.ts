@@ -12,6 +12,12 @@ import graceCover from '@/assets/grace-poster.jpg.asset.json';
 import brittClip from '@/assets/britt.mp4.asset.json';
 import brittClipWebm from '@/assets/britt.webm.asset.json';
 import brittCover from '@/assets/britt-poster.jpg.asset.json';
+import dariannClip from '@/assets/dariann.mp4.asset.json';
+import dariannClipWebm from '@/assets/dariann.webm.asset.json';
+import dariannCover from '@/assets/dariann-poster.jpg.asset.json';
+import hobbsClip from '@/assets/hobbs.mp4.asset.json';
+import hobbsClipWebm from '@/assets/hobbs.webm.asset.json';
+import hobbsCover from '@/assets/hobbs-poster.jpg.asset.json';
 export { live, studio };
 export type HerdArtist = { name: string; song: string; genre: string; image: string; hearts: string; bio: string; handle: string; video?: string; videoWebm?: string; poster?: string; newArtist?: boolean };
 export const artists: HerdArtist[] = [
@@ -19,6 +25,8 @@ export const artists: HerdArtist[] = [
  { name:'Miles Carter', song:'Something real', genre:'Rap', image:elcaminoCover.url, poster:elcaminoCover.url, video:elcaminoClip.url, videoWebm:elcaminoClipWebm.url, hearts:'9.6K', bio:'Late nights, honest verses. Making music on my own terms. Chicago, IL.', handle:'@milescarter' },
  { name:'Grace', song:'Uneasy', genre:'Pop', image:graceCover.url, poster:graceCover.url, video:graceClip.url, videoWebm:graceClipWebm.url, hearts:'7.4K', bio:'Songs for the feelings you can\'t name. Nashville, TN.', handle:'@grace' },
  { name:'Brittany Elise', song:'YLL', genre:'Country', image:brittCover.url, poster:brittCover.url, video:brittClip.url, videoWebm:brittClipWebm.url, hearts:'6.1K', bio:'Small-town stories with a big voice. Tennessee backroads and honest country. Nashville, TN.', handle:'@brittanyelise', newArtist:true },
+ { name:'Dariann', song:'Daddy', genre:'Country', image:dariannCover.url, poster:dariannCover.url, video:dariannClip.url, videoWebm:dariannClipWebm.url, hearts:'4.8K', bio:'Safety pins, spurs and a whole lot of attitude. Country with the volume up. Nashville, TN.', handle:'@dariann', newArtist:true },
+ { name:'Hobbs', song:'SGL', genre:'Country', image:hobbsCover.url, poster:hobbsCover.url, video:hobbsClip.url, videoWebm:hobbsClipWebm.url, hearts:'3.9K', bio:'Meadow sunsets and honest hooks. Country made for front-porch evenings. Austin, TX.', handle:'@hobbs', newArtist:true },
 ];
 export const songs = ['Running out of daylight','Something real','Backroad summer','Velvet skies','Nothing to lose','After hours','Wildflower','Slow motion','Stay a little longer','City lights','Good enough','Golden hour','Home again','No apologies','Between the lines','Headlights','On my own','Midnight drive','Let it go','Blue Sunday','All we know','Easy days','Break the silence','Tomorrow','One more time'];
 export const genres = ['All','Rock','Country','Rap','Pop','R&B','Electronic'];
