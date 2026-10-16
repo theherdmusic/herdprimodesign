@@ -12,6 +12,8 @@ export function useKeyboardInset() {
     const read = () => {
       const inset = Math.max(0, Math.round(window.innerHeight - viewport.height - viewport.offsetTop));
       root.style.setProperty('--keyboard-inset', `${inset}px`);
+      root.style.setProperty('--vv-top', `${Math.round(viewport.offsetTop)}px`);
+      root.style.setProperty('--vv-height', `${Math.round(viewport.height)}px`);
     };
     read();
     viewport.addEventListener('resize', read);
