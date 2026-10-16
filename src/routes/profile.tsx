@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { BadgeCheck, Play, Check, Plus, MapPin, Grid3X3 } from 'lucide-react';
+import { Play, Check, Plus, MapPin, Grid3X3 } from 'lucide-react';
 import { useState } from 'react';
 import { PhoneShell } from '@/components/herd/phone-shell';
 import { Button } from '@/components/ui/button';
