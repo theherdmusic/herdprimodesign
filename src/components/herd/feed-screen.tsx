@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { Heart, Plus, Check, Send, Music2, ChevronDown, Pause, Play, X, Link2, Volume2, VolumeX, MessageCircle, Flag, Search } from 'lucide-react';
+import { Heart, Plus, Check, Send, Music2, ChevronDown, X, Link2, MessageCircle, Flag, Search } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { PhoneShell } from './phone-shell';
@@ -7,9 +7,10 @@ import { artists, getArtist, genres } from './data';
 import { useKeyboardInset } from '@/lib/herd-keyboard';
 import { useOpeningVideo } from './opening-video';
 import { REPORT_REASONS } from './me';
+let feedIndex=0;
 export function FeedScreen({initialTrack=0}:{initialTrack?:number}) {
  const { active: openingActive } = useOpeningVideo();
- const [index,setIndex]=useState(initialTrack%artists.length); const [liked,setLiked]=useState<number[]>([]); const [following,setFollowing]=useState<number[]>([]); const [query,setQuery]=useState(''); const [share,setShare]=useState(false); const [paused,setPaused]=useState(false); const [soundOn,setSoundOn]=useState(true); const [note,setNote]=useState(''); const [commentsOpen,setCommentsOpen]=useState(false); const [reportOpen,setReportOpen]=useState(false); const [draft,setDraft]=useState(''); const [comments,setComments]=useState<Record<number,{user:string;text:string}[]>>({}); const [genre,setGenre]=useState(''); const [genreOpen,setGenreOpen]=useState(false); const [searchOpen,setSearchOpen]=useState(false); const touch=useRef(0); const wheel=useRef(0); const clip=useRef<HTMLVideoElement|null>(null); useKeyboardInset();
+ const [index,setIndex]=useState(feedIndex%artists.length); const [liked,setLiked]=useState<number[]>([]); const [following,setFollowing]=useState<number[]>([]); const [query,setQuery]=useState(''); const [share,setShare]=useState(false); const [note,setNote]=useState(''); const [commentsOpen,setCommentsOpen]=useState(false); const [reportOpen,setReportOpen]=useState(false); const [draft,setDraft]=useState(''); const [comments,setComments]=useState<Record<number,{user:string;text:string}[]>>({}); const [genre,setGenre]=useState(''); const [genreOpen,setGenreOpen]=useState(false); const [searchOpen,setSearchOpen]=useState(false); const touch=useRef(0); const wheel=useRef(0); const clip=useRef<HTMLVideoElement|null>(null); useKeyboardInset();
  useEffect(()=>setIndex(initialTrack%artists.length),[initialTrack]);
  useEffect(()=>{ if(!note)return;const timer=setTimeout(()=>setNote(''),2200);return()=>clearTimeout(timer); },[note]);
  useEffect(()=>{const v=clip.current;if(!v)return;if(paused||openingActive){v.pause();return;}
