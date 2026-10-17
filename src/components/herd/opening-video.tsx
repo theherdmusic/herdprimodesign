@@ -20,17 +20,20 @@ export function OpeningVideo() {
   const { finish } = useOpeningVideo();
   const [muted, setMuted] = useState(true);
   const overlayRef = useRef<HTMLDivElement | null>(null);
+  const startYRef = useRef<number | null>(null);
+  const finishRef = useRef(finish);
+  finishRef.current = finish;
   useEffect(() => {
     const el = overlayRef.current;
     if (!el) return;
-    let startY: number | null = null;
-    const onStart = (event: TouchEvent) => { startY = event.touches[0]?.clientY ?? null; };
+    const onStart = (event: TouchEvent) => { startYRef.current = event.touches[0]?.clientY ?? null; };
     const onMove = (event: TouchEvent) => {
       const y = event.touches[0]?.clientY;
-      console.log("swipe", startY, y); if (startY !== null && y !== undefined && startY - y > 40) finish();
+      const startY = startYRef.current;
+      if (startY !== null && y !== undefined && startY - y > 40) finishRef.current();
     };
-    const onEnd = () => { startY = null; };
-    const onWheel = (event: WheelEvent) => { if (event.deltaY > 30) finish(); };
+    const onEnd = () => { startYRef.current = null; };
+    const onWheel = (event: WheelEvent) => { if (event.deltaY > 30) finishRef.current(); };
     el.addEventListener('touchstart', onStart, { passive: true });
     el.addEventListener('touchmove', onMove, { passive: true });
     el.addEventListener('touchend', onEnd, { passive: true });
@@ -41,7 +44,7 @@ export function OpeningVideo() {
       el.removeEventListener('touchend', onEnd);
       window.removeEventListener('wheel', onWheel);
     };
-  }, [finish]);
+  }, []);
   return <div ref={overlayRef} className="opening-video" role="dialog" aria-label="Herd opening video">
     <video autoPlay playsInline muted={muted} poster={poster.url} onEnded={finish} onError={finish} aria-label="Herd opening film">
       <source src={openingWebm.url} type="video/webm" />
