@@ -11,7 +11,7 @@ let feedIndex=0;
 export function FeedScreen({initialTrack=0}:{initialTrack?:number}) {
  const { active: openingActive } = useOpeningVideo();
  const [index,setIndex]=useState(feedIndex%artists.length); const [liked,setLiked]=useState<number[]>([]); const [following,setFollowing]=useState<number[]>([]); const [query,setQuery]=useState(''); const [share,setShare]=useState(false); const [note,setNote]=useState(''); const [commentsOpen,setCommentsOpen]=useState(false); const [reportOpen,setReportOpen]=useState(false); const [draft,setDraft]=useState(''); const [comments,setComments]=useState<Record<number,{user:string;text:string}[]>>({}); const [genre,setGenre]=useState(''); const [genreOpen,setGenreOpen]=useState(false); const [searchOpen,setSearchOpen]=useState(false); const touch=useRef(0); const wheel=useRef(0); const clip=useRef<HTMLVideoElement|null>(null); useKeyboardInset();
- useEffect(()=>setIndex(initialTrack%artists.length),[initialTrack]);
+ useEffect(()=>{if(initialTrack)setIndex(initialTrack%artists.length);},[initialTrack]);
  useEffect(()=>{feedIndex=index;},[index]);
  useEffect(()=>{ if(!note)return;const timer=setTimeout(()=>setNote(''),2200);return()=>clearTimeout(timer); },[note]);
  useEffect(()=>{const v=clip.current;if(!v)return;if(openingActive){v.pause();return;}
