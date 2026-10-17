@@ -26,9 +26,10 @@ export function OpeningVideo() {
     return () => window.removeEventListener('wheel', onWheel);
   }, [finish]);
   return <div className="opening-video" role="dialog" aria-label="Herd opening video"
-    onTouchStart={event => { touchStartY.current = event.touches[0].clientY; }}
+    onTouchStart={event => { touchStartY.current = event.touches[0]?.clientY ?? null; }}
     onTouchMove={event => {
-      if (touchStartY.current !== null && touchStartY.current - event.touches[0].clientY > 40) finish();
+      const y = event.touches[0]?.clientY;
+      if (touchStartY.current !== null && y !== undefined && touchStartY.current - y > 40) finish();
     }}
     onTouchEnd={() => { touchStartY.current = null; }}>
     <video autoPlay playsInline muted={muted} poster={poster.url} onEnded={finish} onError={finish} aria-label="Herd opening film">
