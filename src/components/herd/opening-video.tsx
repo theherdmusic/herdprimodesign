@@ -26,22 +26,22 @@ export function OpeningVideo() {
   useEffect(() => {
     const el = overlayRef.current;
     if (!el) return;
-    const onStart = (event: TouchEvent) => { startYRef.current = event.touches[0]?.clientY ?? null; console.log("cmp start", startYRef.current); };
+    const onStart = (event: TouchEvent) => { startYRef.current = event.touches[0]?.clientY ?? null; };
     const onMove = (event: TouchEvent) => {
       const y = event.touches[0]?.clientY;
       const startY = startYRef.current;
-      console.log("cmp move", startY, y); if (startY !== null && y !== undefined && startY - y > 40) finishRef.current();
+      if (startY !== null && y !== undefined && startY - y > 40) finishRef.current();
     };
     const onEnd = () => { startYRef.current = null; };
     const onWheel = (event: WheelEvent) => { if (event.deltaY > 30) finishRef.current(); };
-    el.addEventListener('touchstart', onStart, { passive: true });
-    el.addEventListener('touchmove', onMove, { passive: true });
-    el.addEventListener('touchend', onEnd, { passive: true });
+    window.addEventListener('touchstart', onStart, { passive: true });
+    window.addEventListener('touchmove', onMove, { passive: true });
+    window.addEventListener('touchend', onEnd, { passive: true });
     window.addEventListener('wheel', onWheel, { passive: true });
     return () => {
-      el.removeEventListener('touchstart', onStart);
-      el.removeEventListener('touchmove', onMove);
-      el.removeEventListener('touchend', onEnd);
+      window.removeEventListener('touchstart', onStart);
+      window.removeEventListener('touchmove', onMove);
+      window.removeEventListener('touchend', onEnd);
       window.removeEventListener('wheel', onWheel);
     };
   }, []);
