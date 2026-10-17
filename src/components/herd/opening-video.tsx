@@ -26,11 +26,11 @@ export function OpeningVideo() {
   useEffect(() => {
     const el = overlayRef.current;
     if (!el) return;
-    const onStart = (event: TouchEvent) => { startYRef.current = event.touches[0]?.clientY ?? null; console.log("cmp start", startYRef.current); };
+    const onStart = (event: TouchEvent) => { startYRef.current = event.touches[0]?.clientY ?? null; };
     const onMove = (event: TouchEvent) => {
       const y = event.touches[0]?.clientY;
       const startY = startYRef.current;
-      console.log("cmp move", startY, y); if (startY !== null && y !== undefined && startY - y > 40) finishRef.current();
+      if (startY !== null && y !== undefined && startY - y > 40) finishRef.current();
     };
     const onEnd = () => { startYRef.current = null; };
     const onWheel = (event: WheelEvent) => { if (event.deltaY > 30) finishRef.current(); };
