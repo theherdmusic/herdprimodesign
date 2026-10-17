@@ -27,7 +27,7 @@ export function OpeningVideo() {
     const onStart = (event: TouchEvent) => { startY = event.touches[0]?.clientY ?? null; };
     const onMove = (event: TouchEvent) => {
       const y = event.touches[0]?.clientY;
-      if (startY !== null && y !== undefined && startY - y > 40) finish();
+      console.log("swipe", startY, y); if (startY !== null && y !== undefined && startY - y > 40) finish();
     };
     const onEnd = () => { startY = null; };
     const onWheel = (event: WheelEvent) => { if (event.deltaY > 30) finish(); };
