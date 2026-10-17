@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
-import { Volume2, VolumeX, X } from 'lucide-react';
+import { Volume2, VolumeX, ChevronsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import opening from '@/assets/herd-opening.mp4.asset.json';
 import openingWebm from '@/assets/herd-opening.webm.asset.json';
@@ -26,7 +26,7 @@ export function OpeningVideo() {
     </video>
     <div className="opening-controls">
       <Button variant="secondary" size="icon" aria-label={muted ? 'Turn opening sound on' : 'Mute opening sound'} onClick={() => setMuted(value => !value)}>{muted ? <VolumeX /> : <Volume2 />}</Button>
-      <Button variant="secondary" size="icon" aria-label="Skip opening video" onClick={finish}><X /></Button>
-    </div>
+     </div>
+    <div className="opening-swipe" aria-hidden="true"><ChevronsUp size={26}/><span>Swipe up</span></div>
   </div>;
 }
