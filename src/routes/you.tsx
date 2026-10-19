@@ -10,7 +10,7 @@ import herdLogoUrl from '@/assets/herd-logo.png';
 export const Route = createFileRoute('/you')({ head: () => pageHead('Your profile', 'Edit your Herd profile and see the music videos you have posted.'), component: You });
 
 function You() {
-  const { me, setMe, videos } = useMe();
+  const { me, setMe, videos, view } = useMe();
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(''); const [bio, setBio] = useState('');
   if (!me) return <PhoneShell><div className="join join-center">
@@ -31,8 +31,9 @@ function You() {
       <label className="field-label">Bio</label><textarea className="form-field join-bio" aria-label="Bio" maxLength={150} value={bio} onChange={e => setBio(e.target.value)} />
       <div className="flex gap-2 mt-4"><Button type="submit" className="flex-1">Save</Button><Button type="button" variant="ghost" onClick={() => setEditing(false)}>Cancel</Button></div>
     </form>}
-    <h2 className="text-sm font-semibold mt-7 mb-3">My videos</h2>
-    {videos.length === 0 ? <Link to="/upload" className="my-empty"><Plus />Post your first video</Link> :
-      <div className="my-grid">{videos.map((v, i) => <div key={i} className="my-tile"><Video /><strong>{v.title}</strong><span>{v.genre}</span></div>)}</div>}
+    {view === 'artist' && <><h2 className="text-sm font-semibold mt-7 mb-3">Artist dashboard</h2><div className="profile-stats"><div><strong>{videos.length}</strong><span>Videos</span></div><div><strong>1.2K</strong><span>Plays</span></div><div><strong>86</strong><span>Followers</span></div></div><Button asChild className="w-full mt-3"><Link to="/upload"><Plus />Post a video</Link></Button></>}
+    {view === 'artist' && <h2 className="text-sm font-semibold mt-7 mb-3">My videos</h2>}
+    {view === 'artist' && (videos.length === 0 ? <Link to="/upload" className="my-empty"><Plus />Post your first video</Link> :
+      <div className="my-grid">{videos.map((v, i) => <div key={i} className="my-tile"><Video /><strong>{v.title}</strong><span>{v.genre}</span></div>)}</div>)}
   </div></PhoneShell>;
 }
