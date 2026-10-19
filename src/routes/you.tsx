@@ -16,8 +16,8 @@ function You() {
   if (!me) return <PhoneShell><div className="join join-center">
     <img src={herdLogoUrl} alt="Herd logo" className="join-logo" />
     <h1 className="join-title">Find your herd</h1>
-    <p className="join-sub">Sign up to follow artists, save hearts and post your own videos.</p>
-    <Button asChild className="join-cta"><Link to="/join">Sign up or log in</Link></Button>
+    <p className="join-sub">Log in to follow artists, save hearts and post your own videos.</p>
+    <Button asChild className="join-cta"><Link to="/join">Log in</Link></Button>
   </div></PhoneShell>;
   const initials = me.name.slice(0, 1).toUpperCase();
   return <PhoneShell><div className="join">
