@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
+import { createContext, useContext, useRef, useState, type ReactNode, type TouchEvent as RTouchEvent, type WheelEvent as RWheelEvent } from 'react';
 import { useLocation, useNavigate } from '@tanstack/react-router';
 import { Volume2, VolumeX, ChevronsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -41,14 +41,14 @@ export function OpeningVideo() {
   };
   const dismiss = () => doneRef.current();
 
-  const startY = (e: React.TouchEvent) => { startYRef.current = e.touches[0]?.clientY ?? null; };
-  const moveY = (e: React.TouchEvent) => {
+  const startY = (e: RTouchEvent) => { startYRef.current = e.touches[0]?.clientY ?? null; };
+  const moveY = (e: RTouchEvent) => {
     const y = e.touches[0]?.clientY;
     const start = startYRef.current;
     if (start !== null && y !== undefined && start - y > 40) dismiss();
   };
   const endY = () => { startYRef.current = null; };
-  const onWheel = (e: React.WheelEvent) => { if (e.deltaY > 30) dismiss(); };
+  const onWheel = (e: RWheelEvent) => { if (e.deltaY > 30) dismiss(); };
 
   return <div ref={overlayRef} className="opening-video" role="dialog" aria-label="Herd opening video"
     onTouchStart={startY} onTouchMove={moveY} onTouchEnd={endY} onWheel={onWheel}>
