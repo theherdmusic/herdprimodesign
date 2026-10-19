@@ -33,6 +33,7 @@ export function OpeningVideo() {
   finishRef.current = finish;
 
   doneRef.current = () => {
+    console.log('OV done', closedRef.current, path, me);
     if (closedRef.current) return;
     closedRef.current = true;
     const target = entryAfterOpening(path, me !== null);
@@ -41,11 +42,11 @@ export function OpeningVideo() {
   };
   const dismiss = () => doneRef.current();
 
-  const startY = (e: RTouchEvent) => { startYRef.current = e.touches[0]?.clientY ?? null; };
+  const startY = (e: RTouchEvent) => { console.log('OV start', e.touches[0]?.clientY); startYRef.current = e.touches[0]?.clientY ?? null; };
   const moveY = (e: RTouchEvent) => {
     const y = e.touches[0]?.clientY;
     const start = startYRef.current;
-    if (start !== null && y !== undefined && start - y > 40) dismiss();
+    console.log('OV move', start, y); if (start !== null && y !== undefined && start - y > 40) { console.log('OV dismiss'); dismiss(); }
   };
   const endY = () => { startYRef.current = null; };
   const onWheel = (e: RWheelEvent) => { if (e.deltaY > 30) dismiss(); };
