@@ -1,11 +1,11 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import { Upload, Video, CheckCircle2, ArrowUpRight, X } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { PhoneShell } from '@/components/herd/phone-shell';
 import { Button } from '@/components/ui/button';
 import { pageHead, live } from '@/components/herd/data';
 import { validateVideoDuration } from '@/lib/herd-upload';
-import { useMe } from '@/components/herd/me';
+import { useMe, canUpload } from '@/components/herd/me';
 export const Route=createFileRoute('/upload')({head:()=>pageHead('Upload a video','Share your original music with Herd. Create a music video post, up to three minutes.'),component:UploadScreen});
 function UploadScreen(){const input=useRef<HTMLInputElement>(null);const [file,setFile]=useState('');const [title,setTitle]=useState('');const [genre,setGenre]=useState('');const [error,setError]=useState('');const [progress,setProgress]=useState<number|null>(null);const [checking,setChecking]=useState(false);const objectUrl=useRef<string|null>(null);
  const {addVideo}=useMe(); useEffect(()=>{if(progress===100)addVideo({title:title||'Untitled',genre:genre||'Music'});},[progress]);

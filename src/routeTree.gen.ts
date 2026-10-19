@@ -10,7 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ArtistRouteImport } from './routes/artist'
 import { Route as ChartsRouteImport } from './routes/charts'
+import { Route as FanRouteImport } from './routes/fan'
 import { Route as JoinRouteImport } from './routes/join'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RadioRouteImport } from './routes/radio'
@@ -22,9 +24,19 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArtistRoute = ArtistRouteImport.update({
+  id: '/artist',
+  path: '/artist',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ChartsRoute = ChartsRouteImport.update({
   id: '/charts',
   path: '/charts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FanRoute = FanRouteImport.update({
+  id: '/fan',
+  path: '/fan',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JoinRoute = JoinRouteImport.update({
@@ -55,7 +67,9 @@ const YouRoute = YouRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/artist': typeof ArtistRoute
   '/charts': typeof ChartsRoute
+  '/fan': typeof FanRoute
   '/join': typeof JoinRoute
   '/profile': typeof ProfileRoute
   '/radio': typeof RadioRoute
@@ -64,7 +78,9 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/artist': typeof ArtistRoute
   '/charts': typeof ChartsRoute
+  '/fan': typeof FanRoute
   '/join': typeof JoinRoute
   '/profile': typeof ProfileRoute
   '/radio': typeof RadioRoute
@@ -74,7 +90,9 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/artist': typeof ArtistRoute
   '/charts': typeof ChartsRoute
+  '/fan': typeof FanRoute
   '/join': typeof JoinRoute
   '/profile': typeof ProfileRoute
   '/radio': typeof RadioRoute
@@ -84,13 +102,32 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/charts' | '/join' | '/profile' | '/radio' | '/upload' | '/you'
+    | '/'
+    | '/artist'
+    | '/charts'
+    | '/fan'
+    | '/join'
+    | '/profile'
+    | '/radio'
+    | '/upload'
+    | '/you'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/charts' | '/join' | '/profile' | '/radio' | '/upload' | '/you'
+  to:
+    | '/'
+    | '/artist'
+    | '/charts'
+    | '/fan'
+    | '/join'
+    | '/profile'
+    | '/radio'
+    | '/upload'
+    | '/you'
   id:
     | '__root__'
     | '/'
+    | '/artist'
     | '/charts'
+    | '/fan'
     | '/join'
     | '/profile'
     | '/radio'
@@ -100,7 +137,9 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ArtistRoute: typeof ArtistRoute
   ChartsRoute: typeof ChartsRoute
+  FanRoute: typeof FanRoute
   JoinRoute: typeof JoinRoute
   ProfileRoute: typeof ProfileRoute
   RadioRoute: typeof RadioRoute
@@ -117,11 +156,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/artist': {
+      id: '/artist'
+      path: '/artist'
+      fullPath: '/artist'
+      preLoaderRoute: typeof ArtistRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/charts': {
       id: '/charts'
       path: '/charts'
       fullPath: '/charts'
       preLoaderRoute: typeof ChartsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fan': {
+      id: '/fan'
+      path: '/fan'
+      fullPath: '/fan'
+      preLoaderRoute: typeof FanRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/join': {
@@ -164,7 +217,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ArtistRoute: ArtistRoute,
   ChartsRoute: ChartsRoute,
+  FanRoute: FanRoute,
   JoinRoute: JoinRoute,
   ProfileRoute: ProfileRoute,
   RadioRoute: RadioRoute,
