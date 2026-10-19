@@ -26,7 +26,7 @@ function Join() {
     nav({ to: role === 'fan' ? '/' : '/upload' });
   };
 
-  const bgArtists = [artists[0], artists[2], artists[5]];
+  const bgArtists = [artists[0], artists[2], artists[5]].filter(Boolean) as typeof artists;
 
   return <PhoneShell><div className="join">
     <div className="join-video-bg" aria-hidden>
