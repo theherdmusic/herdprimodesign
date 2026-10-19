@@ -26,7 +26,18 @@ function Join() {
     nav({ to: role === 'fan' ? '/' : '/upload' });
   };
 
+  const bgArtists = [artists[0], artists[2], artists[5]];
+
   return <PhoneShell><div className="join">
+    <div className="join-video-bg" aria-hidden>
+      {bgArtists.map(a => (
+        <video key={a.name} autoPlay muted loop playsInline preload="auto">
+          <source src={a.videoWebm} type="video/webm" />
+          <source src={a.video} type="video/mp4" />
+        </video>
+      ))}
+    </div>
+    <div className="join-video-veil" aria-hidden />
     {history.length > 0 && <Button variant="ghost" size="icon" aria-label="Back" className="join-back" onClick={back}><ArrowLeft /></Button>}
     {step === 'welcome' && <div className="join-center">
       <img src={herdLogoUrl} alt="Herd logo" className="join-logo" />

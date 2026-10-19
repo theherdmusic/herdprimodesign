@@ -96,6 +96,10 @@
 .comment-avatar { width:30px;height:30px;flex:none;border-radius:999px;display:grid;place-items:center;background:var(--primary);color:var(--primary-foreground);font-size:12px;font-weight:700; }
 .comment-form { display:flex;gap:8px;margin-top:12px; } .comment-form input { flex:1;background:var(--muted);border:1px solid var(--border);border-radius:999px;padding:10px 14px;font-size:16px;color:var(--foreground);outline:none; } .comment-form input:focus { border-color:var(--primary); } .comment-form button { border-radius:999px; }
 .join { position:relative; padding:20px 22px 30px; min-height:100%; }
+.join-video-bg { position:absolute; inset:0; display:flex; flex-direction:column; z-index:0; overflow:hidden; }
+.join-video-bg video { flex:1 1 0; min-height:0; width:100%; object-fit:cover; }
+.join-video-veil { position:absolute; inset:0; z-index:1; background:linear-gradient(to bottom, rgba(10,10,12,.62), rgba(10,10,12,.78)); backdrop-filter:blur(3px); }
+.join > *:not(.join-video-bg):not(.join-video-veil) { position:relative; z-index:2; }
 .join-center { display:flex; flex-direction:column; align-items:center; text-align:center; justify-content:center; min-height:100%; }
 .join-back { margin:-6px 0 8px -10px; }
 .join-logo { width:120px; height:120px; object-fit:contain; margin-bottom:18px; }
