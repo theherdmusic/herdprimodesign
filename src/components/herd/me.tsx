@@ -3,17 +3,22 @@ import { createContext, useContext, useState, type ReactNode } from 'react';
 export type Me = { name: string; handle: string; bio: string; email: string; role: 'fan' | 'musician'; genres: string[]; follows: string[] };
 export type MyVideo = { title: string; genre: string };
 
-type Ctx = { me: Me | null; setMe: (m: Me | null) => void; videos: MyVideo[]; addVideo: (v: MyVideo) => void };
-const MeContext = createContext<Ctx>({ me: null, setMe: () => {}, videos: [], addVideo: () => {} });
+export type View = 'fan' | 'artist';
+type Ctx = { me: Me | null; setMe: (m: Me | null) => void; videos: MyVideo[]; addVideo: (v: MyVideo) => void; view: View; setView: (v: View) => void };
+const MeContext = createContext<Ctx>({ me: null, setMe: () => {}, videos: [], addVideo: () => {}, view: 'fan', setView: () => {} });
 
 /** Mockup-only account state: lives in memory, resets on page reload. */
 export function MeProvider({ children }: { children: ReactNode }) {
   const [me, setMe] = useState<Me | null>(null);
   const [videos, setVideos] = useState<MyVideo[]>([]);
-  return <MeContext.Provider value={{ me, setMe, videos, addVideo: v => setVideos(list => [v, ...list]) }}>{children}</MeContext.Provider>;
+  const [view, setView] = useState<View>('fan');
+  return <MeContext.Provider value={{ me, setMe, videos, addVideo: v => setVideos(list => [v, ...list]), view, setView }}>{children}</MeContext.Provider>;
 }
 
 export const useMe = () => useContext(MeContext);
+
+/** Only the artist view can post videos. */
+export const canUpload = (view: View) => view === 'artist';
 
 export const GENRES = ['Rock', 'Country', 'Rap', 'Pop', 'R&B', 'Indie', 'Electronic', 'Folk', 'Latin', 'Metal'];
 
