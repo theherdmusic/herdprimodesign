@@ -1,6 +1,9 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
+import { useLocation, useNavigate } from '@tanstack/react-router';
 import { Volume2, VolumeX, ChevronsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { entryAfterOpening } from '@/lib/herd-entry';
+import { useMe } from '@/components/herd/me';
 import opening from '@/assets/herd-opening.mp4.asset.json';
 import openingWebm from '@/assets/herd-opening.webm.asset.json';
 import poster from '@/assets/herd-opening.jpg.asset.json';
@@ -18,11 +21,26 @@ export function useOpeningVideo() {
 
 export function OpeningVideo() {
   const { finish } = useOpeningVideo();
+  const nav = useNavigate();
+  const path = useLocation({ select: l => l.pathname });
+  const { me } = useMe();
   const [muted, setMuted] = useState(true);
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const startYRef = useRef<number | null>(null);
+  const closedRef = useRef(false);
+  const doneRef = useRef<() => void>(() => {});
   const finishRef = useRef(finish);
   finishRef.current = finish;
+
+  doneRef.current = () => {
+    if (closedRef.current) return;
+    closedRef.current = true;
+    const target = entryAfterOpening(path, me !== null);
+    finishRef.current();
+    if (target) nav({ to: target });
+  };
+  const dismiss = () => doneRef.current();
+
   useEffect(() => {
     const el = overlayRef.current;
     if (!el) return;
@@ -30,10 +48,10 @@ export function OpeningVideo() {
     const onMove = (event: TouchEvent) => {
       const y = event.touches[0]?.clientY;
       const startY = startYRef.current;
-      if (startY !== null && y !== undefined && startY - y > 40) finishRef.current();
+      if (startY !== null && y !== undefined && startY - y > 40) doneRef.current();
     };
     const onEnd = () => { startYRef.current = null; };
-    const onWheel = (event: WheelEvent) => { if (event.deltaY > 30) finishRef.current(); };
+    const onWheel = (event: WheelEvent) => { if (event.deltaY > 30) doneRef.current(); };
     window.addEventListener('touchstart', onStart, { passive: true });
     window.addEventListener('touchmove', onMove, { passive: true });
     window.addEventListener('touchend', onEnd, { passive: true });
@@ -46,7 +64,7 @@ export function OpeningVideo() {
     };
   }, []);
   return <div ref={overlayRef} className="opening-video" role="dialog" aria-label="Herd opening video">
-    <video autoPlay playsInline muted={muted} poster={poster.url} onEnded={finish} onError={finish} aria-label="Herd opening film">
+    <video autoPlay playsInline muted={muted} poster={poster.url} onEnded={dismiss} onError={dismiss} aria-label="Herd opening film">
       <source src={openingWebm.url} type="video/webm" />
       <source src={opening.url} type="video/mp4" />
     </video>
