@@ -44,7 +44,7 @@ function Join() {
       <input className="form-field mb-3" type="email" placeholder="Email" aria-label="Email" value={email} onChange={e => setEmail(e.target.value)} />
       <input className="form-field" type="password" placeholder="Password" aria-label="Password" value={password} onChange={e => setPassword(e.target.value)} />
       {error && <p className="upload-message upload-error">{error}</p>}
-      <Button className="join-cta" onClick={() => { if (!/^\S+@\S+\.\S+$/.test(email)) return setError('Enter a valid email.'); if (!password) return setError('Enter your password.'); setMe({ name: email.split('@')[0], handle: handleOf(''), bio: '', email, role: 'fan', genres: [], follows: [] }); nav({ to: '/' }); }}>Log in</Button>
+      <Button className="join-cta" onClick={() => { if (!/^\S+@\S+\.\S+$/.test(email)) return setError('Enter a valid email.'); if (!password) return setError('Enter your password.'); setMe({ name: email.split('@')[0] ?? 'You', handle: handleOf(''), bio: '', email, role: 'fan', genres: [], follows: [] }); nav({ to: '/' }); }}>Log in</Button>
       <Button variant="ghost" className="w-full" onClick={() => { setStep('signup'); setError(''); }}>Don't have an account? Sign up</Button>
     </div>}
     {step === 'signup' && <div>
