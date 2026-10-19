@@ -9,7 +9,7 @@ import herdLogoUrl from '@/assets/herd-logo.png';
 
 export const Route = createFileRoute('/join')({ head: () => pageHead('Join Herd', 'Sign up for Herd as a fan or a musician. Pick your genres and find your herd.'), component: Join });
 
-type Step = 'welcome' | 'signup' | 'birthday' | 'path' | 'genres' | 'follow' | 'musician';
+type Step = 'welcome' | 'login' | 'signup' | 'birthday' | 'path' | 'genres' | 'follow' | 'musician';
 
 function Join() {
   const nav = useNavigate(); const { setMe } = useMe();
@@ -32,8 +32,20 @@ function Join() {
       <img src={herdLogoUrl} alt="Herd logo" className="join-logo" />
       <h1 className="join-title">Stay you.<br />Be Herd.</h1>
       <p className="join-sub">Music videos from independent artists. Your hearts build the charts.</p>
-      <Button className="join-cta" onClick={() => go('signup')}>Get started</Button>
+      <Button className="join-cta" onClick={() => go('signup')}>Sign up</Button>
+      <Button variant="secondary" className="join-option" onClick={() => go('login')}>Log in</Button>
+      <Button variant="secondary" className="join-option" onClick={() => go('birthday')}><span className="font-bold">G</span>Continue with Google</Button>
       <Button variant="ghost" className="w-full" onClick={() => nav({ to: '/' })}>Just look around</Button>
+    </div>}
+    {step === 'login' && <div>
+      <h1 className="join-title">Log in to Herd</h1>
+      <Button variant="secondary" className="join-option" onClick={() => { setMe({ name: 'You', handle: '@you', bio: '', email: 'you@gmail.com', role: 'fan', genres: [], follows: [] }); nav({ to: '/' }); }}><span className="font-bold">G</span>Continue with Google</Button>
+      <div className="join-or">or use email</div>
+      <input className="form-field mb-3" type="email" placeholder="Email" aria-label="Email" value={email} onChange={e => setEmail(e.target.value)} />
+      <input className="form-field" type="password" placeholder="Password" aria-label="Password" value={password} onChange={e => setPassword(e.target.value)} />
+      {error && <p className="upload-message upload-error">{error}</p>}
+      <Button className="join-cta" onClick={() => { if (!/^\S+@\S+\.\S+$/.test(email)) return setError('Enter a valid email.'); if (!password) return setError('Enter your password.'); setMe({ name: email.split('@')[0] ?? 'You', handle: handleOf(''), bio: '', email, role: 'fan', genres: [], follows: [] }); nav({ to: '/' }); }}>Log in</Button>
+      <Button variant="ghost" className="w-full" onClick={() => { setStep('signup'); setError(''); }}>Don't have an account? Sign up</Button>
     </div>}
     {step === 'signup' && <div>
       <h1 className="join-title">Create your account</h1>
