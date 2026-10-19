@@ -1,6 +1,9 @@
-import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
+import { createContext, useContext, useRef, useState, type ReactNode, type TouchEvent as RTouchEvent, type WheelEvent as RWheelEvent } from 'react';
+import { useLocation, useNavigate } from '@tanstack/react-router';
 import { Volume2, VolumeX, ChevronsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { entryAfterOpening } from '@/lib/herd-entry';
+import { useMe } from '@/components/herd/me';
 import opening from '@/assets/herd-opening.mp4.asset.json';
 import openingWebm from '@/assets/herd-opening.webm.asset.json';
 import poster from '@/assets/herd-opening.jpg.asset.json';
@@ -18,35 +21,38 @@ export function useOpeningVideo() {
 
 export function OpeningVideo() {
   const { finish } = useOpeningVideo();
+  const nav = useNavigate();
+  const path = useLocation({ select: l => l.pathname });
+  const { me } = useMe();
   const [muted, setMuted] = useState(true);
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const startYRef = useRef<number | null>(null);
+  const closedRef = useRef(false);
+  const doneRef = useRef<() => void>(() => {});
   const finishRef = useRef(finish);
   finishRef.current = finish;
-  useEffect(() => {
-    const el = overlayRef.current;
-    if (!el) return;
-    const onStart = (event: TouchEvent) => { startYRef.current = event.touches[0]?.clientY ?? null; };
-    const onMove = (event: TouchEvent) => {
-      const y = event.touches[0]?.clientY;
-      const startY = startYRef.current;
-      if (startY !== null && y !== undefined && startY - y > 40) finishRef.current();
-    };
-    const onEnd = () => { startYRef.current = null; };
-    const onWheel = (event: WheelEvent) => { if (event.deltaY > 30) finishRef.current(); };
-    window.addEventListener('touchstart', onStart, { passive: true });
-    window.addEventListener('touchmove', onMove, { passive: true });
-    window.addEventListener('touchend', onEnd, { passive: true });
-    window.addEventListener('wheel', onWheel, { passive: true });
-    return () => {
-      window.removeEventListener('touchstart', onStart);
-      window.removeEventListener('touchmove', onMove);
-      window.removeEventListener('touchend', onEnd);
-      window.removeEventListener('wheel', onWheel);
-    };
-  }, []);
-  return <div ref={overlayRef} className="opening-video" role="dialog" aria-label="Herd opening video">
-    <video autoPlay playsInline muted={muted} poster={poster.url} onEnded={finish} onError={finish} aria-label="Herd opening film">
+
+  doneRef.current = () => {
+    if (closedRef.current) return;
+    closedRef.current = true;
+    const target = entryAfterOpening(path, me !== null);
+    finishRef.current();
+    if (target) nav({ to: target });
+  };
+  const dismiss = () => doneRef.current();
+
+  const startY = (e: RTouchEvent) => { startYRef.current = e.touches[0]?.clientY ?? null; };
+  const moveY = (e: RTouchEvent) => {
+    const y = e.touches[0]?.clientY;
+    const start = startYRef.current;
+    if (start !== null && y !== undefined && start - y > 40) dismiss();
+  };
+  const endY = () => { startYRef.current = null; };
+  const onWheel = (e: RWheelEvent) => { if (e.deltaY > 30) dismiss(); };
+
+  return <div ref={overlayRef} className="opening-video" role="dialog" aria-label="Herd opening video"
+    onTouchStart={startY} onTouchMove={moveY} onTouchEnd={endY} onWheel={onWheel}>
+    <video autoPlay playsInline muted={muted} poster={poster.url} onEnded={dismiss} onError={dismiss} aria-label="Herd opening film">
       <source src={openingWebm.url} type="video/webm" />
       <source src={opening.url} type="video/mp4" />
     </video>
