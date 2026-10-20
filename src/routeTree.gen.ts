@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ChartsRouteImport } from './routes/charts'
+import { Route as FloatingMcgeeRouteImport } from './routes/floating-mcgee'
 import { Route as JoinRouteImport } from './routes/join'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RadioRouteImport } from './routes/radio'
@@ -25,6 +26,11 @@ const IndexRoute = IndexRouteImport.update({
 const ChartsRoute = ChartsRouteImport.update({
   id: '/charts',
   path: '/charts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FloatingMcgeeRoute = FloatingMcgeeRouteImport.update({
+  id: '/floating-mcgee',
+  path: '/floating-mcgee',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JoinRoute = JoinRouteImport.update({
@@ -56,6 +62,7 @@ const YouRoute = YouRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/charts': typeof ChartsRoute
+  '/floating-mcgee': typeof FloatingMcgeeRoute
   '/join': typeof JoinRoute
   '/profile': typeof ProfileRoute
   '/radio': typeof RadioRoute
@@ -65,6 +72,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/charts': typeof ChartsRoute
+  '/floating-mcgee': typeof FloatingMcgeeRoute
   '/join': typeof JoinRoute
   '/profile': typeof ProfileRoute
   '/radio': typeof RadioRoute
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/charts': typeof ChartsRoute
+  '/floating-mcgee': typeof FloatingMcgeeRoute
   '/join': typeof JoinRoute
   '/profile': typeof ProfileRoute
   '/radio': typeof RadioRoute
@@ -84,13 +93,29 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/charts' | '/join' | '/profile' | '/radio' | '/upload' | '/you'
+    | '/'
+    | '/charts'
+    | '/floating-mcgee'
+    | '/join'
+    | '/profile'
+    | '/radio'
+    | '/upload'
+    | '/you'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/charts' | '/join' | '/profile' | '/radio' | '/upload' | '/you'
+  to:
+    | '/'
+    | '/charts'
+    | '/floating-mcgee'
+    | '/join'
+    | '/profile'
+    | '/radio'
+    | '/upload'
+    | '/you'
   id:
     | '__root__'
     | '/'
     | '/charts'
+    | '/floating-mcgee'
     | '/join'
     | '/profile'
     | '/radio'
@@ -101,6 +126,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ChartsRoute: typeof ChartsRoute
+  FloatingMcgeeRoute: typeof FloatingMcgeeRoute
   JoinRoute: typeof JoinRoute
   ProfileRoute: typeof ProfileRoute
   RadioRoute: typeof RadioRoute
@@ -122,6 +148,13 @@ declare module '@tanstack/react-router' {
       path: '/charts'
       fullPath: '/charts'
       preLoaderRoute: typeof ChartsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/floating-mcgee': {
+      id: '/floating-mcgee'
+      path: '/floating-mcgee'
+      fullPath: '/floating-mcgee'
+      preLoaderRoute: typeof FloatingMcgeeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/join': {
@@ -165,6 +198,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ChartsRoute: ChartsRoute,
+  FloatingMcgeeRoute: FloatingMcgeeRoute,
   JoinRoute: JoinRoute,
   ProfileRoute: ProfileRoute,
   RadioRoute: RadioRoute,
