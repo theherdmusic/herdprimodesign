@@ -23,7 +23,7 @@ function Join() {
   const handleOf = (n: string) => '@' + (n || email.split('@')[0] || 'you').toLowerCase().replace(/[^a-z0-9]/g, '');
   const finish = (role: 'fan' | 'musician') => {
     setMe({ name: name || email.split('@')[0] || 'You', handle: handleOf(name), bio, email, role, genres, follows });
-    nav({ to: role === 'fan' ? '/' : '/upload' });
+    nav({ to: role === 'fan' ? '/' : '/you' });
   };
 
   const bgArtists = [artists[0], artists[2], artists[5]].filter(Boolean) as typeof artists;

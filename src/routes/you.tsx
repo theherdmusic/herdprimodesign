@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useState } from 'react';
-import { Pencil, Plus, Video } from 'lucide-react';
+import { Pencil, Video } from 'lucide-react';
 import { PhoneShell } from '@/components/herd/phone-shell';
 import { Button } from '@/components/ui/button';
 import { pageHead } from '@/components/herd/data';
@@ -32,7 +32,7 @@ function You() {
       <div className="flex gap-2 mt-4"><Button type="submit" className="flex-1">Save</Button><Button type="button" variant="ghost" onClick={() => setEditing(false)}>Cancel</Button></div>
     </form>}
     <h2 className="text-sm font-semibold mt-7 mb-3">My videos</h2>
-    {videos.length === 0 ? <Link to="/upload" className="my-empty"><Plus />Post your first video</Link> :
+    {videos.length === 0 ? <div className="my-empty"><Video />No videos yet</div> :
       <div className="my-grid">{videos.map((v, i) => <div key={i} className="my-tile"><Video /><strong>{v.title}</strong><span>{v.genre}</span></div>)}</div>}
   </div></PhoneShell>;
 }
