@@ -72,6 +72,12 @@ export function OpeningVideo() {
 
   return <div className="opening-video" role="dialog" aria-label="Herd opening video"
     onTouchStart={startY} onTouchMove={moveY} onTouchEnd={endY} onWheel={onWheel}>
+    {/* A blurred, zoomed copy of the same film fills the space around a widescreen clip. */}
+    <video key={`bg-${stage}`} className="opening-bg" aria-hidden="true" autoPlay playsInline muted loop
+      onEnded={filmEnded} onError={filmEnded}>
+      <source src={film.webm} type="video/webm" />
+      <source src={film.mp4} type="video/mp4" />
+    </video>
     <video key={stage} autoPlay playsInline muted={muted} poster={film.poster} onEnded={filmEnded} onError={filmEnded} aria-label={film.label}>
       <source src={film.webm} type="video/webm" />
       <source src={film.mp4} type="video/mp4" />
