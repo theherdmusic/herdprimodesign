@@ -31,6 +31,11 @@
 .opening-video { position:absolute; inset:0; z-index:60; background:var(--background); overflow:hidden; }
 .opening-video video { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; }
 .opening-video video.opening-bg { object-fit:cover; transform:scale(1.2); filter:blur(26px) brightness(.45) saturate(1.2); pointer-events:none; }
+/* The film sits in a band shaped like the clip itself, so nothing is cropped. */
+.opening-band { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:100%; height:auto; max-height:100%; }
+.opening-band video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+/* A widescreen film fades at its top and bottom edges so the blurred backdrop blends in. */
+.opening-band--feather video { -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 9%, #000 91%, transparent 100%); mask-image: linear-gradient(to bottom, transparent 0, #000 9%, #000 91%, transparent 100%); }
 .opening-controls { position:absolute; top:20px; right:16px; left:16px; display:flex; justify-content:flex-end; }
 .opening-swipe { position:absolute; bottom:64px; left:0; right:0; display:flex; flex-direction:column; align-items:center; gap:2px; color:#fff; font-size:13px; font-weight:600; letter-spacing:.06em; text-shadow:0 1px 6px rgba(0,0,0,.6); animation:opening-swipe-bounce 1.4s ease-in-out infinite; }
 @keyframes opening-swipe-bounce { 0%,100% { transform:translateY(0); opacity:.65; } 50% { transform:translateY(-12px); opacity:1; } }

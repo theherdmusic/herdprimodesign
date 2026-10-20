@@ -24,8 +24,9 @@ export function useOpeningVideo() {
 }
 
 // Films play back to back: the sheep intro first, then the follow-up clip.
-const SHEEP_INTRO = { mp4: opening.url, webm: openingWebm.url, poster: poster.url, label: 'Herd opening film' };
-const FOLLOW_UP = { mp4: after.url, webm: afterWebm.url, poster: afterPoster.url, label: 'Herd intro film' };
+// Each film carries its own shape so it is shown whole, never cropped.
+const SHEEP_INTRO = { mp4: opening.url, webm: openingWebm.url, poster: poster.url, label: 'Herd opening film', aspect: '1080 / 1920', feather: false };
+const FOLLOW_UP = { mp4: after.url, webm: afterWebm.url, poster: afterPoster.url, label: 'Herd intro film', aspect: '1280 / 720', feather: true };
 const FILMS = [SHEEP_INTRO, FOLLOW_UP];
 
 export function OpeningVideo() {
