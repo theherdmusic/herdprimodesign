@@ -18,3 +18,4 @@
 - Overlay gestures use React handlers on the overlay element itself, not window listeners, so they are attached the moment the element exists.
 - Sandbox gesture tests wait until the target element carries a `__react` key before dispatching touches, because React 19 hydrates lazily and events sent earlier are dropped.
 - Home-screen support uses manifest-only metadata and opaque icons derived from the supplied logo, with an explicit Apple touch icon; no app-shell service worker is needed because offline use is not requested.
+- Floating McGee uses a standalone full-screen content route with CSS-only horizontal motion, keeping the supplied artwork unchanged and honoring reduced-motion preferences.

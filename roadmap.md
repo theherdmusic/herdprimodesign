@@ -8,3 +8,4 @@
 - [x] Use the supplied badge mark, background removed, as the Radio tab icon.
 - [x] Play the opening first, then hand signed-out visitors straight to the log-in screen, with no sign-up option.
 - [x] Remove the upload section entirely; HERD TV is the looping clip only.
+- [x] Add Floating McGee below the login welcome’s browse option and verify its artwork bounces slowly between screen edges.
