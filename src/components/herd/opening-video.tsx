@@ -59,14 +59,15 @@ export function OpeningVideo() {
     else setStage(next);
   };
 
-  const startY = (e: RTouchEvent) => { startYRef.current = e.touches[0]?.clientY ?? null; };
+  const startY = (e: RTouchEvent) => { startYRef.current = e.touches[0]?.clientY ?? null; console.log('DBG startY', startYRef.current); };
   const moveY = (e: RTouchEvent) => {
     const y = e.touches[0]?.clientY;
     const start = startYRef.current;
+    console.log('DBG moveY', start, y);
     if (start !== null && y !== undefined && start - y > 40) dismiss();
   };
   const endY = () => { startYRef.current = null; };
-  const onWheel = (e: RWheelEvent) => { if (e.deltaY > 30) dismiss(); };
+  const onWheel = (e: RWheelEvent) => { console.log('DBG wheel', e.deltaY); if (e.deltaY > 30) dismiss(); };
 
   const film = stage === 0 ? SHEEP_INTRO : FOLLOW_UP;
 
