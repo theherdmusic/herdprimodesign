@@ -111,6 +111,9 @@ function HerdTv() {
               Commercial in {commercialIn}s
             </span>
           )}
+          {stage === 'ad' && (
+            <span className="tv-count tv-count--break">Commercial break</span>
+          )}
           {stage === 'ad' && adLeft !== null && adLeft <= NEXT_UP_AT && (
             <span className="tv-count">
               Next video in {adLeft}s
