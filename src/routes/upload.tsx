@@ -5,8 +5,16 @@ import { PhoneShell } from '@/components/herd/phone-shell';
 import { Button } from '@/components/ui/button';
 import { pageHead, live } from '@/components/herd/data';
 import { validateVideoDuration } from '@/lib/herd-upload';
+import introMp4 from '@/assets/herdtv-intro.mp4.asset.json';
+import introWebm from '@/assets/herdtv-intro.webm.asset.json';
 import { useMe } from '@/components/herd/me';
-export const Route=createFileRoute('/upload')({head:()=>pageHead('Upload a video','Share your original music with Herd. Create a music video post, up to three minutes.'),component:UploadScreen});
+export const Route=createFileRoute('/upload')({head:()=>pageHead('Upload a video','Share your original music with Herd. Create a music video post, up to three minutes.'),component:HerdTv});
+function HerdTv(){const [done,setDone]=useState(false);const [land,setLand]=useState(false);const v=useRef<HTMLVideoElement>(null);
+ useEffect(()=>{const m=window.matchMedia('(orientation: landscape)');const f=()=>setLand(m.matches);f();m.addEventListener('change',f);return()=>m.removeEventListener('change',f);},[]);
+ useEffect(()=>{const el=v.current;if(!el||done)return;el.muted=false;el.play().catch(()=>{el.muted=true;el.play().catch(()=>{});});},[done]);
+ if(done)return <UploadScreen/>;
+ return <PhoneShell landscape={land}><div className="rw-stage"><video ref={v} className="rw-video herdtv-intro" autoPlay playsInline onEnded={()=>setDone(true)} onError={()=>setDone(true)} onClick={e=>{e.currentTarget.muted=false;}} aria-label="HERD TV intro"><source src={introWebm.url} type="video/webm"/><source src={introMp4.url} type="video/mp4"/></video><Button variant="secondary" size="sm" className="rw-back" onClick={()=>setDone(true)}>Skip</Button></div></PhoneShell>;}
+
 function UploadScreen(){const input=useRef<HTMLInputElement>(null);const [file,setFile]=useState('');const [title,setTitle]=useState('');const [genre,setGenre]=useState('');const [error,setError]=useState('');const [progress,setProgress]=useState<number|null>(null);const [checking,setChecking]=useState(false);const objectUrl=useRef<string|null>(null);
  const {addVideo}=useMe(); useEffect(()=>{if(progress===100)addVideo({title:title||'Untitled',genre:genre||'Music'});},[progress]);
  useEffect(()=>{if(progress===null||progress>=100)return;const timer=setTimeout(()=>setProgress(p=>p===null?null:Math.min(p+20,100)),400);return()=>clearTimeout(timer);},[progress]);
