@@ -23,7 +23,7 @@ function Join() {
   const handleOf = (n: string) => '@' + (n || email.split('@')[0] || 'you').toLowerCase().replace(/[^a-z0-9]/g, '');
   const finish = (role: 'fan' | 'musician') => {
     setMe({ name: name || email.split('@')[0] || 'You', handle: handleOf(name), bio, email, role, genres, follows });
-    nav({ to: role === 'fan' ? '/' : '/upload' });
+    nav({ to: role === 'fan' ? '/' : '/you' });
   };
 
   const bgArtists = [artists[0], artists[2], artists[5]].filter(Boolean) as typeof artists;
@@ -67,7 +67,7 @@ function Join() {
       <h1 className="join-title">Which path?</h1>
       <p className="join-sub">You can switch later.</p>
       <button className="path-card" onClick={() => go('genres')}><Headphones /><div><strong>I'm a fan</strong><span>Discover artists, heart songs, move the charts.</span></div></button>
-      <button className="path-card" onClick={() => go('musician')}><Mic2 /><div><strong>I'm a musician</strong><span>Post music videos and grow your herd.</span></div></button>
+      <button className="path-card" onClick={() => go('musician')}><Mic2 /><div><strong>I'm a musician</strong><span>Share your sound and grow your herd.</span></div></button>
     </div>}
     {step === 'genres' && <div>
       <h1 className="join-title">What do you listen to?</h1>
@@ -90,7 +90,7 @@ function Join() {
       <label className="field-label">Your genre</label>
       <div className="chip-grid">{GENRES.slice(0, 6).map(g => <button key={g} className={`genre-chip ${genres.includes(g) ? 'selected' : ''}`} onClick={() => setGenres([g])}>{g}</button>)}</div>
       {error && <p className="upload-message upload-error">{error}</p>}
-      <Button className="join-cta" onClick={() => name.trim() ? finish('musician') : setError('Add your artist name.')}>Post your first video</Button>
+      <Button className="join-cta" onClick={() => name.trim() ? finish('musician') : setError('Add your artist name.')}>Create my artist page</Button>
     </div>}
   </div></PhoneShell>;
 }
