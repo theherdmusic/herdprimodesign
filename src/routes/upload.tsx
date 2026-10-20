@@ -11,6 +11,24 @@ import mattieWebm from '@/assets/mattie.webm.asset.json';
 import mattiePoster from '@/assets/mattie.jpg.asset.json';
 import adMp4 from '@/assets/herdtv-ad.mp4.asset.json';
 import adWebm from '@/assets/herdtv-ad.webm.asset.json';
+import brittPoster from '@/assets/britt-poster.jpg.asset.json';
+import gracePoster from '@/assets/grace-poster.jpg.asset.json';
+import hobbsPoster from '@/assets/hobbs-poster.jpg.asset.json';
+import dariannPoster from '@/assets/dariann-poster.jpg.asset.json';
+import elcaminoPoster from '@/assets/elcamino-poster.jpg.asset.json';
+import herdPoster from '@/assets/herd-video-poster.jpg.asset.json';
+import reactPoster from '@/assets/react-win.jpg.asset.json';
+import { ChevronLeft, Play } from 'lucide-react';
+
+// Placeholder artwork — swap for real show art later.
+const SHOWS = [
+  { title: 'Barstool Stage', tag: 'Live sets', art: elcaminoPoster.url },
+  { title: 'The HERD Morning Show', tag: 'Daily', art: gracePoster.url },
+  { title: 'HERD House', tag: 'Reality', art: brittPoster.url },
+  { title: 'Backyard Parties', tag: 'Live', art: hobbsPoster.url },
+  { title: 'Busking Wars', tag: 'Competition', art: dariannPoster.url },
+  { title: 'HERD LRT', tag: 'On the move', art: herdPoster.url },
+];
 
 const NEXT_UP_AT = 15; // show "next video" countdown this many seconds before the ad ends
 
@@ -22,6 +40,49 @@ export const Route = createFileRoute('/upload')({
 });
 
 function HerdTv() {
+  const [watching, setWatching] = useState(false);
+  const [soon, setSoon] = useState<string | null>(null);
+  if (watching) return <AlwaysOn onBack={() => setWatching(false)} />;
+  return (
+    <PhoneShell>
+      <div className="tvm">
+        <button className="tvm-hero" onClick={() => setWatching(true)} style={{ backgroundImage: `url(${mattiePoster.url})` }}>
+          <span className="tvm-live">● Live</span>
+          <span className="tvm-hero-title">HERD TV<br /><small>Always On</small></span>
+          <span className="tvm-play"><Play size={16} fill="currentColor" /> Watch now</span>
+        </button>
+        <h3 className="tvm-row-title">HERD Originals</h3>
+        <div className="tvm-row">
+          {SHOWS.map(s => (
+            <button key={s.title} className="tvm-tile" onClick={() => setSoon(s.title)} style={{ backgroundImage: `url(${s.art})` }}>
+              <span className="tvm-tag">{s.tag}</span>
+              <span className="tvm-tile-title">{s.title}</span>
+            </button>
+          ))}
+        </div>
+        <h3 className="tvm-row-title">Trending on HERD</h3>
+        <div className="tvm-row">
+          {[...SHOWS].reverse().map(s => (
+            <button key={s.title} className="tvm-tile tvm-tile--wide" onClick={() => setSoon(s.title)} style={{ backgroundImage: `url(${s.title === 'HERD LRT' ? reactPoster.url : s.art})` }}>
+              <span className="tvm-tile-title">{s.title}</span>
+            </button>
+          ))}
+        </div>
+        {soon && (
+          <div className="tvm-soon" onClick={() => setSoon(null)}>
+            <div className="tvm-soon-card">
+              <strong>{soon}</strong>
+              <p>New episodes coming soon to HERD TV.</p>
+              <button onClick={() => setSoon(null)}>Got it</button>
+            </div>
+          </div>
+        )}
+      </div>
+    </PhoneShell>
+  );
+}
+
+function AlwaysOn({ onBack }: { onBack: () => void }) {
   const v = useRef<HTMLVideoElement>(null);
   const [land, setLand] = useState(false);
   const [stage, setStage] = useState<Stage>('intro');
@@ -82,6 +143,7 @@ function HerdTv() {
   return (
     <PhoneShell landscape={land}>
       <div className="rw-stage">
+        <button className="tvm-back" onClick={onBack} aria-label="Back to HERD TV menu"><ChevronLeft size={18} /> Shows</button>
         <video
           ref={v}
           className="rw-video"
