@@ -11,13 +11,6 @@ import mattieWebm from '@/assets/mattie.webm.asset.json';
 import mattiePoster from '@/assets/mattie.jpg.asset.json';
 import adMp4 from '@/assets/herdtv-ad.mp4.asset.json';
 import adWebm from '@/assets/herdtv-ad.webm.asset.json';
-import brittPoster from '@/assets/britt-poster.jpg.asset.json';
-import gracePoster from '@/assets/grace-poster.jpg.asset.json';
-import hobbsPoster from '@/assets/hobbs-poster.jpg.asset.json';
-import dariannPoster from '@/assets/dariann-poster.jpg.asset.json';
-import elcaminoPoster from '@/assets/elcamino-poster.jpg.asset.json';
-import herdPoster from '@/assets/herd-video-poster.jpg.asset.json';
-import reactPoster from '@/assets/react-win.jpg.asset.json';
 import showBarstool from '@/assets/show-barstool.jpg';
 import showMorning from '@/assets/show-morning.jpg';
 import showHouse from '@/assets/show-house.jpg';
@@ -71,7 +64,7 @@ function HerdTv() {
         <h3 className="tvm-row-title">Trending on HERD</h3>
         <div className="tvm-row">
           {[...SHOWS].reverse().map(s => (
-            <button key={s.title} className="tvm-tile tvm-tile--wide" onClick={() => setSoon(s.title)} style={{ backgroundImage: `url(${s.title === 'HERD LRT' ? reactPoster.url : s.art})` }}>
+            <button key={s.title} className="tvm-tile tvm-tile--wide" onClick={() => setSoon(s.title)} style={{ backgroundImage: `url(${s.art})` }}>
               <span className="tvm-tile-title">{s.title}</span>
             </button>
           ))}
