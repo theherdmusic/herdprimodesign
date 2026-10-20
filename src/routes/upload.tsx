@@ -11,24 +11,23 @@ import mattieWebm from '@/assets/mattie.webm.asset.json';
 import mattiePoster from '@/assets/mattie.jpg.asset.json';
 import adMp4 from '@/assets/herdtv-ad.mp4.asset.json';
 import adWebm from '@/assets/herdtv-ad.webm.asset.json';
-import brittPoster from '@/assets/britt-poster.jpg.asset.json';
-import gracePoster from '@/assets/grace-poster.jpg.asset.json';
-import hobbsPoster from '@/assets/hobbs-poster.jpg.asset.json';
-import dariannPoster from '@/assets/dariann-poster.jpg.asset.json';
-import elcaminoPoster from '@/assets/elcamino-poster.jpg.asset.json';
-import herdPoster from '@/assets/herd-video-poster.jpg.asset.json';
-import reactPoster from '@/assets/react-win.jpg.asset.json';
+import showBarstool from '@/assets/show-barstool.jpg';
+import showMorning from '@/assets/show-morning.jpg';
+import showHouse from '@/assets/show-house.jpg';
+import showBackyard from '@/assets/show-backyard.jpg';
+import showBusking from '@/assets/show-busking.jpg';
+import showLrt from '@/assets/show-lrt.jpg';
 import mcgeePoster from '@/assets/floating-mcgee-poster.jpg';
 import { ChevronLeft, Play } from 'lucide-react';
 
 // Placeholder artwork — swap for real show art later.
 const SHOWS = [
-  { title: 'Barstool Stage', tag: 'Live sets', art: elcaminoPoster.url },
-  { title: 'The HERD Morning Show', tag: 'Daily', art: gracePoster.url },
-  { title: 'HERD House', tag: 'Reality', art: brittPoster.url },
-  { title: 'Backyard Parties', tag: 'Live', art: hobbsPoster.url },
-  { title: 'Busking Wars', tag: 'Competition', art: dariannPoster.url },
-  { title: 'HERD LRT', tag: 'On the move', art: herdPoster.url },
+  { title: 'Barstool Stage', tag: 'Live sets', art: showBarstool },
+  { title: 'The HERD Morning Show', tag: 'Daily', art: showMorning },
+  { title: 'HERD House', tag: 'Reality', art: showHouse },
+  { title: 'Backyard Parties', tag: 'Live', art: showBackyard },
+  { title: 'Busking Wars', tag: 'Competition', art: showBusking },
+  { title: 'HERD LRT', tag: 'On the move', art: showLrt },
   { title: 'Floating McGee Fight Night', tag: 'Fight night', art: mcgeePoster },
 ];
 
@@ -65,7 +64,7 @@ function HerdTv() {
         <h3 className="tvm-row-title">Trending on HERD</h3>
         <div className="tvm-row">
           {[...SHOWS].reverse().map(s => (
-            <button key={s.title} className="tvm-tile tvm-tile--wide" onClick={() => setSoon(s.title)} style={{ backgroundImage: `url(${s.title === 'HERD LRT' ? reactPoster.url : s.art})` }}>
+            <button key={s.title} className="tvm-tile tvm-tile--wide" onClick={() => setSoon(s.title)} style={{ backgroundImage: `url(${s.art})` }}>
               <span className="tvm-tile-title">{s.title}</span>
             </button>
           ))}
