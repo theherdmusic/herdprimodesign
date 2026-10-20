@@ -17,7 +17,7 @@ export function OpeningVideoProvider({ children }: { children: ReactNode }) {
 }
 
 export function useOpeningVideo() {
-  return useContext(OpeningVideo());
+  return useContext(OpeningContext);
 }
 
 // A single opening film plays before the app itself appears: the sheep intro.
