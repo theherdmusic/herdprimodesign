@@ -17,3 +17,4 @@
 - Sample feed video is served from CDN asset pointers in two formats (H.264 MP4 first, VP9 WebM fallback) because the sandbox test browser has no H.264 decoder, so an MP4-only clip cannot be verified there.
 - Overlay gestures use React handlers on the overlay element itself, not window listeners, so they are attached the moment the element exists.
 - Sandbox gesture tests wait until the target element carries a `__react` key before dispatching touches, because React 19 hydrates lazily and events sent earlier are dropped.
+- Home-screen support uses manifest-only metadata and opaque icons derived from the supplied logo, with an explicit Apple touch icon; no app-shell service worker is needed because offline use is not requested.
