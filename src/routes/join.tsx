@@ -46,6 +46,7 @@ function Join() {
       <Button className="join-cta" onClick={() => go('login')}>Log in</Button>
       <Button variant="secondary" className="join-option" onClick={() => go('birthday')}><span className="font-bold">G</span>Continue with Google</Button>
       <Button variant="ghost" className="w-full" onClick={() => nav({ to: '/' })}>Just look around</Button>
+       <Button variant="ghost" className="w-full" onClick={() => nav({ to: '/floating-mcgee' })}>Floating McGee</Button>
     </div>}
     {step === 'login' && <div>
       <h1 className="join-title">Log in to Herd</h1>
