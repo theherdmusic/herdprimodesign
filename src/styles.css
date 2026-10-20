@@ -151,10 +151,10 @@
 .new-artist-tag { display:inline-flex;align-items:center;background:var(--primary);color:var(--primary-foreground);border-radius:6px;padding:4px 9px;font-size:10px;font-weight:800;letter-spacing:.5px;margin:0 0 9px; }
 
 /* HERD TV lower third */
-.tv-lowerthird{position:absolute;left:0;right:0;bottom:86px;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:0 14px;pointer-events:none}
-.tv-brand{background:var(--accent);color:#0a0a0f;font-weight:800;font-size:12px;letter-spacing:.12em;padding:6px 12px;border-radius:10px}
+.tv-lowerthird{position:absolute;left:0;right:0;bottom:150px;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:0 14px;pointer-events:none}
+.tv-brand{background:var(--primary);color:var(--primary-foreground);font-weight:800;font-size:12px;letter-spacing:.12em;padding:6px 12px;border-radius:10px}
 .tv-count{background:rgba(10,10,15,.65);backdrop-filter:blur(6px);color:#fff;font-size:12px;font-weight:600;padding:6px 12px;border-radius:10px}
 .phone-landscape .tv-lowerthird{bottom:14px}
 @media (max-width:520px){
-  .tv-lowerthird{bottom:calc(env(safe-area-inset-bottom,0px) + 76px)}
+  .tv-lowerthird{bottom:calc(env(safe-area-inset-bottom,0px) + 140px)}
 }
