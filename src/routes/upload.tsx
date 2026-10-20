@@ -99,7 +99,6 @@ function HerdTv() {
           {sources}
         </video>
         <div className="tv-lowerthird">
-          <span className="tv-brand">HERD TV</span>
           <span className="tv-right">
             {stage === 'ad' && (
               <span className="tv-count tv-count--break">Commercial break</span>
