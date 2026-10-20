@@ -18,6 +18,7 @@ import dariannPoster from '@/assets/dariann-poster.jpg.asset.json';
 import elcaminoPoster from '@/assets/elcamino-poster.jpg.asset.json';
 import herdPoster from '@/assets/herd-video-poster.jpg.asset.json';
 import reactPoster from '@/assets/react-win.jpg.asset.json';
+import mcgeePoster from '@/assets/floating-mcgee-poster.jpg';
 import { ChevronLeft, Play } from 'lucide-react';
 
 // Placeholder artwork — swap for real show art later.
@@ -28,6 +29,7 @@ const SHOWS = [
   { title: 'Backyard Parties', tag: 'Live', art: hobbsPoster.url },
   { title: 'Busking Wars', tag: 'Competition', art: dariannPoster.url },
   { title: 'HERD LRT', tag: 'On the move', art: herdPoster.url },
+  { title: 'Floating McGee Fight Night', tag: 'Fight night', art: mcgeePoster },
 ];
 
 const NEXT_UP_AT = 15; // show "next video" countdown this many seconds before the ad ends
