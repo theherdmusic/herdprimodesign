@@ -30,6 +30,7 @@ function HerdTv() {
     const el = v.current;
     if (!el) return;
     el.muted = false;
+    el.load();
     el.play().catch(() => {
       el.muted = true;
       el.play().catch(() => {});
