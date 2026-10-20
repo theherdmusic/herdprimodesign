@@ -158,3 +158,5 @@
 @media (max-width:520px){
   .tv-lowerthird{bottom:calc(env(safe-area-inset-bottom,0px) + 140px)}
 }
+.tv-right{display:flex;gap:8px;align-items:center;margin-left:auto}
+.tv-count--break{background:var(--primary);color:var(--primary-foreground);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:11px}
