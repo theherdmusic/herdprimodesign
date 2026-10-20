@@ -1,3 +1,5 @@
+// ============= HERD TV: sheep intro -> full show video -> commercial -> repeat =============
+
 import { createFileRoute } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { PhoneShell } from '@/components/herd/phone-shell';
@@ -10,7 +12,6 @@ import mattiePoster from '@/assets/mattie.jpg.asset.json';
 import adMp4 from '@/assets/herdtv-ad.mp4.asset.json';
 import adWebm from '@/assets/herdtv-ad.webm.asset.json';
 
-const AD_AFTER = 30; // seconds of Mattie Go before the commercial
 const NEXT_UP_AT = 15; // show "next video" countdown this many seconds before the ad ends
 
 type Stage = 'intro' | 'show' | 'ad';
@@ -24,7 +25,6 @@ function HerdTv() {
   const v = useRef<HTMLVideoElement>(null);
   const [land, setLand] = useState(false);
   const [stage, setStage] = useState<Stage>('intro');
-  const [showT, setShowT] = useState(0); // seconds the Mattie Go loop has played
   const [adLeft, setAdLeft] = useState<number | null>(null); // seconds left in the commercial
 
   useEffect(() => {
@@ -49,24 +49,18 @@ function HerdTv() {
   const onTime = () => {
     const el = v.current;
     if (!el) return;
-    if (stage === 'show') {
-      setShowT(el.currentTime);
-      if (el.currentTime >= AD_AFTER) setStage('ad');
-    } else if (stage === 'ad' && el.duration) {
+    if (stage === 'ad' && el.duration) {
       setAdLeft(Math.max(0, Math.ceil(el.duration - el.currentTime)));
     }
   };
 
   const onEnded = () => {
+    setAdLeft(null);
     if (stage === 'intro') setStage('show');
-    else if (stage === 'ad') {
-      setShowT(0);
-      setAdLeft(null);
-      setStage('show');
-    }
+    else if (stage === 'show') setStage('ad');
+    else setStage('show');
   };
 
-  const commercialIn = Math.max(0, Math.ceil(AD_AFTER - showT));
   const sources =
     stage === 'intro' ? (
       <>
@@ -92,7 +86,7 @@ function HerdTv() {
           ref={v}
           className="rw-video"
           autoPlay
-          loop={stage === 'show'}
+          loop={false}
           playsInline
           poster={stage === 'show' ? mattiePoster.url : undefined}
           aria-label="HERD TV"
@@ -106,19 +100,12 @@ function HerdTv() {
         </video>
         <div className="tv-lowerthird">
           <span className="tv-brand">HERD TV</span>
-          {stage === 'show' && (
-            <span className="tv-count">
-              Commercial in {commercialIn}s
-            </span>
-          )}
           <span className="tv-right">
             {stage === 'ad' && (
               <span className="tv-count tv-count--break">Commercial break</span>
             )}
             {stage === 'ad' && adLeft !== null && adLeft <= NEXT_UP_AT && (
-              <span className="tv-count">
-                Next video in {adLeft}s
-              </span>
+              <span className="tv-count">Next video in {adLeft}s</span>
             )}
           </span>
         </div>
