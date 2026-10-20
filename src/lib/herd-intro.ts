@@ -1,7 +1,7 @@
 // Browser-safe helper for the opening sequence order.
 // The intro films play one after another before the app itself appears.
 
-export const INTRO_CLIP_COUNT = 2;
+export const INTRO_CLIP_COUNT = 1;
 
 /**
  * Which film should play after `stage` finishes.

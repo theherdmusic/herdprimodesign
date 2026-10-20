@@ -2,11 +2,11 @@ import { describe, expect, it } from 'vitest';
 import { INTRO_CLIP_COUNT, nextIntroStage } from '@/lib/herd-intro';
 
 describe('opening sequence order', () => {
-  it('plays the second film after the sheep intro', () => {
-    expect(nextIntroStage(0)).toBe(1);
+  it('opens with the single intro film only', () => {
+    expect(INTRO_CLIP_COUNT).toBe(1);
   });
 
-  it('ends the sequence after the last film', () => {
-    expect(nextIntroStage(INTRO_CLIP_COUNT - 1)).toBeNull();
+  it('ends the sequence as soon as that film finishes', () => {
+    expect(nextIntroStage(0)).toBeNull();
   });
 });
