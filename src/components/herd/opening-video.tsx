@@ -79,10 +79,12 @@ export function OpeningVideo() {
       <source src={film.webm} type="video/webm" />
       <source src={film.mp4} type="video/mp4" />
     </video>
-    <video key={stage} autoPlay playsInline muted={muted} poster={film.poster} onEnded={filmEnded} onError={filmEnded} aria-label={film.label}>
-      <source src={film.webm} type="video/webm" />
-      <source src={film.mp4} type="video/mp4" />
-    </video>
+    <div key={`band-${stage}`} className={film.feather ? 'opening-band opening-band--feather' : 'opening-band'} style={{ aspectRatio: film.aspect }}>
+      <video key={stage} autoPlay playsInline muted={muted} poster={film.poster} onEnded={filmEnded} onError={filmEnded} aria-label={film.label}>
+        <source src={film.webm} type="video/webm" />
+        <source src={film.mp4} type="video/mp4" />
+      </video>
+    </div>
     <div className="opening-controls">
       <Button variant="secondary" size="icon" aria-label={muted ? 'Turn opening sound on' : 'Mute opening sound'} onClick={() => setMuted(value => !value)}>{muted ? <VolumeX /> : <Volume2 />}</Button>
      </div>
