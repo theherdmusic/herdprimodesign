@@ -5,9 +5,9 @@ import { Button } from '@/components/ui/button';
 import { entryAfterOpening } from '@/lib/herd-entry';
 import { nextIntroStage } from '@/lib/herd-intro';
 import { useMe } from '@/components/herd/me';
-import filmMp4 from '@/assets/herd-after.mp4.asset.json';
-import filmWebm from '@/assets/herd-after.webm.asset.json';
-import filmPoster from '@/assets/herd-after.jpg.asset.json';
+import filmMp4 from '@/assets/herd-opening.mp4.asset.json';
+import filmWebm from '@/assets/herd-opening.webm.asset.json';
+import filmPoster from '@/assets/herd-opening.jpg.asset.json';
 
 const OpeningContext = createContext({ active: true, finish: () => {} });
 
@@ -17,13 +17,13 @@ export function OpeningVideoProvider({ children }: { children: ReactNode }) {
 }
 
 export function useOpeningVideo() {
-  return useContext(OpeningContext);
+  return useContext(OpeningVideo());
 }
 
-// A single opening film plays before the app itself appears.
+// A single opening film plays before the app itself appears: the sheep intro.
 // It carries its own shape so it is shown whole, never cropped, with a soft
-// blurred fill above and below so there are no black bars.
-const OPENING_FILM = { mp4: filmMp4.url, webm: filmWebm.url, poster: filmPoster.url, label: 'Herd intro film', aspect: '1280 / 720', feather: true };
+// blurred fill behind it so there are no black bars.
+const OPENING_FILM = { mp4: filmMp4.url, webm: filmWebm.url, poster: filmPoster.url, label: 'Herd opening film', aspect: '1080 / 1920', feather: false };
 const FILMS = [OPENING_FILM];
 
 export function OpeningVideo() {
@@ -63,7 +63,7 @@ export function OpeningVideo() {
 
   return <div className="opening-video" role="dialog" aria-label="Herd opening video"
     onTouchStart={startY} onTouchMove={moveY} onTouchEnd={endY} onWheel={onWheel}>
-    {/* A blurred, zoomed copy of the same film fills the space around a widescreen clip. */}
+    {/* A blurred, zoomed copy of the same film fills the space around the clip. */}
     <video className="opening-bg" aria-hidden="true" autoPlay playsInline muted loop
       onEnded={filmEnded} onError={filmEnded}>
       <source src={OPENING_FILM.webm} type="video/webm" />
