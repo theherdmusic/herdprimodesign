@@ -24,10 +24,9 @@ export function useOpeningVideo() {
 }
 
 // Films play back to back: the sheep intro first, then the follow-up clip.
-const FILMS = [
-  { mp4: opening.url, webm: openingWebm.url, poster: poster.url, label: 'Herd opening film' },
-  { mp4: after.url, webm: afterWebm.url, poster: afterPoster.url, label: 'Herd intro film' },
-];
+const SHEEP_INTRO = { mp4: opening.url, webm: openingWebm.url, poster: poster.url, label: 'Herd opening film' };
+const FOLLOW_UP = { mp4: after.url, webm: afterWebm.url, poster: afterPoster.url, label: 'Herd intro film' };
+const FILMS = [SHEEP_INTRO, FOLLOW_UP];
 
 export function OpeningVideo() {
   const { finish } = useOpeningVideo();
@@ -69,7 +68,7 @@ export function OpeningVideo() {
   const endY = () => { startYRef.current = null; };
   const onWheel = (e: RWheelEvent) => { if (e.deltaY > 30) dismiss(); };
 
-  const film = FILMS[stage];
+  const film = stage === 0 ? SHEEP_INTRO : FOLLOW_UP;
 
   return <div className="opening-video" role="dialog" aria-label="Herd opening video"
     onTouchStart={startY} onTouchMove={moveY} onTouchEnd={endY} onWheel={onWheel}>
