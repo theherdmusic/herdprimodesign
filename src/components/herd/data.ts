@@ -21,6 +21,9 @@ import hobbsCover from '@/assets/hobbs-poster.jpg.asset.json';
 import vinniClip from '@/assets/vinni.mp4.asset.json';
 import vinniClipWebm from '@/assets/vinni.webm.asset.json';
 import vinniCover from '@/assets/vinni-poster.jpg.asset.json';
+import rrClip from '@/assets/rr.mp4.asset.json';
+import rrClipWebm from '@/assets/rr.webm.asset.json';
+import rrCover from '@/assets/rr-poster.jpg.asset.json';
 export { live, studio };
 export type HerdArtist = { name: string; song: string; genre: string; image: string; hearts: string; bio: string; handle: string; video?: string; videoWebm?: string; poster?: string; newArtist?: boolean };
 export const artists: HerdArtist[] = [
@@ -31,6 +34,7 @@ export const artists: HerdArtist[] = [
  { name:'Dariann', song:'Daddy', genre:'Country', image:dariannCover.url, poster:dariannCover.url, video:dariannClip.url, videoWebm:dariannClipWebm.url, hearts:'4.8K', bio:'Safety pins, spurs and a whole lot of attitude. Country with the volume up. Nashville, TN.', handle:'@dariann', newArtist:true },
  { name:'Hobbs', song:'SGL', genre:'Country', image:hobbsCover.url, poster:hobbsCover.url, video:hobbsClip.url, videoWebm:hobbsClipWebm.url, hearts:'3.9K', bio:'Meadow sunsets and honest hooks. Country made for front-porch evenings. Austin, TX.', handle:'@hobbs', newArtist:true },
  { name:'Big Vinni', song:'Walmart Pool', genre:'Country', image:vinniCover.url, poster:vinniCover.url, video:vinniClip.url, videoWebm:vinniClipWebm.url, hearts:'2.7K', bio:'Full send, no brakes. Songs for the last day of summer. Nashville, TN.', handle:'@bigvinni', newArtist:true },
+ { name:'RR', song:'Untitled', genre:'Country', image:rrCover.url, poster:rrCover.url, video:rrClip.url, videoWebm:rrClipWebm.url, hearts:'1.9K', bio:'New to the Herd. First video just dropped.', handle:'@rr', newArtist:true },
 ];
 export const songs = ['Running out of daylight','Something real','Backroad summer','Velvet skies','Nothing to lose','After hours','Wildflower','Slow motion','Stay a little longer','City lights','Good enough','Golden hour','Home again','No apologies','Between the lines','Headlights','On my own','Midnight drive','Let it go','Blue Sunday','All we know','Easy days','Break the silence','Tomorrow','One more time'];
 export const genres = ['All','Rock','Country','Rap','Pop','R&B','Electronic'];
