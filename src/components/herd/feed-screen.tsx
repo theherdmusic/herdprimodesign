@@ -1,5 +1,5 @@
 import { Link, useNavigate } from '@tanstack/react-router';
-import { Heart, Plus, Check, Send, X, Link2, MessageCircle, Flag, Search, MoreHorizontal, Zap } from 'lucide-react';
+import { Heart, Plus, Check, Send, X, Link2, MessageCircle, Flag, Search, MoreHorizontal } from 'lucide-react';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { PhoneShell } from './phone-shell';
@@ -9,6 +9,7 @@ import { needsSignIn, type GatedAction } from '@/lib/herd-entry';
 import { useOpeningVideo } from './opening-video';
 import { REPORT_REASONS, useMe } from './me';
 import { ReactAd } from './react-ad';
+import reactLogo from '@/assets/react-logo.png.asset.json';
 let feedIndex=0;
 type Sheet = null|'share'|'comments'|'more'|'report'|'signin';
 export function FeedScreen({initialTrack}:{initialTrack?:number|undefined}) {
@@ -50,7 +51,7 @@ export function FeedScreen({initialTrack}:{initialTrack?:number|undefined}) {
    <div className="feed-action"><Button variant="ghost" className="action-button" aria-label="Open comments" onClick={()=>setSheet('comments')}><MessageCircle/></Button><span>{currentComments.length}</span></div>
    <div className="feed-action"><Button variant="ghost" className="action-button" aria-label="Share video" onClick={()=>setSheet('share')}><Send/></Button></div>
   </div>
-  <div className="feed-bottom">{artist.newArtist&&<span className="new-artist-tag">New Artist</span>}<div className="artist-row"><Link to="/profile" search={{artist:index}} className="artist-line">{artist.name}</Link><button type="button" className="more-btn" aria-label="More options" onClick={()=>setSheet('more')}><MoreHorizontal size={20}/></button></div><p className="song-title">{artist.song}</p><button type="button" className="react-btn" onClick={()=>setReacting(true)}><Zap size={16} fill="currentColor"/>React</button></div>
+  <div className="feed-bottom">{artist.newArtist&&<span className="new-artist-tag">New Artist</span>}<div className="artist-row"><Link to="/profile" search={{artist:index}} className="artist-line">{artist.name}</Link><button type="button" className="more-btn" aria-label="More options" onClick={()=>setSheet('more')}><MoreHorizontal size={20}/></button></div><p className="song-title">{artist.song}</p><button type="button" className="react-btn" aria-label="React" onClick={()=>setReacting(true)}><img src={reactLogo.url} alt="" /></button></div>
   </div>
   {reacting&&<ReactAd onClose={closeAd}/>}
   {searchOpen&&<div className="search-sheet" role="dialog" aria-label="Search"><div className="search-sheet-top"><div className="feed-search"><Search size={16}/><input aria-label="Search artists" placeholder="Artists or songs" value={query} onChange={e=>setQuery(e.target.value)} autoFocus/></div><button type="button" className="sheet-x" aria-label="Close search" onClick={()=>{setSearchOpen(false);setQuery('');}}><X size={20}/></button></div><div className="genre-chips">{genres.map(g=><button key={g} type="button" className={`genre-chip ${genre===g?'selected':''}`} onClick={()=>setGenre(g)}>{g}</button>)}</div><div className="search-hits">{hits.map(({a,i})=><button key={a.name} type="button" className="search-hit" onClick={()=>{setIndex(i);setTab('foryou');setSearchOpen(false);setQuery('');}}><img src={a.image} alt=""/><span><b>{a.name}</b><small>{a.song} · {a.genre}</small></span></button>)}{!hits.length&&<p className="feed-search-empty">No artists found</p>}</div></div>}
