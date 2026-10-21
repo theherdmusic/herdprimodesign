@@ -1,8 +1,15 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { ArrowUpRight } from 'lucide-react';
 import { useState } from 'react';
 import { PhoneShell } from '@/components/herd/phone-shell';
-import { Button } from '@/components/ui/button';
-import { getArtist, songs, genres, pageHead } from '@/components/herd/data';
-export const Route=createFileRoute('/charts')({head:()=>pageHead('Top 25','The independent music Top 25. Explore trending songs across genres, updated hourly.'),component:Charts});
-function Charts(){const [genre,setGenre]=useState('All');return <PhoneShell><div className="page-inner"><div className="flex items-center justify-between"><span className="eyebrow">The people have spoken</span><ArrowUpRight size={17} className="text-primary"/></div><h1 className="page-title mt-2">The Top 25<span className="text-primary">.</span></h1><p className="page-subtitle"><span className="block mt-2 text-[10px]">Updated hourly </span></p><div className="genre-tabs">{genres.map(g=><Button key={g} variant={genre===g?'default':'secondary'} className="genre-button" onClick={()=>setGenre(g)}>{g}</Button>)}</div><div>{songs.map((song,i)=>{const a=getArtist(i);const displaySong=genre==='All'?song:songs[(i+genres.indexOf(genre)*3)%25];return <Link className="chart-row" key={song} to="/" search={{track:i%2}}><span className="rank">{String(i+1).padStart(2,'0')}</span><img className="track-thumb" src={a.image} alt="" loading="lazy"/><div className="min-w-0"><div className="track-name">{displaySong}</div><div className="track-artist">{i<2?a.name:['The Slow Days','June Wilder','Eastside Echo','Nova Lane'][i%4]}</div></div></Link>;})}</div></div></PhoneShell>;}
+import { artists, getArtist, songs, genres, pageHead } from '@/components/herd/data';
+export const Route=createFileRoute('/charts')({head:()=>pageHead('Top 25','The independent music Top 25, updated hourly.'),component:Charts});
+function Charts(){
+ const [genre,setGenre]=useState('All');
+ const rows=songs.map((song,i)=>{const a=getArtist(i);const title=i<artists.length?a.song:(genre==='All'?song:songs[(i+genres.indexOf(genre)*3)%25]);return {i,a,title,name:i<artists.length?a.name:['The Slow Days','June Wilder','Eastside Echo','Nova Lane'][i%4]};});
+ const top=rows[0]!;
+ return <PhoneShell><div className="page-inner charts"><h1 className="page-title">Top 25<span className="text-primary">.</span></h1><p className="page-subtitle">Updated hourly</p>
+  <div className="genre-chips">{genres.map(g=><button key={g} type="button" className={`genre-chip ${genre===g?'selected':''}`} onClick={()=>setGenre(g)}>{g}</button>)}</div>
+  <Link className="chart-hero" to="/" search={{track:top.i%artists.length}} style={{backgroundImage:`url(${top.a.image})`}}><span className="chart-hero-rank">#1</span><span className="chart-hero-text"><b>{top.title}</b><small>{top.name}</small></span></Link>
+  <div>{rows.slice(1).map(r=><Link className="chart-row" key={r.i} to="/" search={{track:r.i%artists.length}}><span className="rank">{r.i+1}</span><img className="track-thumb" src={r.a.image} alt="" loading="lazy"/><div className="min-w-0"><div className="track-name">{r.title}</div><div className="track-artist">{r.name}</div></div></Link>)}</div>
+ </div></PhoneShell>;
+}

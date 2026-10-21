@@ -14,7 +14,6 @@ import { Route as ChartsRouteImport } from './routes/charts'
 import { Route as FloatingMcgeeRouteImport } from './routes/floating-mcgee'
 import { Route as JoinRouteImport } from './routes/join'
 import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as RadioRouteImport } from './routes/radio'
 import { Route as UploadRouteImport } from './routes/upload'
 import { Route as YouRouteImport } from './routes/you'
 
@@ -43,11 +42,6 @@ const ProfileRoute = ProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RadioRoute = RadioRouteImport.update({
-  id: '/radio',
-  path: '/radio',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const UploadRoute = UploadRouteImport.update({
   id: '/upload',
   path: '/upload',
@@ -65,7 +59,6 @@ export interface FileRoutesByFullPath {
   '/floating-mcgee': typeof FloatingMcgeeRoute
   '/join': typeof JoinRoute
   '/profile': typeof ProfileRoute
-  '/radio': typeof RadioRoute
   '/upload': typeof UploadRoute
   '/you': typeof YouRoute
 }
@@ -75,7 +68,6 @@ export interface FileRoutesByTo {
   '/floating-mcgee': typeof FloatingMcgeeRoute
   '/join': typeof JoinRoute
   '/profile': typeof ProfileRoute
-  '/radio': typeof RadioRoute
   '/upload': typeof UploadRoute
   '/you': typeof YouRoute
 }
@@ -86,7 +78,6 @@ export interface FileRoutesById {
   '/floating-mcgee': typeof FloatingMcgeeRoute
   '/join': typeof JoinRoute
   '/profile': typeof ProfileRoute
-  '/radio': typeof RadioRoute
   '/upload': typeof UploadRoute
   '/you': typeof YouRoute
 }
@@ -98,7 +89,6 @@ export interface FileRouteTypes {
     | '/floating-mcgee'
     | '/join'
     | '/profile'
-    | '/radio'
     | '/upload'
     | '/you'
   fileRoutesByTo: FileRoutesByTo
@@ -108,7 +98,6 @@ export interface FileRouteTypes {
     | '/floating-mcgee'
     | '/join'
     | '/profile'
-    | '/radio'
     | '/upload'
     | '/you'
   id:
@@ -118,7 +107,6 @@ export interface FileRouteTypes {
     | '/floating-mcgee'
     | '/join'
     | '/profile'
-    | '/radio'
     | '/upload'
     | '/you'
   fileRoutesById: FileRoutesById
@@ -129,7 +117,6 @@ export interface RootRouteChildren {
   FloatingMcgeeRoute: typeof FloatingMcgeeRoute
   JoinRoute: typeof JoinRoute
   ProfileRoute: typeof ProfileRoute
-  RadioRoute: typeof RadioRoute
   UploadRoute: typeof UploadRoute
   YouRoute: typeof YouRoute
 }
@@ -171,13 +158,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/radio': {
-      id: '/radio'
-      path: '/radio'
-      fullPath: '/radio'
-      preLoaderRoute: typeof RadioRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/upload': {
       id: '/upload'
       path: '/upload'
@@ -201,7 +181,6 @@ const rootRouteChildren: RootRouteChildren = {
   FloatingMcgeeRoute: FloatingMcgeeRoute,
   JoinRoute: JoinRoute,
   ProfileRoute: ProfileRoute,
-  RadioRoute: RadioRoute,
   UploadRoute: UploadRoute,
   YouRoute: YouRoute,
 }
