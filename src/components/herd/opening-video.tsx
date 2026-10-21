@@ -15,8 +15,8 @@ const store = () => (typeof window === 'undefined' ? null : window.localStorage)
 
 export function OpeningVideoProvider({ children }: { children: ReactNode }) {
   // Starts as "checking" on every load; device storage decides whether this install already saw it.
-  const [phase, setPhase] = useState<Phase>(() => (hasSeenOpening(store()) && typeof window !== 'undefined' && (window as { __herdHydrated?: boolean }).__herdHydrated ? 'done' : 'checking'));
-  useEffect(() => { (window as { __herdHydrated?: boolean }).__herdHydrated = true; setPhase(p => (p === 'checking' ? (hasSeenOpening(store()) ? 'done' : 'play') : p)); }, []);
+  const [phase, setPhase] = useState<Phase>('checking');
+  useEffect(() => { setPhase(p => (p === 'checking' ? (hasSeenOpening(store()) ? 'done' : 'play') : p)); }, []);
   const finish = () => { markOpeningSeen(store()); setPhase('done'); };
   return <OpeningContext.Provider value={{ active: phase !== 'done', playing: phase === 'play', finish }}>{children}</OpeningContext.Provider>;
 }
