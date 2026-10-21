@@ -143,6 +143,7 @@ function AlwaysOn({ onBack }: { onBack: () => void }) {
           autoPlay
           loop={false}
           playsInline
+          preload="auto"
           poster={stage === 'show' ? mattiePoster.url : undefined}
           aria-label="HERD TV"
           onEnded={onEnded}

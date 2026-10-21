@@ -25,7 +25,7 @@ export function ReactAd({ onClose }: { onClose: () => void }) {
     <button className="react-ad-close" aria-label="Close" onClick={onClose}><X size={20} /></button>
     {step === 'ad' && <>
       <span className="react-ad-by">Brought to you by {SPONSOR}</span>
-      <video ref={v} className="react-ad-video" playsInline autoPlay poster={poster.url} onEnded={() => setStep('ask')} onError={() => setStep('ask')} onClick={e => { e.currentTarget.muted = false; }}>
+      <video ref={v} className="react-ad-video" playsInline autoPlay preload="auto" poster={poster.url} onEnded={() => setStep('ask')} onError={() => setStep('ask')} onClick={e => { e.currentTarget.muted = false; }}>
         <source src={webm.url} type="video/webm" /><source src={mp4.url} type="video/mp4" />
       </video>
       {AD_IS_LANDSCAPE && upright && <span className="react-ad-rotate"><RotateCw size={14} /> Rotate for full screen</span>}

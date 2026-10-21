@@ -49,11 +49,11 @@ export function OpeningVideo() {
   if (!playing) return <div className="opening-video" aria-hidden="true" />;
   return <div className="opening-video" role="dialog" aria-label="Herd opening video"
     onTouchStart={startY} onTouchMove={moveY} onTouchEnd={() => { startYRef.current = null; }} onWheel={onWheel}>
-    <video className="opening-bg" aria-hidden="true" autoPlay playsInline muted loop>
+    <video className="opening-bg" aria-hidden="true" autoPlay playsInline muted loop preload="auto">
       <source src={FILM.webm} type="video/webm" /><source src={FILM.mp4} type="video/mp4" />
     </video>
     <div className="opening-band" style={{ aspectRatio: '1080 / 1920' }}>
-      <video autoPlay playsInline muted={muted} poster={FILM.poster} onEnded={filmEnded} onError={filmEnded} aria-label="Herd opening film">
+      <video autoPlay playsInline muted={muted} poster={FILM.poster} preload="auto" onEnded={filmEnded} onError={filmEnded} aria-label="Herd opening film">
         <source src={FILM.webm} type="video/webm" /><source src={FILM.mp4} type="video/mp4" />
       </video>
     </div>
