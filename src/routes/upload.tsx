@@ -36,7 +36,7 @@ const NEXT_UP_AT = 15; // show "next video" countdown this many seconds before t
 type Stage = 'intro' | 'show' | 'ad';
 
 export const Route = createFileRoute('/upload')({
-  head: () => pageHead('HERD TV', 'Watch HERD TV — shows and commercials, upright or sideways.'),
+  head: () => pageHead('TV', 'Watch HERD TV Always On and Herd Originals.'),
   component: HerdTv,
 });
 
@@ -57,14 +57,6 @@ function HerdTv() {
           {SHOWS.map(s => (
             <button key={s.title} className="tvm-tile" onClick={() => setSoon(s.title)} style={{ backgroundImage: `url(${s.art})` }}>
               <span className="tvm-tag">{s.tag}</span>
-              <span className="tvm-tile-title">{s.title}</span>
-            </button>
-          ))}
-        </div>
-        <h3 className="tvm-row-title">Trending on HERD</h3>
-        <div className="tvm-row">
-          {[...SHOWS].reverse().map(s => (
-            <button key={s.title} className="tvm-tile tvm-tile--wide" onClick={() => setSoon(s.title)} style={{ backgroundImage: `url(${s.art})` }}>
               <span className="tvm-tile-title">{s.title}</span>
             </button>
           ))}
