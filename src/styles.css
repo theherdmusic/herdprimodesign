@@ -208,7 +208,8 @@
 .artist-row { display:flex; align-items:center; gap:4px; }
 .more-btn { width:44px; height:44px; display:grid; place-items:center; background:none; border:0; color:var(--foreground); cursor:pointer; }
 .song-title { margin:2px 0 12px; }
-.react-btn { display:inline-flex; align-items:center; gap:6px; height:46px; padding:0 22px; border-radius:999px; border:0; background:var(--destructive); color:var(--foreground); font-size:16px; font-weight:800; cursor:pointer; box-shadow:0 6px 20px color-mix(in oklab,var(--destructive) 45%,transparent); }
+.react-btn { display:inline-flex; align-items:center; justify-content:center; height:30px; padding:0 12px; border-radius:999px; border:1px solid color-mix(in oklab,var(--foreground) 16%,transparent); background:var(--overlay); cursor:pointer; }
+.react-btn img { display:block; height:15px; width:auto; }
 .react-btn:active { transform:scale(.96); }
 .sheet-x { width:44px; height:44px; display:grid; place-items:center; background:none; border:0; color:var(--foreground); cursor:pointer; }
 .share-link { height:50px; font-size:15px; }
