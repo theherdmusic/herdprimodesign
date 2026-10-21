@@ -213,7 +213,7 @@
 .sheet-x { width:44px; height:44px; display:grid; place-items:center; background:none; border:0; color:var(--foreground); cursor:pointer; }
 .share-link { height:50px; font-size:15px; }
 .report-list button { min-height:44px; }
-.search-sheet { position:absolute; inset:0; z-index:45; background:var(--background); padding:calc(env(safe-area-inset-top,0px) + 16px) 16px 90px; display:flex; flex-direction:column; gap:14px; animation:reveal .2s ease; }
+.search-sheet { position:absolute; inset:0; z-index:45; background:var(--background); padding:calc(env(safe-area-inset-top,0px) + 16px) 16px 16px; display:flex; flex-direction:column; gap:14px; animation:reveal .2s ease; }
 .search-sheet-top { display:flex; align-items:center; gap:6px; }
 .search-sheet .feed-search { max-width:none; height:46px; margin:0; flex:1; }
 .search-sheet .feed-search svg { width:16px; height:16px; }

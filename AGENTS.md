@@ -9,9 +9,11 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
-- Herd uses a shared phone-shell component with separate content routes for its five tabs, keeping the mockup visually consistent.
+- Herd uses a shared phone-shell component with separate content routes for its four tabs (Feed, Charts, TV, You), keeping the mockup visually consistent.
 - All mockup actions use client state and sample assets, with no backend or production uploads, because this is a design-only prototype.
-- Opening-video state lives in a root provider, not storage, so each fresh page load plays it once while tab navigation does not replay it.
+- The opening film plays once per install: a device-storage flag (helpers in `src/lib/herd-entry.ts`, tested) is checked after hydration, and Skip/end goes straight to the feed.
+- Sign-in is requested only for heart, follow and comment (`needsSignIn`); watching and scrolling never require an account.
+- React & Win is a sponsor overlay on the feed (`react-ad.tsx`), not a tab, so the viewer returns to the same video and spot.
 - The opening sequence's film order lives in `src/lib/herd-intro.ts` (a browser-safe helper with a boundary test), so only the last film hands off to the entry screen; the opening is the single vertical sheep film, because the user dropped the delivery-van clip (herd-after) from it and kept the sheep.
 - The HERD TV tab plays the sheep intro clip once, then the show clip end to end (no loop, no countdown overlay), then the commercial in full, then the show again; keep the lower third to the HERD TV label plus a commercial-break marker, because the user removed the upload form and every countdown pill. The three-minute duration helper and its boundary tests stay in place for when submissions return.
 - Sample feed video is served from CDN asset pointers in two formats (H.264 MP4 first, VP9 WebM fallback) because the sandbox test browser has no H.264 decoder, so an MP4-only clip cannot be verified there.
