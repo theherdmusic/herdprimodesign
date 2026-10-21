@@ -1,15 +1,24 @@
 import { describe, expect, it } from 'vitest';
-import { entryAfterOpening } from '@/lib/herd-entry';
+import { hasSeenOpening, markOpeningSeen, needsSignIn } from '@/lib/herd-entry';
 
-describe('Entry screen after the opening film', () => {
-  it('sends a signed-out visitor on the main screen to the welcome screen', () => {
-    expect(entryAfterOpening('/', false)).toBe('/join');
+const mem = () => { const m = new Map<string, string>(); return { getItem: (k: string) => m.get(k) ?? null, setItem: (k: string, v: string) => { m.set(k, v); } }; };
+
+describe('Opening film plays once per install', () => {
+  it('plays on a fresh install', () => {
+    expect(hasSeenOpening(mem())).toBe(false);
   });
-  it('keeps a signed-in visitor on the main screen', () => {
-    expect(entryAfterOpening('/', true)).toBeNull();
+  it('never plays again once seen', () => {
+    const s = mem();
+    markOpeningSeen(s);
+    expect(hasSeenOpening(s)).toBe(true);
   });
-  it('leaves visitors who opened another tab where they are', () => {
-    expect(entryAfterOpening('/charts', false)).toBeNull();
-    expect(entryAfterOpening('/join', false)).toBeNull();
+});
+
+describe('Sign-in is only asked for hearts, follows and comments', () => {
+  it('asks a signed-out viewer to sign in to heart', () => {
+    expect(needsSignIn('heart', false)).toBe(true);
+  });
+  it('lets a signed-in viewer comment freely', () => {
+    expect(needsSignIn('comment', true)).toBe(false);
   });
 });

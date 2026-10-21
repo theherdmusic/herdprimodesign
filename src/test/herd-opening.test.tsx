@@ -1,9 +1,10 @@
 import { renderHook, act } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { OpeningVideoProvider, useOpeningVideo } from '@/components/herd/opening-video';
 
 describe('Opening video lifecycle', () => {
-  it('plays on a fresh app load', () => {
+  beforeEach(() => localStorage.clear());
+  it('plays on a fresh install', () => {
     const { result } = renderHook(useOpeningVideo, { wrapper: OpeningVideoProvider });
     expect(result.current.active).toBe(true);
   });
@@ -13,11 +14,11 @@ describe('Opening video lifecycle', () => {
     rerender();
     expect(result.current.active).toBe(false);
   });
-  it('plays again when a refresh recreates the app', () => {
+  it('does not play again after a refresh once seen', () => {
     const first = renderHook(useOpeningVideo, { wrapper: OpeningVideoProvider });
     act(() => first.result.current.finish());
     first.unmount();
     const refreshed = renderHook(useOpeningVideo, { wrapper: OpeningVideoProvider });
-    expect(refreshed.result.current.active).toBe(true);
+    expect(refreshed.result.current.active).toBe(false);
   });
 });
