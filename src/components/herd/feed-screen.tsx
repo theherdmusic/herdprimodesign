@@ -11,7 +11,7 @@ import { REPORT_REASONS, useMe } from './me';
 import { ReactAd } from './react-ad';
 let feedIndex=0;
 type Sheet = null|'share'|'comments'|'more'|'report'|'signin';
-export function FeedScreen({initialTrack}:{initialTrack?:number}) {
+export function FeedScreen({initialTrack}:{initialTrack?:number|undefined}) {
  const { active: openingActive } = useOpeningVideo(); const { me } = useMe(); const nav=useNavigate();
  const [index,setIndex]=useState(feedIndex%artists.length); const [liked,setLiked]=useState<number[]>([]); const [following,setFollowing]=useState<number[]>([]);
  const [tab,setTab]=useState<'foryou'|'following'>('foryou'); const [sheet,setSheet]=useState<Sheet>(null); const [gateFor,setGateFor]=useState<GatedAction>('heart');
