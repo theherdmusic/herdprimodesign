@@ -3,7 +3,7 @@ import { AudioLines, BarChart3, Tv, UserRound } from 'lucide-react';
 import { type ReactNode } from 'react';
 import herdLogoUrl from '@/assets/herd-logo.png';
 import { OpeningVideo, useOpeningVideo } from './opening-video';
-const tabs = [{to:'/',label:'Feed',icon:AudioLines},{to:'/charts',label:'Charts',icon:BarChart3},{to:'/upload',label:'TV',icon:Tv},{to:'/you',label:'You',icon:UserRound}] as const;
+const tabs = [{to:'/',label:'Discovery',icon:AudioLines},{to:'/charts',label:'Charts',icon:BarChart3},{to:'/upload',label:'TV',icon:Tv},{to:'/you',label:'You',icon:UserRound}] as const;
 export function PhoneShell({children, landscape}:{children:ReactNode; landscape?:boolean}) {
  const opening = useOpeningVideo();
  const path=useLocation({select:l=>l.pathname});
