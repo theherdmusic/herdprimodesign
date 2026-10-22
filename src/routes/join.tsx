@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate, useLocation, Outlet } from '@tanstack/react-router';
 import { useState } from 'react';
-import { ArrowLeft, Check, Headphones, Mic2 } from 'lucide-react';
+import { ArrowLeft, Check, Headphones, Mic2, Search } from 'lucide-react';
 import { PhoneShell } from '@/components/herd/phone-shell';
 import { Button } from '@/components/ui/button';
 import { artists, pageHead } from '@/components/herd/data';
@@ -18,6 +18,7 @@ function Join() {
   const step = stepFromPath(useLocation().pathname);
   const [email, setEmail] = useState(''); const [password, setPassword] = useState(''); const [birthday, setBirthday] = useState('');
   const [error, setError] = useState(''); const [genres, setGenres] = useState<string[]>([]); const [follows, setFollows] = useState<string[]>([]);
+  const [followQuery, setFollowQuery] = useState('');
   const [name, setName] = useState(''); const [bio, setBio] = useState('');
   const go = (s: Step) => { setError(''); nav({ to: ('/join/' + SLUG[s]) as '/join' }); };
   const back = () => { setError(''); if (window.history.length > 1) window.history.back(); else nav({ to: '/join' }); };
@@ -81,7 +82,9 @@ function Join() {
     {step === 'follow' && <div>
       <h1 className="join-title">Join a herd</h1>
       <p className="join-sub">Follow a few artists to start your feed.</p>
-      <ul className="follow-list">{artists.map(a => <li key={a.name}><img src={a.poster ?? a.image} alt="" /><div><strong>{a.name}</strong><span>{a.genre}</span></div><Button size="sm" variant={follows.includes(a.name) ? 'secondary' : 'default'} onClick={() => toggle(follows, setFollows, a.name)}>{follows.includes(a.name) ? 'Following' : 'Follow'}</Button></li>)}</ul>
+      <div className="feed-search join-search"><Search size={16} /><input aria-label="Search artists" placeholder="Search artists" value={followQuery} onChange={e => setFollowQuery(e.target.value)} /></div>
+      <ul className="follow-list">{artists.filter(a => !followQuery.trim() || `${a.name} ${a.genre} ${a.song}`.toLowerCase().includes(followQuery.trim().toLowerCase())).map(a => <li key={a.name}><img src={a.poster ?? a.image} alt="" /><div><strong>{a.name}</strong><span>{a.genre}</span></div><Button size="sm" variant={follows.includes(a.name) ? 'secondary' : 'default'} onClick={() => toggle(follows, setFollows, a.name)}>{follows.includes(a.name) ? 'Following' : 'Follow'}</Button></li>)}</ul>
+      {followQuery.trim() && !artists.some(a => `${a.name} ${a.genre} ${a.song}`.toLowerCase().includes(followQuery.trim().toLowerCase())) && <p className="feed-search-empty">No artists found</p>}
       <Button className="join-cta" onClick={() => finish('fan')}>Start listening</Button>
     </div>}
     {step === 'musician' && <div>

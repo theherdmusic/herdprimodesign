@@ -116,6 +116,8 @@
 .join-option { width:100%; height:44px; margin-bottom:10px; }
 .join-or { text-align:center; color:var(--muted-foreground); font-size:11px; margin:14px 0; }
 .join-bio { height:84px; padding-top:11px; resize:none; }
+.join-search { max-width:none; height:44px; margin:0 0 6px; }
+.join-search svg { width:16px; height:16px; }
 .path-card { display:flex; gap:14px; align-items:center; width:100%; text-align:left; padding:18px; margin-bottom:12px; border:1px solid var(--border); border-radius:14px; background:var(--card); transition:border-color .2s, transform .2s; }
 .path-card:hover { border-color:var(--primary); transform:translateY(-1px); } .path-card>svg { color:var(--primary); width:28px; height:28px; flex:none; }
 .path-card strong { display:block; font-size:15px; } .path-card span { font-size:12px; color:var(--muted-foreground); }
