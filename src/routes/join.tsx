@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { createFileRoute, useNavigate, useLocation, Outlet } from '@tanstack/react-router';
 import { useState } from 'react';
 import { ArrowLeft, Check, Headphones, Mic2 } from 'lucide-react';
 import { PhoneShell } from '@/components/herd/phone-shell';
@@ -10,15 +10,17 @@ import herdLogoUrl from '@/assets/herd-logo.png';
 export const Route = createFileRoute('/join')({ head: () => pageHead('Welcome to Herd', 'Log in to Herd to follow artists, heart songs and find your herd.'), component: Join });
 
 type Step = 'welcome' | 'login' | 'birthday' | 'path' | 'genres' | 'follow' | 'musician';
+const SLUG: Record<Step, string> = { welcome: '', login: 'login', birthday: 'age-verification', path: 'choose-path', genres: 'genres', follow: 'follow-artists', musician: 'artist-setup' };
+const stepFromPath = (p: string): Step => { const slug = p.replace(/^\/join\/?/, '').replace(/\/$/, ''); return (Object.keys(SLUG) as Step[]).find(k => SLUG[k] === slug) ?? 'welcome'; };
 
 function Join() {
   const nav = useNavigate(); const { setMe } = useMe();
-  const [step, setStep] = useState<Step>('welcome'); const [history, setHistory] = useState<Step[]>([]);
+  const step = stepFromPath(useLocation().pathname);
   const [email, setEmail] = useState(''); const [password, setPassword] = useState(''); const [birthday, setBirthday] = useState('');
   const [error, setError] = useState(''); const [genres, setGenres] = useState<string[]>([]); const [follows, setFollows] = useState<string[]>([]);
   const [name, setName] = useState(''); const [bio, setBio] = useState('');
-  const go = (s: Step) => { setError(''); setHistory(h => [...h, step]); setStep(s); };
-  const back = () => { setError(''); setHistory(h => { const p = h[h.length - 1]; if (p) setStep(p); return h.slice(0, -1); }); };
+  const go = (s: Step) => { setError(''); nav({ to: ('/join/' + SLUG[s]) as '/join' }); };
+  const back = () => { setError(''); if (window.history.length > 1) window.history.back(); else nav({ to: '/join' }); };
   const toggle = (list: string[], set: (v: string[]) => void, v: string) => set(list.includes(v) ? list.filter(x => x !== v) : [...list, v]);
   const handleOf = (n: string) => '@' + (n || email.split('@')[0] || 'you').toLowerCase().replace(/[^a-z0-9]/g, '');
   const finish = (role: 'fan' | 'musician') => {
@@ -38,7 +40,7 @@ function Join() {
       ))}
     </div>
     <div className="join-video-veil" aria-hidden />
-    {history.length > 0 && <Button variant="ghost" size="icon" aria-label="Back" className="join-back" onClick={back}><ArrowLeft /></Button>}
+    {step !== 'welcome' && <Button variant="ghost" size="icon" aria-label="Back" className="join-back" onClick={back}><ArrowLeft /></Button>}
     {step === 'welcome' && <div className="join-center">
       <img src={herdLogoUrl} alt="Herd logo" className="join-logo" />
       <h1 className="join-title">Stay you.<br />Be Herd.</h1>
@@ -93,5 +95,5 @@ function Join() {
       {error && <p className="upload-message upload-error">{error}</p>}
       <Button className="join-cta" onClick={() => name.trim() ? finish('musician') : setError('Add your artist name.')}>Create my artist page</Button>
     </div>}
-  </div></PhoneShell>;
+  <Outlet /></div></PhoneShell>;
 }

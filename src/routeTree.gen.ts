@@ -16,6 +16,7 @@ import { Route as JoinRouteImport } from './routes/join'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as UploadRouteImport } from './routes/upload'
 import { Route as YouRouteImport } from './routes/you'
+import { Route as JoinStepRouteImport } from './routes/join.$step'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,34 +53,42 @@ const YouRoute = YouRouteImport.update({
   path: '/you',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JoinStepRoute = JoinStepRouteImport.update({
+  id: '/$step',
+  path: '/$step',
+  getParentRoute: () => JoinRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/charts': typeof ChartsRoute
   '/floating-mcgee': typeof FloatingMcgeeRoute
-  '/join': typeof JoinRoute
+  '/join': typeof JoinRouteWithChildren
   '/profile': typeof ProfileRoute
   '/upload': typeof UploadRoute
   '/you': typeof YouRoute
+  '/join/$step': typeof JoinStepRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/charts': typeof ChartsRoute
   '/floating-mcgee': typeof FloatingMcgeeRoute
-  '/join': typeof JoinRoute
+  '/join': typeof JoinRouteWithChildren
   '/profile': typeof ProfileRoute
   '/upload': typeof UploadRoute
   '/you': typeof YouRoute
+  '/join/$step': typeof JoinStepRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/charts': typeof ChartsRoute
   '/floating-mcgee': typeof FloatingMcgeeRoute
-  '/join': typeof JoinRoute
+  '/join': typeof JoinRouteWithChildren
   '/profile': typeof ProfileRoute
   '/upload': typeof UploadRoute
   '/you': typeof YouRoute
+  '/join/$step': typeof JoinStepRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +100,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/upload'
     | '/you'
+    | '/join/$step'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,6 +110,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/upload'
     | '/you'
+    | '/join/$step'
   id:
     | '__root__'
     | '/'
@@ -109,13 +120,14 @@ export interface FileRouteTypes {
     | '/profile'
     | '/upload'
     | '/you'
+    | '/join/$step'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ChartsRoute: typeof ChartsRoute
   FloatingMcgeeRoute: typeof FloatingMcgeeRoute
-  JoinRoute: typeof JoinRoute
+  JoinRoute: typeof JoinRouteWithChildren
   ProfileRoute: typeof ProfileRoute
   UploadRoute: typeof UploadRoute
   YouRoute: typeof YouRoute
@@ -172,14 +184,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof YouRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/join/$step': {
+      id: '/join/$step'
+      path: '/$step'
+      fullPath: '/join/$step'
+      preLoaderRoute: typeof JoinStepRouteImport
+      parentRoute: typeof JoinRoute
+    }
   }
 }
+
+interface JoinRouteChildren {
+  JoinStepRoute: typeof JoinStepRoute
+}
+
+const JoinRouteChildren: JoinRouteChildren = {
+  JoinStepRoute: JoinStepRoute,
+}
+
+const JoinRouteWithChildren = JoinRoute._addFileChildren(JoinRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ChartsRoute: ChartsRoute,
   FloatingMcgeeRoute: FloatingMcgeeRoute,
-  JoinRoute: JoinRoute,
+  JoinRoute: JoinRouteWithChildren,
   ProfileRoute: ProfileRoute,
   UploadRoute: UploadRoute,
   YouRoute: YouRoute,
