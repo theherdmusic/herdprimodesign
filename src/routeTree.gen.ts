@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ArtistPortalRouteImport } from './routes/artist-portal'
 import { Route as ChartsRouteImport } from './routes/charts'
 import { Route as FloatingMcgeeRouteImport } from './routes/floating-mcgee'
 import { Route as JoinRouteImport } from './routes/join'
@@ -21,6 +22,11 @@ import { Route as JoinStepRouteImport } from './routes/join.$step'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArtistPortalRoute = ArtistPortalRouteImport.update({
+  id: '/artist-portal',
+  path: '/artist-portal',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ChartsRoute = ChartsRouteImport.update({
@@ -61,6 +67,7 @@ const JoinStepRoute = JoinStepRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/artist-portal': typeof ArtistPortalRoute
   '/charts': typeof ChartsRoute
   '/floating-mcgee': typeof FloatingMcgeeRoute
   '/join': typeof JoinRouteWithChildren
@@ -71,6 +78,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/artist-portal': typeof ArtistPortalRoute
   '/charts': typeof ChartsRoute
   '/floating-mcgee': typeof FloatingMcgeeRoute
   '/join': typeof JoinRouteWithChildren
@@ -82,6 +90,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/artist-portal': typeof ArtistPortalRoute
   '/charts': typeof ChartsRoute
   '/floating-mcgee': typeof FloatingMcgeeRoute
   '/join': typeof JoinRouteWithChildren
@@ -94,6 +103,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/artist-portal'
     | '/charts'
     | '/floating-mcgee'
     | '/join'
@@ -104,6 +114,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/artist-portal'
     | '/charts'
     | '/floating-mcgee'
     | '/join'
@@ -114,6 +125,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/artist-portal'
     | '/charts'
     | '/floating-mcgee'
     | '/join'
@@ -125,6 +137,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ArtistPortalRoute: typeof ArtistPortalRoute
   ChartsRoute: typeof ChartsRoute
   FloatingMcgeeRoute: typeof FloatingMcgeeRoute
   JoinRoute: typeof JoinRouteWithChildren
@@ -140,6 +153,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/artist-portal': {
+      id: '/artist-portal'
+      path: '/artist-portal'
+      fullPath: '/artist-portal'
+      preLoaderRoute: typeof ArtistPortalRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/charts': {
@@ -206,6 +226,7 @@ const JoinRouteWithChildren = JoinRoute._addFileChildren(JoinRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ArtistPortalRoute: ArtistPortalRoute,
   ChartsRoute: ChartsRoute,
   FloatingMcgeeRoute: FloatingMcgeeRoute,
   JoinRoute: JoinRouteWithChildren,
