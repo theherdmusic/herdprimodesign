@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate, useLocation, Outlet } from '@tanstack/react-router';
 import { useState } from 'react';
-import { ArrowLeft, Check, Headphones, Mic2 } from 'lucide-react';
+import { ArrowLeft, Check, Headphones, Mic2, Search } from 'lucide-react';
 import { PhoneShell } from '@/components/herd/phone-shell';
 import { Button } from '@/components/ui/button';
 import { artists, pageHead } from '@/components/herd/data';
@@ -18,6 +18,7 @@ function Join() {
   const step = stepFromPath(useLocation().pathname);
   const [email, setEmail] = useState(''); const [password, setPassword] = useState(''); const [birthday, setBirthday] = useState('');
   const [error, setError] = useState(''); const [genres, setGenres] = useState<string[]>([]); const [follows, setFollows] = useState<string[]>([]);
+  const [followQuery, setFollowQuery] = useState('');
   const [name, setName] = useState(''); const [bio, setBio] = useState('');
   const go = (s: Step) => { setError(''); nav({ to: ('/join/' + SLUG[s]) as '/join' }); };
   const back = () => { setError(''); if (window.history.length > 1) window.history.back(); else nav({ to: '/join' }); };
