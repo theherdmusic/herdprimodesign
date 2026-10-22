@@ -7,6 +7,12 @@ export const UPLOAD_KINDS: { id: UploadKind; label: string; hint: string; accept
   { id: 'audio', label: 'Audio', hint: 'Your song file.', accept: 'audio/*' },
   { id: 'video', label: 'Vertical music video', hint: '9:16 music video, up to 1 minute.', accept: 'video/*' },
 ];
+export type UploadSection = 'verticals' | 'horizontals' | 'artwork';
+export const UPLOAD_SECTIONS: { id: UploadSection; title: string; sub: string; kinds: UploadKind[] }[] = [
+  { id: 'verticals', title: 'Verticals', sub: 'Vertical music videos and press photos', kinds: ['video', 'photo-vertical'] },
+  { id: 'horizontals', title: 'Horizontals', sub: 'Horizontal press photos', kinds: ['photo-horizontal'] },
+  { id: 'artwork', title: 'Artwork', sub: 'Cover artwork for your songs', kinds: ['cover'] },
+];
 export const MAX_PORTAL_VIDEO_SECONDS = 60;
 export const MAX_PORTAL_FILE_BYTES = 1024 ** 3;
 
