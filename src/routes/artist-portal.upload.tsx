@@ -7,7 +7,7 @@ import { useMe } from '@/components/herd/me';
 import { isValidReleaseDate, MAX_PORTAL_FILE_BYTES, MAX_PORTAL_VIDEO_SECONDS, UPLOAD_KINDS, UPLOAD_SECTIONS, type UploadKind, type UploadSection } from '@/lib/herd-portal';
 
 export const Route = createFileRoute('/artist-portal/upload')({
-  validateSearch: (s: Record<string, unknown>): { section: UploadSection } => ({ section: UPLOAD_SECTIONS.some(x => x.id === s.section) ? s.section as UploadSection : 'verticals' }),
+  validateSearch: (s: Record<string, unknown>): { section: UploadSection } => ({ section: UPLOAD_SECTIONS.some(x => x.id === s['section']) ? s['section'] as UploadSection : 'verticals' }),
   head: () => pageHead('Upload · Artist Portal', 'Send Herd your vertical videos, horizontal photos and artwork.'),
   component: UploadFiles,
 });
