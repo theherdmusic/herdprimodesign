@@ -21,7 +21,7 @@ export function FeedScreen({initialTrack}:{initialTrack?:number|undefined}) {
  useEffect(()=>{if(initialTrack!==undefined)setIndex(initialTrack%artists.length);},[initialTrack]);
  useEffect(()=>{feedIndex=index;},[index]);
  useEffect(()=>{ if(!note)return;const t=setTimeout(()=>setNote(''),2200);return()=>clearTimeout(t); },[note]);
-  useEffect(()=>{const v=clip.current;console.log('feed-effect',{adOpen,openingActive,hasV:!!v});if(!v)return;if(openingActive||adOpen){v.pause();return;}
+  useEffect(()=>{const v=clip.current;if(!v)return;if(openingActive||adOpen){v.pause();return;}
    const start=()=>{v.muted=false;v.play().catch(()=>{v.muted=true;v.play().catch(()=>{});});};
    if(v.readyState>=2)start();else{v.addEventListener('loadeddata',start,{once:true});}
    return()=>v.removeEventListener('loadeddata',start);

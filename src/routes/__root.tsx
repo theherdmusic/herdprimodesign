@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { OpeningVideoProvider } from '@/components/herd/opening-video';
 import { MeProvider } from '@/components/herd/me';
+import { ReactAdProvider } from '@/components/herd/phone-shell';
 
 function NotFoundComponent() {
   return (
@@ -130,7 +131,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-       <OpeningVideoProvider><MeProvider><Outlet /></MeProvider></OpeningVideoProvider>
+       <OpeningVideoProvider><MeProvider><ReactAdProvider><Outlet /></ReactAdProvider></MeProvider></OpeningVideoProvider>
     </QueryClientProvider>
   );
 }
