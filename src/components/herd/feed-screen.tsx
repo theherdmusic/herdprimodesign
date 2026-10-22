@@ -22,9 +22,12 @@ export function FeedScreen({initialTrack}:{initialTrack?:number|undefined}) {
  useEffect(()=>{feedIndex=index;},[index]);
  useEffect(()=>{ if(!note)return;const t=setTimeout(()=>setNote(''),2200);return()=>clearTimeout(t); },[note]);
   useEffect(()=>{const v=clip.current;if(!v)return;if(openingActive||adOpen){v.pause();return;}
-   const start=()=>{v.muted=false;v.play().catch(()=>{v.muted=true;v.play().catch(()=>{});});};
-   if(v.readyState>=2)start();else{v.addEventListener('loadeddata',start,{once:true});}
-   return()=>v.removeEventListener('loadeddata',start);
+   const start=()=>{if(!v.paused&&!v.muted)return;v.muted=false;v.play().catch(()=>{v.muted=true;v.play().catch(()=>{});});};
+   // First touch anywhere turns sound on (browsers block sound until the visitor interacts once).
+   const unlock=()=>{v.muted=false;v.play().catch(()=>{});};
+   start(); v.addEventListener('loadeddata',start); v.addEventListener('canplay',start);
+   window.addEventListener('pointerdown',unlock,{once:true}); window.addEventListener('touchstart',unlock,{once:true});
+   return()=>{v.removeEventListener('loadeddata',start);v.removeEventListener('canplay',start);window.removeEventListener('pointerdown',unlock);window.removeEventListener('touchstart',unlock);};
   },[index,openingActive,adOpen]);
  const artist=getArtist(index); const isLiked=liked.includes(index); const isFollowing=following.includes(index);
  const sample=[{user:'@riffqueen',text:'This chorus lives in my head now 🔥'},{user:'@backroadkid',text:'Finally real indie music on my feed.'},{user:'@nightowl',text:'Need the full song ASAP'}]; const currentComments=[...sample,...(comments[index]??[])];
