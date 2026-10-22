@@ -3,7 +3,7 @@ import { ArrowLeft, Check, ChevronRight, Circle, FolderOpen, Upload, UserRound }
 import { Button } from '@/components/ui/button';
 import { pageHead } from '@/components/herd/data';
 import { useMe } from '@/components/herd/me';
-import { checklist } from '@/lib/herd-portal';
+import { checklist, UPLOAD_SECTIONS } from '@/lib/herd-portal';
 
 export const Route = createFileRoute('/artist-portal/')({
   head: () => pageHead('Artist Portal', 'Your Herd artist portal: your page, uploads and checklist.'),
@@ -16,7 +16,6 @@ function PortalHome() {
   const done = items.filter(i => i.done).length;
   const sections = [
     { to: '/artist-portal/your-page' as const, icon: UserRound, title: 'Your page', sub: 'Name, bio, socials, color' },
-    { to: '/artist-portal/upload' as const, icon: Upload, title: 'Upload files', sub: 'Photos, artwork, audio, video' },
     { to: '/artist-portal/uploads' as const, icon: FolderOpen, title: `Your uploads (${uploads.length})`, sub: 'Everything you sent' },
   ];
   return <>
@@ -26,6 +25,14 @@ function PortalHome() {
     <nav className="flex flex-col gap-2 mb-7">{sections.map(s => <Link key={s.to} to={s.to} className="flex items-center gap-3 min-h-16 px-4 rounded-xl border border-border bg-card">
       <s.icon className="size-5 text-primary shrink-0" /><div className="flex-1 min-w-0"><strong className="block text-sm">{s.title}</strong><span className="text-xs text-muted-foreground">{s.sub}</span></div><ChevronRight className="size-4 text-muted-foreground" />
     </Link>)}</nav>
+    <h2 className="text-sm font-bold uppercase tracking-wider mb-2">Upload</h2>
+    <nav className="flex flex-col gap-2 mb-7">{UPLOAD_SECTIONS.map(s => <Link key={s.id} to="/artist-portal/upload" search={{ section: s.id }} className="flex items-center gap-3 min-h-16 px-4 rounded-xl border border-border bg-card">
+      <Upload className="size-5 text-primary shrink-0" /><div className="flex-1 min-w-0"><strong className="block text-sm">{s.title}</strong><span className="text-xs text-muted-foreground">{s.sub}</span></div><ChevronRight className="size-4 text-muted-foreground" />
+    </Link>)}
+      <div aria-disabled="true" className="flex items-center gap-3 min-h-16 px-4 rounded-xl border border-border bg-card opacity-60">
+        <Upload className="size-5 text-muted-foreground shrink-0" /><div className="flex-1 min-w-0"><strong className="block text-sm line-through">Audio</strong><span className="text-xs text-muted-foreground">Coming soon</span></div>
+      </div>
+    </nav>
     <section className="rounded-xl border border-border bg-card p-4">
       <h2 className="text-sm font-bold uppercase tracking-wider mb-1">What we need from you</h2>
       <p className="text-xs text-muted-foreground mb-3">{done} of {items.length} done</p>
