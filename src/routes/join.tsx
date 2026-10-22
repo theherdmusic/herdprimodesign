@@ -69,8 +69,8 @@ function Join() {
     {step === 'path' && <div>
       <h1 className="join-title">Which path?</h1>
       <p className="join-sub">You can switch later.</p>
-      <button className="path-card" onClick={() => go('genres')}><Headphones /><div><strong>I'm a fan</strong><span>Discover artists, heart songs, move the charts.</span></div></button>
-      <button className="path-card" onClick={() => go('musician')}><Mic2 /><div><strong>I'm a musician</strong><span>Share your sound and grow your herd.</span></div></button>
+      <button className="path-card" onClick={() => go('genres')}><Headphones /><div><strong>I'm a fan, and only sing in the shower.</strong><span>Discover artists, heart songs, move the charts.</span></div></button>
+      <button className="path-card" onClick={() => go('musician')}><Mic2 /><div><strong>I'm an artist and love to perform.</strong><span>Share your sound and grow your herd.</span></div></button>
     </div>}
     {step === 'genres' && <div>
       <h1 className="join-title">What do you listen to?</h1>
