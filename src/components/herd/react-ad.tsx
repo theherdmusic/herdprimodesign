@@ -18,6 +18,7 @@ export function ReactAd({ onClose }: { onClose: () => void }) {
   const [step, setStep] = useState<Step>('ad');
   const [upright, setUpright] = useState(true);
   useEffect(() => { const m = window.matchMedia('(orientation: portrait)'); const f = () => setUpright(m.matches); f(); m.addEventListener('change', f); return () => m.removeEventListener('change', f); }, []);
+  useEffect(() => { document.querySelectorAll('video').forEach(el => { if (el !== v.current) el.pause(); }); }, []);
   useEffect(() => { const el = v.current; if (!el) return; el.muted = false; el.play().catch(() => { el.muted = true; el.play().catch(() => {}); }); }, []);
   useEffect(() => { if (step !== 'done') return; const t = setTimeout(onClose, 1800); return () => clearTimeout(t); }, [step, onClose]);
 
