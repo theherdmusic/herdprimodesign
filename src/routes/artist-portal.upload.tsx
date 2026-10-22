@@ -4,10 +4,11 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { pageHead } from '@/components/herd/data';
 import { useMe } from '@/components/herd/me';
-import { isValidReleaseDate, MAX_PORTAL_FILE_BYTES, MAX_PORTAL_VIDEO_SECONDS, UPLOAD_KINDS, type UploadKind } from '@/lib/herd-portal';
+import { isValidReleaseDate, MAX_PORTAL_FILE_BYTES, MAX_PORTAL_VIDEO_SECONDS, UPLOAD_KINDS, UPLOAD_SECTIONS, type UploadKind, type UploadSection } from '@/lib/herd-portal';
 
 export const Route = createFileRoute('/artist-portal/upload')({
-  head: () => pageHead('Upload files · Artist Portal', 'Send Herd your press photos, artwork, audio and vertical music videos.'),
+  validateSearch: (s: Record<string, unknown>): { section: UploadSection } => ({ section: UPLOAD_SECTIONS.some(x => x.id === s.section) ? s.section as UploadSection : 'verticals' }),
+  head: () => pageHead('Upload · Artist Portal', 'Send Herd your vertical videos, horizontal photos and artwork.'),
   component: UploadFiles,
 });
 

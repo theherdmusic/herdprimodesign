@@ -35,7 +35,6 @@ export function checklist(bio: string, page: ArtistPage, uploads: PortalUpload[]
     { label: 'Press photo — horizontal', done: has('photo-horizontal') },
     { label: 'Social links', done: [page.website, page.instagram, page.tiktok, page.youtube, page.spotify].some(s => s.trim()) },
     { label: 'Cover artwork', done: has('cover') },
-    { label: 'Audio', done: has('audio') },
     { label: 'Vertical music video', done: has('video') },
   ];
 }
