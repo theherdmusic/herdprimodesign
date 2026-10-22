@@ -33,8 +33,8 @@ function ArtistPortal() {
       <div className="py-4"><dt className="text-xs text-muted-foreground">Genre</dt><dd className="text-sm mt-1">{me.genres.join(', ') || 'Not added'}</dd></div>
       <div className="py-4"><dt className="text-xs text-muted-foreground">Bio</dt><dd className="text-sm mt-1 break-words">{me.bio || 'Not added'}</dd></div>
     </dl>
-    <h2 className="text-lg font-bold mt-7 mb-2">Artist dashboard</h2>
+    <h2 className="text-lg font-bold mt-7 mb-2">Artist Portal</h2>
     <p className="text-sm text-muted-foreground">Sign in to your Herd artist account.</p>
-    <Button asChild className="join-cta whitespace-normal"><a href="https://theherdmusic.com/artistdash" target="_blank" rel="noopener noreferrer">Open artist dashboard<ExternalLink /></a></Button>
+    <Button asChild className="join-cta whitespace-normal"><a href="https://theherdmusic.com/artistdash" target="_blank" rel="noopener noreferrer">Open artist portal<ExternalLink /></a></Button>
   </div></PhoneShell>;
 }
