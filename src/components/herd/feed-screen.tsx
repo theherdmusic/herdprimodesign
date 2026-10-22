@@ -1,15 +1,13 @@
 import { Link, useNavigate } from '@tanstack/react-router';
 import { Heart, Plus, Check, Send, X, Link2, MessageCircle, Flag, Search, MoreHorizontal } from 'lucide-react';
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { PhoneShell } from './phone-shell';
+import { PhoneShell, useReactAd } from './phone-shell';
 import { artists, getArtist, genres } from './data';
 import { useKeyboardInset } from '@/lib/herd-keyboard';
 import { needsSignIn, type GatedAction } from '@/lib/herd-entry';
 import { useOpeningVideo } from './opening-video';
 import { REPORT_REASONS, useMe } from './me';
-import { ReactAd } from './react-ad';
-import reactLogo from '@/assets/react-logo.png.asset.json';
 let feedIndex=0;
 type Sheet = null|'share'|'comments'|'more'|'report'|'signin';
 export function FeedScreen({initialTrack}:{initialTrack?:number|undefined}) {
@@ -18,26 +16,25 @@ export function FeedScreen({initialTrack}:{initialTrack?:number|undefined}) {
  const [tab,setTab]=useState<'foryou'|'following'>('foryou'); const [sheet,setSheet]=useState<Sheet>(null); const [gateFor,setGateFor]=useState<GatedAction>('heart');
  const [searchOpen,setSearchOpen]=useState(false); const [query,setQuery]=useState(''); const [genre,setGenre]=useState('All');
  const [note,setNote]=useState(''); const [draft,setDraft]=useState(''); const [comments,setComments]=useState<Record<number,{user:string;text:string}[]>>({});
- const [reacting,setReacting]=useState(false);
+ const {open:adOpen}=useReactAd();
  const touch=useRef(0); const wheel=useRef(0); const clip=useRef<HTMLVideoElement|null>(null); useKeyboardInset();
  useEffect(()=>{if(initialTrack!==undefined)setIndex(initialTrack%artists.length);},[initialTrack]);
  useEffect(()=>{feedIndex=index;},[index]);
  useEffect(()=>{ if(!note)return;const t=setTimeout(()=>setNote(''),2200);return()=>clearTimeout(t); },[note]);
- useEffect(()=>{const v=clip.current;if(!v)return;if(openingActive||reacting){v.pause();return;}
-  const start=()=>{v.muted=false;v.play().catch(()=>{v.muted=true;v.play().catch(()=>{});});};
-  if(v.readyState>=2)start();else{v.addEventListener('loadeddata',start,{once:true});}
-  return()=>v.removeEventListener('loadeddata',start);
- },[index,openingActive,reacting]);
+  useEffect(()=>{const v=clip.current;if(!v)return;if(openingActive||adOpen){v.pause();return;}
+   const start=()=>{v.muted=false;v.play().catch(()=>{v.muted=true;v.play().catch(()=>{});});};
+   if(v.readyState>=2)start();else{v.addEventListener('loadeddata',start,{once:true});}
+   return()=>v.removeEventListener('loadeddata',start);
+  },[index,openingActive,adOpen]);
  const artist=getArtist(index); const isLiked=liked.includes(index); const isFollowing=following.includes(index);
  const sample=[{user:'@riffqueen',text:'This chorus lives in my head now 🔥'},{user:'@backroadkid',text:'Finally real indie music on my feed.'},{user:'@nightowl',text:'Need the full song ASAP'}]; const currentComments=[...sample,...(comments[index]??[])];
  const gate=(a:GatedAction,run:()=>void)=>{ if(needsSignIn(a,me!==null)){setGateFor(a);setSheet('signin');return;} run(); };
  const lineup=tab==='following'?following:artists.map((_,i)=>i);
  const next=()=>{ if(!lineup.length)return; const pos=lineup.indexOf(index); setIndex(lineup[(pos+1)%lineup.length]??0); };
  const nextArtist=getArtist(lineup.length?(lineup[(lineup.indexOf(index)+1)%lineup.length]??index):index);
- const closeAd=useCallback(()=>setReacting(false),[]);
  const q=query.trim().toLowerCase();
  const hits=artists.map((a,i)=>({a,i})).filter(({a})=>(genre==='All'||a.genre===genre)&&(!q||`${a.name} ${a.song}`.toLowerCase().includes(q)));
- const busy=!!sheet||searchOpen||reacting;
+ const busy=!!sheet||searchOpen||adOpen;
  return <PhoneShell><div className="feed" onTouchStart={e=>{touch.current=(e.touches[0]?.clientY??0);}} onTouchEnd={e=>{if(busy)return;const d=touch.current-(e.changedTouches[0]?.clientY??0);if(d>45)next();}} onWheel={e=>{if(busy)return;if(e.deltaY>20&&Date.now()-wheel.current>700){wheel.current=Date.now();next();}}}>
 {artist.video?<video key={artist.video} ref={clip} className="feed-video" poster={artist.poster??artist.image} autoPlay={!openingActive} muted loop playsInline preload="auto" onClick={e=>{const v=e.currentTarget;if(v.paused){v.muted=false;v.play().catch(()=>{v.muted=true;v.play().catch(()=>{});});}else v.pause();}} aria-label={`${artist.name} performing ${artist.song}`}>{artist.videoWebm&&<source src={artist.videoWebm} type="video/webm"/>}<source src={artist.video} type="video/mp4"/></video>:<img key={artist.image} className="feed-photo" src={artist.image} alt={`${artist.name} performing ${artist.song}`}/>}<div className="feed-shade"/>
   {nextArtist.video&&nextArtist.video!==artist.video&&<video key={`preload-${nextArtist.video}`} className="feed-preload" preload="auto" muted playsInline aria-hidden="true">{nextArtist.videoWebm&&<source src={nextArtist.videoWebm} type="video/webm"/>}<source src={nextArtist.video} type="video/mp4"/></video>}
@@ -53,9 +50,8 @@ export function FeedScreen({initialTrack}:{initialTrack?:number|undefined}) {
    <div className="feed-action"><Button variant="ghost" className="action-button" aria-label="Open comments" onClick={()=>setSheet('comments')}><MessageCircle/></Button><span>{currentComments.length}</span></div>
    <div className="feed-action"><Button variant="ghost" className="action-button" aria-label="Share video" onClick={()=>setSheet('share')}><Send/></Button></div>
   </div>
-  <div className="feed-bottom">{artist.newArtist&&<span className="new-artist-tag">New Artist</span>}<div className="artist-row"><Link to="/profile" search={{artist:index}} className="artist-line">{artist.name}</Link><button type="button" className="more-btn" aria-label="More options" onClick={()=>setSheet('more')}><MoreHorizontal size={20}/></button></div><p className="song-title">{artist.song}</p><button type="button" className="react-btn" aria-label="React" onClick={()=>setReacting(true)}><img src={reactLogo.url} alt="" /></button></div>
+  <div className="feed-bottom">{artist.newArtist&&<span className="new-artist-tag">New Artist</span>}<div className="artist-row"><Link to="/profile" search={{artist:index}} className="artist-line">{artist.name}</Link><button type="button" className="more-btn" aria-label="More options" onClick={()=>setSheet('more')}><MoreHorizontal size={20}/></button></div><p className="song-title">{artist.song}</p></div>
   </div>
-  {reacting&&<ReactAd onClose={closeAd}/>}
   {searchOpen&&<div className="search-sheet" role="dialog" aria-label="Search"><div className="search-sheet-top"><div className="feed-search"><Search size={16}/><input aria-label="Search artists" placeholder="Artists or songs" value={query} onChange={e=>setQuery(e.target.value)} autoFocus/></div><button type="button" className="sheet-x" aria-label="Close search" onClick={()=>{setSearchOpen(false);setQuery('');}}><X size={20}/></button></div><div className="genre-chips">{genres.map(g=><button key={g} type="button" className={`genre-chip ${genre===g?'selected':''}`} onClick={()=>setGenre(g)}>{g}</button>)}</div><div className="search-hits">{hits.map(({a,i})=><button key={a.name} type="button" className="search-hit" onClick={()=>{setIndex(i);setTab('foryou');setSearchOpen(false);setQuery('');}}><img src={a.image} alt=""/><span><b>{a.name}</b><small>{a.song} · {a.genre}</small></span></button>)}{!hits.length&&<p className="feed-search-empty">No artists found</p>}</div></div>}
   {sheet==='share'&&<div className="share-panel" role="dialog" aria-label="Share"><div className="share-top"><strong>Share</strong><button className="sheet-x" aria-label="Close" onClick={()=>setSheet(null)}><X size={20}/></button></div><Button className="share-link" onClick={async()=>{try{await navigator.clipboard.writeText(`${location.origin}/?track=${index}`);setNote('Link copied');}catch{setNote('Copy failed');}setSheet(null);}}><Link2/>Copy link</Button></div>}
   {sheet==='more'&&<div className="share-panel" role="dialog" aria-label="More options"><div className="share-top"><strong>Options</strong><button className="sheet-x" aria-label="Close" onClick={()=>setSheet(null)}><X size={20}/></button></div><Button variant="secondary" className="share-link" onClick={()=>setSheet('report')}><Flag/>Report</Button></div>}
