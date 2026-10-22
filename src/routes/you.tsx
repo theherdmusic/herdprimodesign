@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { pageHead } from '@/components/herd/data';
 import { useMe } from '@/components/herd/me';
 import herdLogoUrl from '@/assets/herd-logo.png';
+import { canOpenArtistPortal } from '@/lib/herd-profile';
 
 export const Route = createFileRoute('/you')({ head: () => pageHead('Your profile', 'Edit your Herd profile and see the music videos you have posted.'), component: You });
 
@@ -21,7 +22,8 @@ function You() {
   </div></PhoneShell>;
   const initials = me.name.slice(0, 1).toUpperCase();
   return <PhoneShell><div className="join">
-    <div className="you-head"><span className="you-avatar">{initials}</span><div><h1 className="text-xl font-bold">{me.name}</h1><p className="text-xs text-muted-foreground">{me.handle} · {me.role === 'fan' ? 'Fan' : 'Musician'}</p></div></div>
+    {canOpenArtistPortal(me) && <div className="flex justify-end mb-4"><Button asChild variant="outline" className="min-h-11"><Link to="/artist-portal">Artist Portal</Link></Button></div>}
+    <div className="you-head"><span className="you-avatar shrink-0">{initials}</span><div className="min-w-0 break-words"><h1 className="text-xl font-bold">{me.name}</h1><p className="text-xs text-muted-foreground">{me.handle} · {me.role === 'fan' ? 'Fan' : 'Artist'}</p></div></div>
     {!editing ? <>
       <p className="text-sm my-4">{me.bio || <span className="text-muted-foreground">No bio yet.</span>}</p>
       {me.genres.length > 0 && <div className="chip-grid mb-4">{me.genres.map(g => <span key={g} className="genre-chip selected">{g}</span>)}</div>}

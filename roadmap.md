@@ -1,4 +1,6 @@
 # Herd mockup
+- [x] Keep matching fan/artist profiles and add an artist-only corner portal button and page; verified both account types and portal navigation.
+- [ ] Reproduce the full referenced dashboard information (blocked: linked page requires login; screenshots or text needed).
 - [x] Build phone-sized design system and five clickable screens.
 - [x] Add sample artwork and interactions.
 - [x] Verify navigation, feed actions and upload duration limit.
