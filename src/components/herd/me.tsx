@@ -1,16 +1,24 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
+import type { ArtistPage, PortalUpload } from '@/lib/herd-portal';
 
 export type Me = { name: string; handle: string; bio: string; email: string; role: 'fan' | 'musician'; genres: string[]; follows: string[] };
 export type MyVideo = { title: string; genre: string };
 
-type Ctx = { me: Me | null; setMe: (m: Me | null) => void; videos: MyVideo[]; addVideo: (v: MyVideo) => void };
-const MeContext = createContext<Ctx>({ me: null, setMe: () => {}, videos: [], addVideo: () => {} });
+const EMPTY_PAGE: ArtistPage = { tagline: '', hometown: '', website: '', instagram: '', tiktok: '', youtube: '', spotify: '', color: '#00FFAA' };
+
+type Ctx = {
+  me: Me | null; setMe: (m: Me | null) => void; videos: MyVideo[]; addVideo: (v: MyVideo) => void;
+  page: ArtistPage; setPage: (p: ArtistPage) => void; uploads: PortalUpload[]; addUpload: (u: PortalUpload) => void;
+};
+const MeContext = createContext<Ctx>({ me: null, setMe: () => {}, videos: [], addVideo: () => {}, page: EMPTY_PAGE, setPage: () => {}, uploads: [], addUpload: () => {} });
 
 /** Mockup-only account state: lives in memory, resets on page reload. */
 export function MeProvider({ children }: { children: ReactNode }) {
   const [me, setMe] = useState<Me | null>(null);
   const [videos, setVideos] = useState<MyVideo[]>([]);
-  return <MeContext.Provider value={{ me, setMe, videos, addVideo: v => setVideos(list => [v, ...list]) }}>{children}</MeContext.Provider>;
+  const [page, setPage] = useState<ArtistPage>(EMPTY_PAGE);
+  const [uploads, setUploads] = useState<PortalUpload[]>([]);
+  return <MeContext.Provider value={{ me, setMe, videos, addVideo: v => setVideos(list => [v, ...list]), page, setPage, uploads, addUpload: u => setUploads(list => [u, ...list]) }}>{children}</MeContext.Provider>;
 }
 
 export const useMe = () => useContext(MeContext);
