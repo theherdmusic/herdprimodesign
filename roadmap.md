@@ -1,6 +1,6 @@
 # Herd mockup
 - [x] Keep matching fan/artist profiles and add an artist-only corner portal button and page; verified both account types and portal navigation.
-- [ ] Reproduce the full referenced dashboard information (blocked: linked page requires login; screenshots or text needed).
+- [x] Bring the artist portal (checklist, Your Page, Upload Files, Your Uploads) into the app, each section on its own page.
 - [x] Build phone-sized design system and five clickable screens.
 - [x] Add sample artwork and interactions.
 - [x] Verify navigation, feed actions and upload duration limit.

@@ -17,6 +17,10 @@ import { Route as JoinRouteImport } from './routes/join'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as UploadRouteImport } from './routes/upload'
 import { Route as YouRouteImport } from './routes/you'
+import { Route as ArtistPortalIndexRouteImport } from './routes/artist-portal.index'
+import { Route as ArtistPortalUploadRouteImport } from './routes/artist-portal.upload'
+import { Route as ArtistPortalUploadsRouteImport } from './routes/artist-portal.uploads'
+import { Route as ArtistPortalYourPageRouteImport } from './routes/artist-portal.your-page'
 import { Route as JoinStepRouteImport } from './routes/join.$step'
 
 const IndexRoute = IndexRouteImport.update({
@@ -59,6 +63,26 @@ const YouRoute = YouRouteImport.update({
   path: '/you',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArtistPortalIndexRoute = ArtistPortalIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ArtistPortalRoute,
+} as any)
+const ArtistPortalUploadRoute = ArtistPortalUploadRouteImport.update({
+  id: '/upload',
+  path: '/upload',
+  getParentRoute: () => ArtistPortalRoute,
+} as any)
+const ArtistPortalUploadsRoute = ArtistPortalUploadsRouteImport.update({
+  id: '/uploads',
+  path: '/uploads',
+  getParentRoute: () => ArtistPortalRoute,
+} as any)
+const ArtistPortalYourPageRoute = ArtistPortalYourPageRouteImport.update({
+  id: '/your-page',
+  path: '/your-page',
+  getParentRoute: () => ArtistPortalRoute,
+} as any)
 const JoinStepRoute = JoinStepRouteImport.update({
   id: '/$step',
   path: '/$step',
@@ -67,37 +91,48 @@ const JoinStepRoute = JoinStepRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/artist-portal': typeof ArtistPortalRoute
+  '/artist-portal': typeof ArtistPortalRouteWithChildren
   '/charts': typeof ChartsRoute
   '/floating-mcgee': typeof FloatingMcgeeRoute
   '/join': typeof JoinRouteWithChildren
   '/profile': typeof ProfileRoute
   '/upload': typeof UploadRoute
   '/you': typeof YouRoute
+  '/artist-portal/upload': typeof ArtistPortalUploadRoute
+  '/artist-portal/uploads': typeof ArtistPortalUploadsRoute
+  '/artist-portal/your-page': typeof ArtistPortalYourPageRoute
   '/join/$step': typeof JoinStepRoute
+  '/artist-portal/': typeof ArtistPortalIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/artist-portal': typeof ArtistPortalRoute
   '/charts': typeof ChartsRoute
   '/floating-mcgee': typeof FloatingMcgeeRoute
   '/join': typeof JoinRouteWithChildren
   '/profile': typeof ProfileRoute
   '/upload': typeof UploadRoute
   '/you': typeof YouRoute
+  '/artist-portal/upload': typeof ArtistPortalUploadRoute
+  '/artist-portal/uploads': typeof ArtistPortalUploadsRoute
+  '/artist-portal/your-page': typeof ArtistPortalYourPageRoute
   '/join/$step': typeof JoinStepRoute
+  '/artist-portal': typeof ArtistPortalIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/artist-portal': typeof ArtistPortalRoute
+  '/artist-portal': typeof ArtistPortalRouteWithChildren
   '/charts': typeof ChartsRoute
   '/floating-mcgee': typeof FloatingMcgeeRoute
   '/join': typeof JoinRouteWithChildren
   '/profile': typeof ProfileRoute
   '/upload': typeof UploadRoute
   '/you': typeof YouRoute
+  '/artist-portal/upload': typeof ArtistPortalUploadRoute
+  '/artist-portal/uploads': typeof ArtistPortalUploadsRoute
+  '/artist-portal/your-page': typeof ArtistPortalYourPageRoute
   '/join/$step': typeof JoinStepRoute
+  '/artist-portal/': typeof ArtistPortalIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -110,18 +145,25 @@ export interface FileRouteTypes {
     | '/profile'
     | '/upload'
     | '/you'
+    | '/artist-portal/upload'
+    | '/artist-portal/uploads'
+    | '/artist-portal/your-page'
     | '/join/$step'
+    | '/artist-portal/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/artist-portal'
     | '/charts'
     | '/floating-mcgee'
     | '/join'
     | '/profile'
     | '/upload'
     | '/you'
+    | '/artist-portal/upload'
+    | '/artist-portal/uploads'
+    | '/artist-portal/your-page'
     | '/join/$step'
+    | '/artist-portal'
   id:
     | '__root__'
     | '/'
@@ -132,12 +174,16 @@ export interface FileRouteTypes {
     | '/profile'
     | '/upload'
     | '/you'
+    | '/artist-portal/upload'
+    | '/artist-portal/uploads'
+    | '/artist-portal/your-page'
     | '/join/$step'
+    | '/artist-portal/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ArtistPortalRoute: typeof ArtistPortalRoute
+  ArtistPortalRoute: typeof ArtistPortalRouteWithChildren
   ChartsRoute: typeof ChartsRoute
   FloatingMcgeeRoute: typeof FloatingMcgeeRoute
   JoinRoute: typeof JoinRouteWithChildren
@@ -204,6 +250,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof YouRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/artist-portal/': {
+      id: '/artist-portal/'
+      path: '/'
+      fullPath: '/artist-portal/'
+      preLoaderRoute: typeof ArtistPortalIndexRouteImport
+      parentRoute: typeof ArtistPortalRoute
+    }
+    '/artist-portal/upload': {
+      id: '/artist-portal/upload'
+      path: '/upload'
+      fullPath: '/artist-portal/upload'
+      preLoaderRoute: typeof ArtistPortalUploadRouteImport
+      parentRoute: typeof ArtistPortalRoute
+    }
+    '/artist-portal/uploads': {
+      id: '/artist-portal/uploads'
+      path: '/uploads'
+      fullPath: '/artist-portal/uploads'
+      preLoaderRoute: typeof ArtistPortalUploadsRouteImport
+      parentRoute: typeof ArtistPortalRoute
+    }
+    '/artist-portal/your-page': {
+      id: '/artist-portal/your-page'
+      path: '/your-page'
+      fullPath: '/artist-portal/your-page'
+      preLoaderRoute: typeof ArtistPortalYourPageRouteImport
+      parentRoute: typeof ArtistPortalRoute
+    }
     '/join/$step': {
       id: '/join/$step'
       path: '/$step'
@@ -213,6 +287,24 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface ArtistPortalRouteChildren {
+  ArtistPortalUploadRoute: typeof ArtistPortalUploadRoute
+  ArtistPortalUploadsRoute: typeof ArtistPortalUploadsRoute
+  ArtistPortalYourPageRoute: typeof ArtistPortalYourPageRoute
+  ArtistPortalIndexRoute: typeof ArtistPortalIndexRoute
+}
+
+const ArtistPortalRouteChildren: ArtistPortalRouteChildren = {
+  ArtistPortalUploadRoute: ArtistPortalUploadRoute,
+  ArtistPortalUploadsRoute: ArtistPortalUploadsRoute,
+  ArtistPortalYourPageRoute: ArtistPortalYourPageRoute,
+  ArtistPortalIndexRoute: ArtistPortalIndexRoute,
+}
+
+const ArtistPortalRouteWithChildren = ArtistPortalRoute._addFileChildren(
+  ArtistPortalRouteChildren,
+)
 
 interface JoinRouteChildren {
   JoinStepRoute: typeof JoinStepRoute
@@ -226,7 +318,7 @@ const JoinRouteWithChildren = JoinRoute._addFileChildren(JoinRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ArtistPortalRoute: ArtistPortalRoute,
+  ArtistPortalRoute: ArtistPortalRouteWithChildren,
   ChartsRoute: ChartsRoute,
   FloatingMcgeeRoute: FloatingMcgeeRoute,
   JoinRoute: JoinRouteWithChildren,
