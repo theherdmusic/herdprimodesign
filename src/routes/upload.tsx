@@ -9,6 +9,9 @@ import introWebm from '@/assets/herdtv-intro.webm.asset.json';
 import mattieMp4 from '@/assets/mattie.mp4.asset.json';
 import mattieWebm from '@/assets/mattie.webm.asset.json';
 import mattiePoster from '@/assets/mattie.jpg.asset.json';
+import fightMp4 from '@/assets/fight-night.mp4.asset.json';
+import fightWebm from '@/assets/fight-night.webm.asset.json';
+import fightPoster from '@/assets/fight-night-poster.jpg.asset.json';
 import adMp4 from '@/assets/herdtv-ad.mp4.asset.json';
 import adWebm from '@/assets/herdtv-ad.webm.asset.json';
 import showBarstool from '@/assets/show-barstool.jpg';
@@ -19,6 +22,10 @@ import showBusking from '@/assets/show-busking.jpg';
 import showLrt from '@/assets/show-lrt.jpg';
 import mcgeePoster from '@/assets/floating-mcgee-poster.jpg';
 import { ChevronLeft, Play } from 'lucide-react';
+
+type ShowClip = { mp4: string; webm: string; poster: string };
+const ALWAYS_ON_CLIP: ShowClip = { mp4: mattieMp4.url, webm: mattieWebm.url, poster: mattiePoster.url };
+const FIGHT_NIGHT_CLIP: ShowClip = { mp4: fightMp4.url, webm: fightWebm.url, poster: fightPoster.url };
 
 // Placeholder artwork — swap for real show art later.
 const SHOWS = [
@@ -41,13 +48,14 @@ export const Route = createFileRoute('/upload')({
 });
 
 function HerdTv() {
-  const [watching, setWatching] = useState(false);
+  const [watching, setWatching] = useState<'always' | 'fight' | null>(null);
   const [soon, setSoon] = useState<string | null>(null);
-  if (watching) return <AlwaysOn onBack={() => setWatching(false)} />;
+  if (watching === 'always') return <AlwaysOn clip={ALWAYS_ON_CLIP} onBack={() => setWatching(null)} />;
+  if (watching === 'fight') return <AlwaysOn clip={FIGHT_NIGHT_CLIP} onBack={() => setWatching(null)} />;
   return (
     <PhoneShell>
       <div className="tvm">
-        <button className="tvm-hero" onClick={() => setWatching(true)} style={{ backgroundImage: `url(${mattiePoster.url})` }}>
+        <button className="tvm-hero" onClick={() => setWatching('always')} style={{ backgroundImage: `url(${mattiePoster.url})` }}>
           <span className="tvm-live">● Live</span>
           <span className="tvm-hero-title">HERD TV<br /><small>Always On</small></span>
           <span className="tvm-play"><Play size={16} fill="currentColor" /> Watch now</span>
@@ -55,7 +63,7 @@ function HerdTv() {
         <h3 className="tvm-row-title">HERD Originals</h3>
         <div className="tvm-row">
           {SHOWS.map(s => (
-            <button key={s.title} className="tvm-tile" onClick={() => setSoon(s.title)} style={{ backgroundImage: `url(${s.art})` }}>
+            <button key={s.title} className="tvm-tile" onClick={() => (s.title === 'Floating McGee Fight Night' ? setWatching('fight') : setSoon(s.title))} style={{ backgroundImage: `url(${s.art})` }}>
               <span className="tvm-tag">{s.tag}</span>
               <span className="tvm-tile-title">{s.title}</span>
             </button>
@@ -75,7 +83,7 @@ function HerdTv() {
   );
 }
 
-function AlwaysOn({ onBack }: { onBack: () => void }) {
+function AlwaysOn({ clip, onBack }: { clip: ShowClip; onBack: () => void }) {
   const v = useRef<HTMLVideoElement>(null);
   const [land, setLand] = useState(false);
   const [stage, setStage] = useState<Stage>('intro');
@@ -128,8 +136,8 @@ function AlwaysOn({ onBack }: { onBack: () => void }) {
       </>
     ) : (
       <>
-        <source src={mattieWebm.url} type="video/webm" />
-        <source src={mattieMp4.url} type="video/mp4" />
+        <source src={clip.webm} type="video/webm" />
+        <source src={clip.mp4} type="video/mp4" />
       </>
     );
 
@@ -144,7 +152,7 @@ function AlwaysOn({ onBack }: { onBack: () => void }) {
           loop={false}
           playsInline
           preload="auto"
-          poster={stage === 'show' ? mattiePoster.url : undefined}
+          poster={stage === 'show' ? clip.poster : undefined}
           aria-label="HERD TV"
           onEnded={onEnded}
           onTimeUpdate={onTime}
