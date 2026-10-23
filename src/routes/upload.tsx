@@ -55,7 +55,7 @@ function HerdTv() {
   return (
     <PhoneShell>
       <div className="tvm">
-        <button className="tvm-hero" onClick={() => setWatching(true)} style={{ backgroundImage: `url(${mattiePoster.url})` }}>
+        <button className="tvm-hero" onClick={() => setWatching('always')} style={{ backgroundImage: `url(${mattiePoster.url})` }}>
           <span className="tvm-live">● Live</span>
           <span className="tvm-hero-title">HERD TV<br /><small>Always On</small></span>
           <span className="tvm-play"><Play size={16} fill="currentColor" /> Watch now</span>
@@ -63,7 +63,7 @@ function HerdTv() {
         <h3 className="tvm-row-title">HERD Originals</h3>
         <div className="tvm-row">
           {SHOWS.map(s => (
-            <button key={s.title} className="tvm-tile" onClick={() => setSoon(s.title)} style={{ backgroundImage: `url(${s.art})` }}>
+            <button key={s.title} className="tvm-tile" onClick={() => (s.title === 'Floating McGee Fight Night' ? setWatching('fight') : setSoon(s.title))} style={{ backgroundImage: `url(${s.art})` }}>
               <span className="tvm-tag">{s.tag}</span>
               <span className="tvm-tile-title">{s.title}</span>
             </button>
@@ -83,7 +83,7 @@ function HerdTv() {
   );
 }
 
-function AlwaysOn({ onBack }: { onBack: () => void }) {
+function AlwaysOn({ clip, onBack }: { clip: ShowClip; onBack: () => void }) {
   const v = useRef<HTMLVideoElement>(null);
   const [land, setLand] = useState(false);
   const [stage, setStage] = useState<Stage>('intro');
@@ -136,8 +136,8 @@ function AlwaysOn({ onBack }: { onBack: () => void }) {
       </>
     ) : (
       <>
-        <source src={mattieWebm.url} type="video/webm" />
-        <source src={mattieMp4.url} type="video/mp4" />
+        <source src={clip.webm} type="video/webm" />
+        <source src={clip.mp4} type="video/mp4" />
       </>
     );
 
@@ -152,7 +152,7 @@ function AlwaysOn({ onBack }: { onBack: () => void }) {
           loop={false}
           playsInline
           preload="auto"
-          poster={stage === 'show' ? mattiePoster.url : undefined}
+          poster={stage === 'show' ? clip.poster : undefined}
           aria-label="HERD TV"
           onEnded={onEnded}
           onTimeUpdate={onTime}
