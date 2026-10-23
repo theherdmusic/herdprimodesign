@@ -24,6 +24,9 @@ import vinniCover from '@/assets/vinni-poster.jpg.asset.json';
 import rrClip from '@/assets/rr.mp4.asset.json';
 import rrClipWebm from '@/assets/rr.webm.asset.json';
 import rrCover from '@/assets/rr-poster.jpg.asset.json';
+import moreno2Clip from '@/assets/moreno2.mp4.asset.json';
+import moreno2ClipWebm from '@/assets/moreno2.webm.asset.json';
+import moreno2Cover from '@/assets/moreno2-poster.jpg.asset.json';
 export { live, studio };
 export type HerdArtist = { name: string; song: string; genre: string; image: string; hearts: string; bio: string; handle: string; video?: string; videoWebm?: string; poster?: string; newArtist?: boolean };
 export const artists: HerdArtist[] = [
