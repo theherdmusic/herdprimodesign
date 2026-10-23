@@ -9,6 +9,9 @@ import introWebm from '@/assets/herdtv-intro.webm.asset.json';
 import mattieMp4 from '@/assets/mattie.mp4.asset.json';
 import mattieWebm from '@/assets/mattie.webm.asset.json';
 import mattiePoster from '@/assets/mattie.jpg.asset.json';
+import fightMp4 from '@/assets/fight-night.mp4.asset.json';
+import fightWebm from '@/assets/fight-night.webm.asset.json';
+import fightPoster from '@/assets/fight-night-poster.jpg.asset.json';
 import adMp4 from '@/assets/herdtv-ad.mp4.asset.json';
 import adWebm from '@/assets/herdtv-ad.webm.asset.json';
 import showBarstool from '@/assets/show-barstool.jpg';
@@ -19,6 +22,10 @@ import showBusking from '@/assets/show-busking.jpg';
 import showLrt from '@/assets/show-lrt.jpg';
 import mcgeePoster from '@/assets/floating-mcgee-poster.jpg';
 import { ChevronLeft, Play } from 'lucide-react';
+
+type ShowClip = { mp4: string; webm: string; poster: string };
+const ALWAYS_ON_CLIP: ShowClip = { mp4: mattieMp4.url, webm: mattieWebm.url, poster: mattiePoster.url };
+const FIGHT_NIGHT_CLIP: ShowClip = { mp4: fightMp4.url, webm: fightWebm.url, poster: fightPoster.url };
 
 // Placeholder artwork — swap for real show art later.
 const SHOWS = [
@@ -41,9 +48,10 @@ export const Route = createFileRoute('/upload')({
 });
 
 function HerdTv() {
-  const [watching, setWatching] = useState(false);
+  const [watching, setWatching] = useState<'always' | 'fight' | null>(null);
   const [soon, setSoon] = useState<string | null>(null);
-  if (watching) return <AlwaysOn onBack={() => setWatching(false)} />;
+  if (watching === 'always') return <AlwaysOn clip={ALWAYS_ON_CLIP} onBack={() => setWatching(null)} />;
+  if (watching === 'fight') return <AlwaysOn clip={FIGHT_NIGHT_CLIP} onBack={() => setWatching(null)} />;
   return (
     <PhoneShell>
       <div className="tvm">
