@@ -35,7 +35,7 @@ const SHOWS = [
   { title: 'Backyard Parties', tag: 'Live', art: showBackyard },
   { title: 'Busking Wars', tag: 'Competition', art: showBusking },
   { title: 'HERD LRT', tag: 'On the move', art: showLrt },
-  { title: 'Floating McGee Fight Night', tag: 'Fight night', art: mcgeePoster },
+  { title: 'Shamous and the Lads', tag: 'Herd Series', art: mcgeePoster },
 ];
 
 const NEXT_UP_AT = 15; // show "next video" countdown this many seconds before the ad ends
@@ -63,7 +63,7 @@ function HerdTv() {
         <h3 className="tvm-row-title">HERD Originals</h3>
         <div className="tvm-row">
           {SHOWS.map(s => (
-            <button key={s.title} className="tvm-tile" onClick={() => (s.title === 'Floating McGee Fight Night' ? setWatching('fight') : setSoon(s.title))} style={{ backgroundImage: `url(${s.art})` }}>
+            <button key={s.title} className="tvm-tile" onClick={() => (s.title === 'Shamous and the Lads' ? setWatching('fight') : setSoon(s.title))} style={{ backgroundImage: `url(${s.art})` }}>
               <span className="tvm-tag">{s.tag}</span>
               <span className="tvm-tile-title">{s.title}</span>
             </button>
