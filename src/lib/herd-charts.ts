@@ -16,8 +16,8 @@ export function getChartRows(genre: string, month: number | null = null) {
 
 function parseHearts(h: string): number {
   const m = /^([\d.]+)\s*([KkMm]?)$/.exec(h.trim());
-  if (!m) return 0;
-  const mult = m[2].toUpperCase() === 'K' ? 1_000 : m[2].toUpperCase() === 'M' ? 1_000_000 : 1;
+  if (!m || m[1] === undefined) return 0;
+  const mult = (m[2] ?? '').toUpperCase() === 'K' ? 1_000 : (m[2] ?? '').toUpperCase() === 'M' ? 1_000_000 : 1;
   return parseFloat(m[1]) * mult;
 }
 
