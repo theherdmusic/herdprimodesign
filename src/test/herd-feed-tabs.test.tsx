@@ -1,0 +1,77 @@
+import { QueryClient } from '@tanstack/react-query';
+import { createMemoryHistory, createRouter } from '@tanstack/react-router';
+import { render } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+
+import { routeTree } from '@/routeTree.gen';
+import { FeedScreen } from '@/components/herd/feed-screen';
+import { MeProvider } from '@/components/herd/me';
+import { OpeningVideoProvider } from '@/components/herd/opening-video';
+import { ReactAdProvider } from '@/components/herd/phone-shell';
+import { artists } from '@/components/herd/data';
+import { feedRankedIndexes } from '@/lib/herd-charts';
+
+// jsdom has no media playback, so play() must resolve the way a browser's does.
+HTMLMediaElement.prototype.play = function () {
+  return Promise.resolve();
+};
+
+const router = createRouter({
+  routeTree,
+  history: createMemoryHistory({ initialEntries: ['/'] }),
+  context: { queryClient: new QueryClient() },
+});
+
+function renderFeed() {
+  return render(
+    <router.Provider>
+      <OpeningVideoProvider>
+        <MeProvider>
+          <ReactAdProvider>
+            <FeedScreen />
+          </ReactAdProvider>
+        </MeProvider>
+      </OpeningVideoProvider>
+    </router.Provider>,
+  );
+}
+
+function tabLabels() {
+  return Array.from(document.querySelectorAll('.feed-mode')).map((b) => b.textContent);
+}
+
+// Sample hearts are written like "12.8K"; read them the same way the app ranks.
+function hearts(artist: (typeof artists)[number]) {
+  const m = /^([\d.]+)\s*([KkMm]?)$/.exec(artist.hearts.trim());
+  const mult = (m?.[2] ?? '').toUpperCase() === 'K' ? 1_000 : (m?.[2] ?? '').toUpperCase() === 'M' ? 1_000_000 : 1;
+  return parseFloat(m?.[1] ?? '0') * mult;
+}
+
+describe('Feed tabs', () => {
+  it('lists Discovery first, then TOP 100, then Following', () => {
+    renderFeed();
+    expect(tabLabels()).toEqual(['Discovery', 'TOP 100', 'Following']);
+  });
+
+  it('opens on Discovery', () => {
+    renderFeed();
+    expect(document.querySelector('.feed-mode.selected')?.textContent).toBe('Discovery');
+  });
+
+  it('marks TOP 100 selected once it is tapped', async () => {
+    renderFeed();
+    const top100 = Array.from(document.querySelectorAll('.feed-mode')).find((b) => b.textContent === 'TOP 100');
+    top100?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    await Promise.resolve();
+    expect(document.querySelector('.feed-mode.selected')?.textContent).toBe('TOP 100');
+  });
+});
+
+describe('TOP 100 ranking', () => {
+  it('orders every artist by hearts, highest first', () => {
+    const ranked = feedRankedIndexes();
+    expect([...ranked].sort((a, b) => a - b)).toEqual(artists.map((_, i) => i));
+    const totals = ranked.map((i) => hearts(artists[i]!));
+    expect(totals).toEqual([...totals].sort((a, b) => b - a));
+  });
+});
