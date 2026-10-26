@@ -20,6 +20,5 @@ function YourUploads() {
         <FileUp className="size-5 text-primary shrink-0" />
         <div className="min-w-0 break-words"><strong className="block text-sm">{u.title}</strong><span className="text-xs text-muted-foreground">{UPLOAD_KINDS.find(k => k.id === u.kind)?.label}{u.releaseDate && ` · ${u.releaseDate}`} · {u.fileName}</span></div>
       </li>)}</ul>}
-    <Button asChild className="join-cta"><Link to="/artist-portal/upload" search={{ section: 'verticals' }}>Upload a file</Link></Button>
   </>;
 }
