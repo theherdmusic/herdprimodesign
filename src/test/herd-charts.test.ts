@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { CHART_MONTHS, getChartRows } from '@/lib/herd-charts';
+import { CHART_MONTHS, getChartRows, monthTopGenre } from '@/lib/herd-charts';
 
 describe('monthly Top 25 sample rankings', () => {
   it('offers all twelve calendar months', () => {

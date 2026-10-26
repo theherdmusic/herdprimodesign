@@ -12,9 +12,11 @@ function Charts(){
  const [month,setMonth]=useState<number|null>(null);
  const [monthsOpen,setMonthsOpen]=useState(false);
  const rows=getChartRows(genre,month);
+ const topGenre=month!==null?monthTopGenre(month):null;
  const top=rows[0];
  if(!top) return null;
  return <PhoneShell><div className="page-inner charts"><h1 className="page-title">Top 25<span className="text-primary">.</span></h1><p className="page-subtitle">{month===null?'Updated hourly':CHART_MONTHS[month]}</p>
+  {topGenre&&<div className="month-top-genre"><Flame aria-hidden />Most hearts this month: {topGenre}</div>}
   <div className="genre-chips">{genres.map(g=>g==='All'?<Popover key={g} open={monthsOpen} onOpenChange={setMonthsOpen}>
    <PopoverTrigger asChild><Button variant="ghost" className={`genre-chip ${genre==='All'?'selected':''}`} onClick={()=>setGenre('All')}>All<ChevronDown/></Button></PopoverTrigger>
    <PopoverContent align="start" className="w-72 max-w-[calc(100vw-32px)]" aria-label="Chart month">
