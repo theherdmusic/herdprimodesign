@@ -65,4 +65,11 @@ describe('TOP 100 ranking', () => {
     const totals = ranked.map((i) => hearts(artists[i]!));
     expect(totals).toEqual([...totals].sort((a, b) => b - a));
   });
+
+  it('puts the most-hearted artist at #1 when TOP 100 opens', () => {
+    const best = artists.reduce((top, a, i) => (hearts(a) > hearts(artists[top]!) ? i : top), 0);
+    expect(feedRankedIndexes()[0]).toBe(best);
+    // The chart-topper outranks the previous #1, so the order changes.
+    expect(feedRankedIndexes()).not.toEqual(artists.map((_, i) => i));
+  });
 });

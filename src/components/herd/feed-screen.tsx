@@ -46,7 +46,7 @@ export function FeedScreen({initialTrack}:{initialTrack?:number|undefined}) {
   {nextArtist.video&&nextArtist.video!==artist.video&&<video key={`preload-${nextArtist.video}`} className="feed-preload" preload="auto" muted playsInline aria-hidden="true"><source src={nextArtist.video} type="video/mp4"/>{nextArtist.videoWebm&&<source src={nextArtist.videoWebm} type="video/webm"/>}</video>}
   <div className="feed-top"><div className="feed-tabs">
    <button type="button" className={`feed-mode ${tab==='discovery'?'selected':''}`} onClick={()=>setTab('discovery')}>Discovery</button>
-   <button type="button" className={`feed-mode ${tab==='top100'?'selected':''}`} onClick={()=>setTab('top100')}>TOP 100</button>
+   <button type="button" className={`feed-mode ${tab==='top100'?'selected':''}`} onClick={()=>{setTab('top100');setIndex(feedRankedIndexes()[0]??index);}}>TOP 100</button>
    <button type="button" className={`feed-mode ${tab==='following'?'selected':''}`} onClick={()=>{setTab('following');if(following.length){if(!following.includes(index))setIndex(following[0]!);}else setNote('Follow an artist to fill this tab.');}}>Following</button>
    <button type="button" className="feed-search-glass" aria-label="Search" onClick={()=>setSearchOpen(true)}><Search size={18}/></button>
   </div></div>
