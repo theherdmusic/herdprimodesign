@@ -1,13 +1,9 @@
 import { QueryClient } from '@tanstack/react-query';
-import { createMemoryHistory, createRouter } from '@tanstack/react-router';
-import { render } from '@testing-library/react';
+import { createMemoryHistory, createRouter, RouterProvider } from '@tanstack/react-router';
+import { fireEvent, render } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
 import { routeTree } from '@/routeTree.gen';
-import { FeedScreen } from '@/components/herd/feed-screen';
-import { MeProvider } from '@/components/herd/me';
-import { OpeningVideoProvider } from '@/components/herd/opening-video';
-import { ReactAdProvider } from '@/components/herd/phone-shell';
 import { artists } from '@/components/herd/data';
 import { feedRankedIndexes } from '@/lib/herd-charts';
 
@@ -16,28 +12,21 @@ HTMLMediaElement.prototype.play = function () {
   return Promise.resolve();
 };
 
-const router = createRouter({
-  routeTree,
-  history: createMemoryHistory({ initialEntries: ['/'] }),
-  context: { queryClient: new QueryClient() },
-});
-
 function renderFeed() {
-  return render(
-    <router.Provider>
-      <OpeningVideoProvider>
-        <MeProvider>
-          <ReactAdProvider>
-            <FeedScreen />
-          </ReactAdProvider>
-        </MeProvider>
-      </OpeningVideoProvider>
-    </router.Provider>,
-  );
+  const router = createRouter({
+    routeTree,
+    history: createMemoryHistory({ initialEntries: ['/'] }),
+    context: { queryClient: new QueryClient() },
+  });
+  return render(<RouterProvider router={router} />);
 }
 
 function tabLabels() {
   return Array.from(document.querySelectorAll('.feed-mode')).map((b) => b.textContent);
+}
+
+function tabByName(label: string) {
+  return tabLabels().indexOf(label);
 }
 
 // Sample hearts are written like "12.8K"; read them the same way the app ranks.
@@ -51,6 +40,7 @@ describe('Feed tabs', () => {
   it('lists Discovery first, then TOP 100, then Following', () => {
     renderFeed();
     expect(tabLabels()).toEqual(['Discovery', 'TOP 100', 'Following']);
+    expect(tabByName('Discovery')).toBe(0);
   });
 
   it('opens on Discovery', () => {
@@ -58,11 +48,10 @@ describe('Feed tabs', () => {
     expect(document.querySelector('.feed-mode.selected')?.textContent).toBe('Discovery');
   });
 
-  it('marks TOP 100 selected once it is tapped', async () => {
+  it('moves the highlight to TOP 100 when it is tapped', () => {
     renderFeed();
     const top100 = Array.from(document.querySelectorAll('.feed-mode')).find((b) => b.textContent === 'TOP 100');
-    top100?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-    await Promise.resolve();
+    fireEvent.click(top100!);
     expect(document.querySelector('.feed-mode.selected')?.textContent).toBe('TOP 100');
   });
 });
