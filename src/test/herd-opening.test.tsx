@@ -14,11 +14,11 @@ describe('Opening video lifecycle', () => {
     rerender();
     expect(result.current.active).toBe(false);
   });
-  it('does not play again after a refresh once seen', () => {
+  it('plays again on every fresh load, even after it was watched', () => {
     const first = renderHook(useOpeningVideo, { wrapper: OpeningVideoProvider });
     act(() => first.result.current.finish());
     first.unmount();
-    const refreshed = renderHook(useOpeningVideo, { wrapper: OpeningVideoProvider });
-    expect(refreshed.result.current.active).toBe(false);
+    const reloaded = renderHook(useOpeningVideo, { wrapper: OpeningVideoProvider });
+    expect(reloaded.result.current.active).toBe(true);
   });
 });
