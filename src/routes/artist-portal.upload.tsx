@@ -24,7 +24,6 @@ function videoSeconds(file: File) {
 type Slot = { kind: UploadKind; label: string; accept: string };
 
 function slotsFor(section: UploadSection): Slot[] {
-  if (section === 'artwork') return [{ kind: 'cover', label: 'Artwork upload', accept: 'image/*' }];
   return [
     { kind: 'cover', label: 'Artwork upload', accept: 'image/*' },
     { kind: 'photo-vertical', label: 'Vertical upload', accept: 'image/*' },
