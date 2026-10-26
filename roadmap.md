@@ -15,3 +15,4 @@
 - [x] Portal: separate upload sections for Verticals, Horizontals, Artwork; Audio shown as coming soon (struck through).
 - [x] Give the fan sign-up the same name-and-details step (its own URL) that artists get; verified both paths end to end.
 - [x] Portal upload: drop the Horizontals section and rename Verticals to "Upload"; verified as a signed-in artist.
+- [x] Portal: remove the Artwork section under Upload; verified as a signed-in artist.

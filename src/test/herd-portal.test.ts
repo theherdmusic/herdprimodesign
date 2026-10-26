@@ -9,8 +9,8 @@ describe('release date rule', () => {
 });
 
 describe('upload sections', () => {
-  it('offers Upload and Artwork only, with no Horizontals', () => {
-    expect(UPLOAD_SECTIONS.map(s => [s.id, s.title])).toEqual([['upload', 'Upload'], ['artwork', 'Artwork']]);
+  it('offers Upload only, with no Artwork or Horizontals', () => {
+    expect(UPLOAD_SECTIONS.map(s => [s.id, s.title])).toEqual([['upload', 'Upload']]);
   });
   it('asks the checklist for a vertical press photo but never a horizontal one', () => {
     const page = { tagline: '', hometown: '', website: '', instagram: '', tiktok: '', youtube: '', spotify: '', color: '' };
