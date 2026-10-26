@@ -12,12 +12,13 @@ HTMLMediaElement.prototype.play = function () {
   return Promise.resolve();
 };
 
-function renderFeed() {
+async function renderFeed() {
   const router = createRouter({
     routeTree,
     history: createMemoryHistory({ initialEntries: ['/'] }),
     context: { queryClient: new QueryClient() },
   });
+  await router.load();
   return render(<RouterProvider router={router} />);
 }
 
@@ -37,19 +38,19 @@ function hearts(artist: (typeof artists)[number]) {
 }
 
 describe('Feed tabs', () => {
-  it('lists Discovery first, then TOP 100, then Following', () => {
-    renderFeed();
+  it('lists Discovery first, then TOP 100, then Following', async () => {
+    await renderFeed();
     expect(tabLabels()).toEqual(['Discovery', 'TOP 100', 'Following']);
     expect(tabByName('Discovery')).toBe(0);
   });
 
-  it('opens on Discovery', () => {
-    renderFeed();
+  it('opens on Discovery', async () => {
+    await renderFeed();
     expect(document.querySelector('.feed-mode.selected')?.textContent).toBe('Discovery');
   });
 
-  it('moves the highlight to TOP 100 when it is tapped', () => {
-    renderFeed();
+  it('moves the highlight to TOP 100 when it is tapped', async () => {
+    await renderFeed();
     const top100 = Array.from(document.querySelectorAll('.feed-mode')).find((b) => b.textContent === 'TOP 100');
     fireEvent.click(top100!);
     expect(document.querySelector('.feed-mode.selected')?.textContent).toBe('TOP 100');
