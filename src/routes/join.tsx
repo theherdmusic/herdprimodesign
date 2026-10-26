@@ -5,14 +5,28 @@ import { PhoneShell } from '@/components/herd/phone-shell';
 import { Button } from '@/components/ui/button';
 import { artists, pageHead } from '@/components/herd/data';
 import { GENRES, isOldEnough, useMe } from '@/components/herd/me';
+import { newCaptcha, validatePersonal, type PersonalInfo } from '@/lib/herd-join';
 import herdLogoUrl from '@/assets/herd-logo.png';
 
 export const Route = createFileRoute('/join')({ head: () => pageHead('Welcome to Herd', 'Log in to Herd to follow artists, heart songs and find your herd.'), component: Join });
 
-type Step = 'welcome' | 'login' | 'birthday' | 'path' | 'genres' | 'follow' | 'musician';
-const SLUG: Record<Step, string> = { welcome: '', login: 'login', birthday: 'age-verification', path: 'choose-path', genres: 'genres', follow: 'follow-artists', musician: 'artist-setup' };
+type Step = 'welcome' | 'login' | 'birthday' | 'path' | 'details' | 'genres' | 'follow' | 'musician';
+const SLUG: Record<Step, string> = { welcome: '', login: 'login', birthday: 'age-verification', path: 'choose-path', details: 'your-details', genres: 'genres', follow: 'follow-artists', musician: 'artist-setup' };
 const stepFromPath = (p: string): Step => { const slug = p.replace(/^\/join\/?/, '').replace(/\/$/, ''); return (Object.keys(SLUG) as Step[]).find(k => SLUG[k] === slug) ?? 'welcome'; };
-const newCaptcha = (): [number, number] => [1 + Math.floor(Math.random() * 9), 1 + Math.floor(Math.random() * 9)];
+
+const PERSONAL: readonly (readonly [keyof PersonalInfo, string])[] = [['first', 'First name'], ['last', 'Last name'], ['address', 'Address'], ['city', 'City'], ['state', 'State'], ['zip', 'ZIP code'], ['phone', 'Phone']];
+
+function PersonalFields({ info, setInfo }: { info: PersonalInfo; setInfo: (v: PersonalInfo) => void }) {
+  return <>{PERSONAL.map(([k, l]) => <div key={k}>
+    <label className="field-label">{l}</label>
+    <input className="form-field" aria-label={l} type={k === 'phone' ? 'tel' : 'text'} inputMode={k === 'zip' || k === 'phone' ? 'numeric' : undefined} maxLength={k === 'state' ? 30 : 100} placeholder={l} value={info[k]} onChange={e => setInfo({ ...info, [k]: e.target.value })} />
+  </div>)}</>;
+}
+
+function CaptchaField({ captcha, answer, setAnswer }: { captcha: [number, number]; answer: string; setAnswer: (v: string) => void }) {
+  return <><label className="field-label">Prove you're human: what is {captcha[0]} + {captcha[1]}?</label>
+    <input className="form-field" inputMode="numeric" aria-label="Captcha answer" placeholder="Answer" value={answer} onChange={e => setAnswer(e.target.value)} /></>;
+}
 
 function Join() {
   const nav = useNavigate(); const { setMe } = useMe();
@@ -21,12 +35,18 @@ function Join() {
   const [error, setError] = useState(''); const [genres, setGenres] = useState<string[]>([]); const [follows, setFollows] = useState<string[]>([]);
   const [followQuery, setFollowQuery] = useState('');
   const [name, setName] = useState(''); const [bio, setBio] = useState('');
-  const [info, setInfo] = useState({ first: '', last: '', address: '', city: '', state: '', zip: '', phone: '' });
+  const [info, setInfo] = useState<PersonalInfo>({ first: '', last: '', address: '', city: '', state: '', zip: '', phone: '' });
   const [captcha, setCaptcha] = useState<[number, number]>([3, 4]); const [captchaAnswer, setCaptchaAnswer] = useState('');
   const go = (s: Step) => { setError(''); nav({ to: ('/join/' + SLUG[s]) as '/join' }); };
   const back = () => { setError(''); if (window.history.length > 1) window.history.back(); else nav({ to: '/join' }); };
   const toggle = (list: string[], set: (v: string[]) => void, v: string) => set(list.includes(v) ? list.filter(x => x !== v) : [...list, v]);
   const handleOf = (n: string) => '@' + (n || email.split('@')[0] || 'you').toLowerCase().replace(/[^a-z0-9]/g, '');
+  const submit = (nameLabel: string, next: () => void) => {
+    const msg = validatePersonal(name, nameLabel, info, email, captcha, captchaAnswer);
+    if (msg) { if (msg.startsWith('Captcha')) { setCaptcha(newCaptcha()); setCaptchaAnswer(''); } return setError(msg); }
+    setError(''); next();
+  };
+
   const finish = (role: 'fan' | 'musician') => {
     setMe({ name: name || email.split('@')[0] || 'You', handle: handleOf(name), bio, email, role, genres, follows });
     nav({ to: role === 'fan' ? '/' : '/you' });
@@ -73,8 +93,20 @@ function Join() {
     {step === 'path' && <div>
       <h1 className="join-title">Which path?</h1>
       <p className="join-sub">You can switch later.</p>
-      <button className="path-card" onClick={() => go('genres')}><Headphones /><div><strong>I'm a fan, and only sing in the shower.</strong><span>Discover artists, heart songs, move the charts.</span></div></button>
+      <button className="path-card" onClick={() => go('details')}><Headphones /><div><strong>I'm a fan, and only sing in the shower.</strong><span>Discover artists, heart songs, move the charts.</span></div></button>
       <button className="path-card" onClick={() => go('musician')}><Mic2 /><div><strong>I'm an artist and love to perform.</strong><span>Share your sound and grow your herd.</span></div></button>
+    </div>}
+    {step === 'details' && <div>
+      <h1 className="join-title">Tell us who you are</h1>
+      <p className="join-sub">We ask for your real details to confirm a real person is behind every Herd account and to reach you about your music. Because BOTS do not deserve a profile. Only your name is shown publicly.</p>
+      <label className="field-label">Your name</label>
+      <input className="form-field" aria-label="Your name" placeholder="How your name appears on Herd" value={name} onChange={e => setName(e.target.value)} />
+      <PersonalFields info={info} setInfo={setInfo} />
+      <label className="field-label">Email</label>
+      <input className="form-field" type="email" aria-label="Email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+      <CaptchaField captcha={captcha} answer={captchaAnswer} setAnswer={setCaptchaAnswer} />
+      {error && <p className="upload-message upload-error">{error}</p>}
+      <Button className="join-cta" onClick={() => submit('name', () => go('genres'))}>Next</Button>
     </div>}
     {step === 'genres' && <div>
       <h1 className="join-title">What do you listen to?</h1>
@@ -95,29 +127,16 @@ function Join() {
       <p className="join-sub">We ask for your real details to confirm a real person is behind every artist page and to reach you about your music. Because BOTS do not deserve a profile. Only your artist name, bio and genre are shown publicly.</p>
       <label className="field-label">Artist name</label>
       <input className="form-field" aria-label="Artist name" placeholder="Your stage name" value={name} onChange={e => setName(e.target.value)} />
-      {([['first', 'First name'], ['last', 'Last name'], ['address', 'Address'], ['city', 'City'], ['state', 'State'], ['zip', 'ZIP code'], ['phone', 'Phone']] as const).map(([k, l]) => <div key={k}>
-        <label className="field-label">{l}</label>
-        <input className="form-field" aria-label={l} type={k === 'phone' ? 'tel' : 'text'} inputMode={k === 'zip' || k === 'phone' ? 'numeric' : undefined} maxLength={k === 'state' ? 30 : 100} placeholder={l} value={info[k]} onChange={e => setInfo({ ...info, [k]: e.target.value })} />
-      </div>)}
+      <PersonalFields info={info} setInfo={setInfo} />
       <label className="field-label">Email</label>
       <input className="form-field" type="email" aria-label="Email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
       <label className="field-label">Short bio</label>
       <textarea className="form-field join-bio" aria-label="Bio" maxLength={150} placeholder="Where you're from, what you sound like" value={bio} onChange={e => setBio(e.target.value)} />
       <label className="field-label">Your genre</label>
       <div className="chip-grid">{GENRES.slice(0, 6).map(g => <button key={g} className={`genre-chip ${genres.includes(g) ? 'selected' : ''}`} onClick={() => setGenres([g])}>{g}</button>)}</div>
-      <label className="field-label">Prove you're human: what is {captcha[0]} + {captcha[1]}?</label>
-      <input className="form-field" inputMode="numeric" aria-label="Captcha answer" placeholder="Answer" value={captchaAnswer} onChange={e => setCaptchaAnswer(e.target.value)} />
+      <CaptchaField captcha={captcha} answer={captchaAnswer} setAnswer={setCaptchaAnswer} />
       {error && <p className="upload-message upload-error">{error}</p>}
-      <Button className="join-cta" onClick={() => {
-        if (!name.trim()) return setError('Add your artist name.');
-        if (!info.first.trim() || !info.last.trim()) return setError('Add your first and last name.');
-        if (!info.address.trim() || !info.city.trim() || !info.state.trim()) return setError('Add your full address.');
-        if (!/^\d{5}(-\d{4})?$/.test(info.zip.trim())) return setError('Enter a valid ZIP code.');
-        if (info.phone.replace(/\D/g, '').length < 10) return setError('Enter a valid phone number.');
-        if (!/^\S+@\S+\.\S+$/.test(email)) return setError('Enter a valid email.');
-        if (Number(captchaAnswer) !== captcha[0] + captcha[1]) { setCaptcha(newCaptcha()); setCaptchaAnswer(''); return setError('Captcha answer is wrong. Try the new one.'); }
-        finish('musician');
-      }}>Create my artist page</Button>
+      <Button className="join-cta" onClick={() => submit('artist name', () => finish('musician'))}>Create my artist page</Button>
     </div>}
   <Outlet /></div></PhoneShell>;
 }
