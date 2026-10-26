@@ -11,6 +11,7 @@
 
 - Herd uses a shared phone-shell component with separate content routes for its four tabs (Feed, Charts, TV, You), keeping the mockup visually consistent.
 - All mockup actions use client state and sample assets, with no backend or production uploads, because this is a design-only prototype.
+- Charts use the browser-safe herd-charts helper for deterministic monthly sample rankings so month selection and rank ordering can be tested without implying real historical data.
 - Fan and artist personal profiles share the `/you` view; the separate `/artist-portal` page and its entry button use the same tested client role predicate so the prototype exposes artist tools only to artist accounts.
 - The opening film plays once per install: a device-storage flag (helpers in `src/lib/herd-entry.ts`, tested) is checked after hydration, and Skip/end goes straight to the feed.
 - Sign-in is requested only for heart, follow and comment (`needsSignIn`); watching and scrolling never require an account.
