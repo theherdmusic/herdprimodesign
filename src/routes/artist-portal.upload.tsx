@@ -7,8 +7,8 @@ import { useMe } from '@/components/herd/me';
 import { MAX_PORTAL_FILE_BYTES, MAX_PORTAL_VIDEO_SECONDS, UPLOAD_SECTIONS, type UploadKind, type UploadSection } from '@/lib/herd-portal';
 
 export const Route = createFileRoute('/artist-portal/upload')({
-  validateSearch: (s: Record<string, unknown>): { section: UploadSection } => ({ section: UPLOAD_SECTIONS.some(x => x.id === s['section']) ? s['section'] as UploadSection : 'verticals' }),
-  head: () => pageHead('Upload · Artist Portal', 'Send Herd your vertical videos, horizontal photos and artwork.'),
+  validateSearch: (s: Record<string, unknown>): { section: UploadSection } => ({ section: UPLOAD_SECTIONS.some(x => x.id === s['section']) ? s['section'] as UploadSection : 'upload' }),
+  head: () => pageHead('Upload · Artist Portal', 'Send Herd your vertical videos, press photos and artwork.'),
   component: UploadFiles,
 });
 
@@ -27,9 +27,7 @@ function slotsFor(section: UploadSection): Slot[] {
   if (section === 'artwork') return [{ kind: 'cover', label: 'Artwork upload', accept: 'image/*' }];
   return [
     { kind: 'cover', label: 'Artwork upload', accept: 'image/*' },
-    section === 'verticals'
-      ? { kind: 'photo-vertical', label: 'Vertical upload', accept: 'image/*' }
-      : { kind: 'photo-horizontal', label: 'Horizontal upload', accept: 'image/*' },
+    { kind: 'photo-vertical', label: 'Vertical upload', accept: 'image/*' },
     { kind: 'video', label: 'Music video upload', accept: 'video/*' },
   ];
 }
