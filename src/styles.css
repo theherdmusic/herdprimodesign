@@ -199,8 +199,8 @@
 .feed-mode { background:none; border:0; color:var(--foreground); font-size:15px; font-weight:700; padding:10px 2px; min-height:44px; cursor:pointer; }
 .feed-mode.selected::after { bottom:4px; }
 .feed-search-glass { width:44px; height:44px; }
-.rank-chip { position:absolute; left:16px; top:calc(env(safe-area-inset-top,0px) + 92px); z-index:31; background:var(--primary); color:var(--primary-foreground); font-size:12px; font-weight:800; padding:5px 10px; border-radius:999px; }
-@media(min-width:481px){ .rank-chip { top:112px; } }
+.rank-chip { position:absolute; left:16px; top:calc(env(safe-area-inset-top,0px) + 120px); z-index:31; background:var(--primary); color:var(--primary-foreground); font-size:12px; font-weight:800; padding:5px 10px; border-radius:999px; }
+@media(min-width:481px){ .rank-chip { top:192px; } }
 .feed-actions { right:10px; bottom:96px; gap:16px; }
 .feed-action .action-button { width:50px; height:50px; }
 .feed-action .action-button svg { width:30px; height:30px; }
