@@ -41,7 +41,7 @@ export const artists: HerdArtist[] = [
  { name:'RR', song:'Untitled', genre:'Country', image:rrCover.url, poster:rrCover.url, video:rrClip.url, videoWebm:rrClipWebm.url, hearts:'1.9K', bio:'New to the Herd. First video just dropped.', handle:'@rr', newArtist:true },
 ];
 export const songs = ['Running out of daylight','Something real','Backroad summer','Velvet skies','Nothing to lose','After hours','Wildflower','Slow motion','Stay a little longer','City lights','Good enough','Golden hour','Home again','No apologies','Between the lines','Headlights','On my own','Midnight drive','Let it go','Blue Sunday','All we know','Easy days','Break the silence','Tomorrow','One more time'];
-export const genres = ['All','Rock','Country','Rap','Pop','R&B','Electronic'];
+export const genres = ['All','Pop','Rock','Country','Hip Hop/Rap','EDM'];
 export function pageHead(title:string, description:string) { return { meta:[{title:`${title} · Herd`},{name:'description',content:description},{property:'og:title',content:`${title} · Herd`},{property:'og:description',content:description},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary_large_image'}] }; }
 
 export function getArtist(index:number): HerdArtist { return artists[index % artists.length] ?? { name:"Luna Hayes", song:"Running out of daylight", genre:"Indie Rock", image:live, hearts:"12.8K", bio:"Independent artist making noise out of Austin, TX.", handle:"@lunahhayes" }; }
