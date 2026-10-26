@@ -19,3 +19,19 @@ describe('monthly Top 25 sample rankings', () => {
     expect(getChartRows('All', 1).map(row => row.i)).not.toEqual(getChartRows('All', 0).map(row => row.i));
   });
 });
+
+describe('month top genre by hearts', () => {
+  const rowGenres = (month: number) => new Set(getChartRows('All', month).map(row => row.a.genre));
+  it('picks a genre that appears in that month\'s Top 25 for every month', () => {
+    for (let month = 0; month < 12; month++) {
+      expect(rowGenres(month).has(monthTopGenre(month))).toBe(true);
+    }
+  });
+  it('does not repeat the same genre winner every month', () => {
+    const winners = new Set(CHART_MONTHS.map((_, m) => monthTopGenre(m)));
+    expect(winners.size).toBeGreaterThan(1);
+  });
+  it('keeps the winner stable for a given month', () => {
+    expect(monthTopGenre(4)).toBe(monthTopGenre(4));
+  });
+});
