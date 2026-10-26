@@ -34,3 +34,8 @@ export function monthTopGenre(month: number): string {
   for (const [genre, total] of totals) if (total > bestTotal) { best = genre; bestTotal = total; }
   return best;
 }
+
+// The feed's TOP 100 tab ranks the real artists by hearts; Discovery keeps the sample feed order.
+export function feedRankedIndexes(): number[] {
+  return artists.map((_, i) => i).sort((a, b) => parseHearts(getArtist(b).hearts) - parseHearts(getArtist(a).hearts));
+}
