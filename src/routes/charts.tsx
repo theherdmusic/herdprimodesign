@@ -1,20 +1,22 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Flame } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { PhoneShell } from '@/components/herd/phone-shell';
 import { artists, genres, pageHead } from '@/components/herd/data';
-import { CHART_MONTHS, getChartRows } from '@/lib/herd-charts';
+import { CHART_MONTHS, getChartRows, monthTopGenre } from '@/lib/herd-charts';
 export const Route=createFileRoute('/charts')({head:()=>pageHead('Top 25','Explore Herd’s independent music Top 25 by genre and month.'),component:Charts});
 function Charts(){
  const [genre,setGenre]=useState('All');
  const [month,setMonth]=useState<number|null>(null);
  const [monthsOpen,setMonthsOpen]=useState(false);
  const rows=getChartRows(genre,month);
+ const topGenre=month!==null?monthTopGenre(month):null;
  const top=rows[0];
  if(!top) return null;
  return <PhoneShell><div className="page-inner charts"><h1 className="page-title">Top 25<span className="text-primary">.</span></h1><p className="page-subtitle">{month===null?'Updated hourly':CHART_MONTHS[month]}</p>
+  {topGenre&&<div className="month-top-genre"><Flame aria-hidden />Most hearts this month: {topGenre}</div>}
   <div className="genre-chips">{genres.map(g=>g==='All'?<Popover key={g} open={monthsOpen} onOpenChange={setMonthsOpen}>
    <PopoverTrigger asChild><Button variant="ghost" className={`genre-chip ${genre==='All'?'selected':''}`} onClick={()=>setGenre('All')}>All<ChevronDown/></Button></PopoverTrigger>
    <PopoverContent align="start" className="w-72 max-w-[calc(100vw-32px)]" aria-label="Chart month">
