@@ -50,7 +50,7 @@ export function FeedScreen({initialTrack}:{initialTrack?:number|undefined}) {
    <button type="button" className={`feed-mode ${tab==='following'?'selected':''}`} onClick={()=>{setTab('following');if(following.length){if(!following.includes(index))setIndex(following[0]!);}else setNote('Follow an artist to fill this tab.');}}>Following</button>
    <button type="button" className="feed-search-glass" aria-label="Search" onClick={()=>setSearchOpen(true)}><Search size={18}/></button>
   </div></div>
-  <span className="rank-chip">{rank} this hour</span>
+  <span className="rank-chip">#{rank} this hour</span>
   <div className="feed-actions">
    <div className="feed-action avatar-follow"><Link to="/profile" search={{artist:index}} aria-label={`View ${artist.name}'s profile`}><img src={artist.image} className="feed-avatar" alt={artist.name}/></Link><Button className="follow-plus" aria-label={isFollowing?'Unfollow artist':'Follow artist'} onClick={()=>gate('follow',()=>setFollowing(v=>v.includes(index)?v.filter(i=>i!==index):[...v,index]))}>{isFollowing?<Check/>:<Plus/>}</Button></div>
    <div className="feed-action"><Button variant="ghost" className={`action-button ${isLiked?'text-primary':''}`} aria-label={isLiked?'Unlike video':'Heart video'} onClick={()=>gate('heart',()=>setLiked(v=>v.includes(index)?v.filter(i=>i!==index):[...v,index]))}><Heart fill={isLiked?'currentColor':'none'}/></Button><small className="vote-line">Your heart is a vote.</small></div>
