@@ -43,7 +43,7 @@ export function FeedScreen({initialTrack}:{initialTrack?:number|undefined}) {
 {artist.video?<video key={artist.video} ref={clip} className="feed-video" poster={artist.poster??artist.image} autoPlay={!openingActive} muted loop playsInline preload="auto" onClick={e=>{const v=e.currentTarget;if(v.paused){v.muted=false;v.play().catch(()=>{v.muted=true;v.play().catch(()=>{});});}else v.pause();}} aria-label={`${artist.name} performing ${artist.song}`}><source src={artist.video} type="video/mp4"/>{artist.videoWebm&&<source src={artist.videoWebm} type="video/webm"/>}</video>:<img key={artist.image} className="feed-photo" src={artist.image} alt={`${artist.name} performing ${artist.song}`}/>}<div className="feed-shade"/>
   {nextArtist.video&&nextArtist.video!==artist.video&&<video key={`preload-${nextArtist.video}`} className="feed-preload" preload="auto" muted playsInline aria-hidden="true"><source src={nextArtist.video} type="video/mp4"/>{nextArtist.videoWebm&&<source src={nextArtist.videoWebm} type="video/webm"/>}</video>}
   <div className="feed-top"><div className="feed-tabs">
-   <button type="button" className={`feed-mode ${tab==='foryou'?'selected':''}`} onClick={()=>setTab('foryou')}>For You</button>
+   <button type="button" className={`feed-mode ${tab==='foryou'?'selected':''}`} onClick={()=>setTab('foryou')}>TOP 100</button>
    <button type="button" className={`feed-mode ${tab==='following'?'selected':''}`} onClick={()=>{setTab('following');if(following.length){if(!following.includes(index))setIndex(following[0]!);}else setNote('Follow an artist to fill this tab.');}}>Following</button>
    <button type="button" className="feed-search-glass" aria-label="Search" onClick={()=>setSearchOpen(true)}><Search size={18}/></button>
   </div></div>
