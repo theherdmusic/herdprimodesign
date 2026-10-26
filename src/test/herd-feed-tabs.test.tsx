@@ -11,6 +11,7 @@ import { feedRankedIndexes } from '@/lib/herd-charts';
 HTMLMediaElement.prototype.play = function () {
   return Promise.resolve();
 };
+HTMLMediaElement.prototype.pause = function () {};
 
 async function renderFeed() {
   const router = createRouter({
