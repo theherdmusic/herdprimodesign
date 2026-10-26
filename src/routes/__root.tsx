@@ -88,7 +88,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
-      { name: "theme-color", content: "#08090b" },
+      { name: "theme-color", content: "#0a130e" },
       { property: "og:title", content: "Herd · Independent music" },
       { property: "og:description", content: "Discover independent artists, fresh music videos and live radio on Herd." },
       { property: "og:type", content: "website" },
