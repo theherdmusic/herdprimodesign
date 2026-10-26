@@ -13,7 +13,7 @@
 - All mockup actions use client state and sample assets, with no backend or production uploads, because this is a design-only prototype.
 - Charts use the browser-safe herd-charts helper for deterministic monthly sample rankings so month selection and rank ordering can be tested without implying real historical data.
 - Fan and artist personal profiles share the `/you` view; the separate `/artist-portal` page and its entry button use the same tested client role predicate so the prototype exposes artist tools only to artist accounts.
-- The opening film plays once per install: a device-storage flag (helpers in `src/lib/herd-entry.ts`, tested) is checked after hydration, and Skip/end goes straight to the feed.
+- The opening film plays on every fresh load of the app (no device-storage flag; Skip/end goes straight to the feed).
 - Sign-in is requested only for heart, follow and comment (`needsSignIn`); watching and scrolling never require an account.
 - React & Win is a sponsor overlay, not a tab. Its trigger is an icon-only tab-bar button next to Discovery; the open state lives in `ReactAdProvider` around `<Outlet />` in `__root.tsx` (not inside PhoneShell) so the feed can consume it via `useReactAd()` and pause/resume its video around the ad.
 - The opening sequence's film order lives in `src/lib/herd-intro.ts` (a browser-safe helper with a boundary test), so only the last film hands off to the entry screen; the opening is the single vertical sheep film, because the user dropped the delivery-van clip (herd-after) from it and kept the sheep.

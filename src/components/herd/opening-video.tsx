@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useRef, useState, type ReactNode,
 import { useNavigate } from '@tanstack/react-router';
 import { Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { hasSeenOpening, markOpeningSeen } from '@/lib/herd-entry';
 import { nextIntroStage } from '@/lib/herd-intro';
 import filmMp4 from '@/assets/herd-opening.mp4.asset.json';
 import filmWebm from '@/assets/herd-opening.webm.asset.json';
@@ -11,13 +10,11 @@ import filmPoster from '@/assets/herd-opening.jpg.asset.json';
 type Phase = 'checking' | 'play' | 'done';
 const OpeningContext = createContext({ active: true, playing: false, finish: () => {} });
 
-const store = () => (typeof window === 'undefined' ? null : window.localStorage);
-
 export function OpeningVideoProvider({ children }: { children: ReactNode }) {
-  // Starts as "checking" on every load; device storage decides whether this install already saw it.
+  // Plays on every fresh load of the app; finishing or skipping dismisses it for this visit only.
   const [phase, setPhase] = useState<Phase>('checking');
-  useEffect(() => { setPhase(p => (p === 'checking' ? (hasSeenOpening(store()) ? 'done' : 'play') : p)); }, []);
-  const finish = () => { markOpeningSeen(store()); setPhase('done'); };
+  useEffect(() => { setPhase(p => (p === 'checking' ? 'play' : p)); }, []);
+  const finish = () => { setPhase('done'); };
   return <OpeningContext.Provider value={{ active: phase !== 'done', playing: phase === 'play', finish }}>{children}</OpeningContext.Provider>;
 }
 
