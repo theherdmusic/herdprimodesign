@@ -13,3 +13,4 @@
 - [x] Add Floating McGee below the login welcome’s browse option and verify its artwork bounces slowly between screen edges.
 - [x] v2: once-per-install opening with Skip, 4-tab nav, React sponsor overlay, For You/Following + search with genre filter, #1 chart card linking to the feed, single Originals row on TV, sign-in only for heart/follow/comment.
 - [x] Portal: separate upload sections for Verticals, Horizontals, Artwork; Audio shown as coming soon (struck through).
+- [x] Give the fan sign-up the same name-and-details step (its own URL) that artists get; verified both paths end to end.

@@ -23,3 +23,4 @@
 - Sandbox gesture tests wait until the target element carries a `__react` key before dispatching touches, because React 19 hydrates lazily and events sent earlier are dropped.
 - Home-screen support uses manifest-only metadata and opaque icons derived from the supplied logo, with an explicit Apple touch icon; no app-shell service worker is needed because offline use is not requested.
 - Floating McGee uses a standalone full-screen content route with CSS-only horizontal motion, keeping the supplied artwork unchanged and honoring reduced-motion preferences.
+- Sign-up personal details and their validation live in `src/lib/herd-join.ts` and are rendered by one shared field set, so the fan and artist paths always ask for the same information; keep both paths using it instead of duplicating fields.
