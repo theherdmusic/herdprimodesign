@@ -17,3 +17,4 @@
 - [x] Portal upload: drop the Horizontals section and rename Verticals to "Upload"; verified as a signed-in artist.
 - [x] Portal: remove the Artwork section under Upload; verified as a signed-in artist.
 - [x] Feed: show each artist's genre under their name; verified in preview.
+- [x] Feed: Discovery first and the default tab, with TOP 100 (ranked by hearts) and Following after it; verified in preview.
