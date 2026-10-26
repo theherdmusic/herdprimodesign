@@ -1,16 +1,14 @@
 /** Artist portal rules copied from the Herd artist dashboard. */
-export type UploadKind = 'photo-vertical' | 'photo-horizontal' | 'cover' | 'audio' | 'video';
+export type UploadKind = 'photo-vertical' | 'cover' | 'audio' | 'video';
 export const UPLOAD_KINDS: { id: UploadKind; label: string; hint: string; accept: string }[] = [
   { id: 'photo-vertical', label: 'Press photo vertical', hint: 'A real photo, not artwork. Vertical.', accept: 'image/*' },
-  { id: 'photo-horizontal', label: 'Press photo horizontal', hint: 'A real photo, not artwork. Horizontal.', accept: 'image/*' },
   { id: 'cover', label: 'Cover artwork', hint: 'Square artwork for your song.', accept: 'image/*' },
   { id: 'audio', label: 'Audio', hint: 'Your song file.', accept: 'audio/*' },
   { id: 'video', label: 'Vertical music video', hint: '9:16 music video, up to 1 minute.', accept: 'video/*' },
 ];
-export type UploadSection = 'verticals' | 'horizontals' | 'artwork';
+export type UploadSection = 'upload' | 'artwork';
 export const UPLOAD_SECTIONS: { id: UploadSection; title: string; sub: string; kinds: UploadKind[] }[] = [
-  { id: 'verticals', title: 'Verticals', sub: 'Vertical music videos and press photos', kinds: ['video', 'photo-vertical'] },
-  { id: 'horizontals', title: 'Horizontals', sub: 'Horizontal press photos', kinds: ['photo-horizontal'] },
+  { id: 'upload', title: 'Upload', sub: 'Vertical music videos and press photos', kinds: ['video', 'photo-vertical'] },
   { id: 'artwork', title: 'Artwork', sub: 'Cover artwork for your songs', kinds: ['cover'] },
 ];
 export const MAX_PORTAL_VIDEO_SECONDS = 60;
@@ -32,7 +30,6 @@ export function checklist(bio: string, page: ArtistPage, uploads: PortalUpload[]
   return [
     { label: 'Bio', done: !!bio.trim() },
     { label: 'Press photo — vertical', done: has('photo-vertical') },
-    { label: 'Press photo — horizontal', done: has('photo-horizontal') },
     { label: 'Social links', done: [page.website, page.instagram, page.tiktok, page.youtube, page.spotify].some(s => s.trim()) },
     { label: 'Cover artwork', done: has('cover') },
     { label: 'Vertical music video', done: has('video') },
