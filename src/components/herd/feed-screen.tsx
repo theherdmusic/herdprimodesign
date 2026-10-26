@@ -6,14 +6,16 @@ import { PhoneShell, useReactAd } from './phone-shell';
 import { artists, getArtist, genres } from './data';
 import { useKeyboardInset } from '@/lib/herd-keyboard';
 import { needsSignIn, type GatedAction } from '@/lib/herd-entry';
+import { feedRankedIndexes } from '@/lib/herd-charts';
 import { useOpeningVideo } from './opening-video';
 import { REPORT_REASONS, useMe } from './me';
 let feedIndex=0;
 type Sheet = null|'share'|'comments'|'more'|'report'|'signin';
+type FeedTab = 'discovery'|'top100'|'following';
 export function FeedScreen({initialTrack}:{initialTrack?:number|undefined}) {
  const { active: openingActive } = useOpeningVideo(); const { me } = useMe(); const nav=useNavigate();
  const [index,setIndex]=useState(feedIndex%artists.length); const [liked,setLiked]=useState<number[]>([]); const [following,setFollowing]=useState<number[]>([]);
- const [tab,setTab]=useState<'foryou'|'following'>('foryou'); const [sheet,setSheet]=useState<Sheet>(null); const [gateFor,setGateFor]=useState<GatedAction>('heart');
+ const [tab,setTab]=useState<FeedTab>('discovery'); const [sheet,setSheet]=useState<Sheet>(null); const [gateFor,setGateFor]=useState<GatedAction>('heart');
  const [searchOpen,setSearchOpen]=useState(false); const [query,setQuery]=useState(''); const [genre,setGenre]=useState('All');
  const [note,setNote]=useState(''); const [draft,setDraft]=useState(''); const [comments,setComments]=useState<Record<number,{user:string;text:string}[]>>({});
  const {open:adOpen}=useReactAd();
@@ -32,7 +34,7 @@ export function FeedScreen({initialTrack}:{initialTrack?:number|undefined}) {
  const artist=getArtist(index); const isLiked=liked.includes(index); const isFollowing=following.includes(index);
  const sample=[{user:'@riffqueen',text:'This chorus lives in my head now 🔥'},{user:'@backroadkid',text:'Finally real indie music on my feed.'},{user:'@nightowl',text:'Need the full song ASAP'}]; const currentComments=[...sample,...(comments[index]??[])];
  const gate=(a:GatedAction,run:()=>void)=>{ if(needsSignIn(a,me!==null)){setGateFor(a);setSheet('signin');return;} run(); };
- const lineup=tab==='following'?following:artists.map((_,i)=>i);
+ const lineup=tab==='following'?following:tab==='top100'?feedRankedIndexes():artists.map((_,i)=>i); const rank=tab==='top100'?(lineup.indexOf(index)+1):index+1;
   const next=()=>{ if(!lineup.length)return; const pos=lineup.indexOf(index); setIndex(lineup[(pos+1)%lineup.length]??0); };
   const prev=()=>{ if(!lineup.length)return; const pos=lineup.indexOf(index); if(pos<=0)return; setIndex(lineup[pos-1]??0); };
  const nextArtist=getArtist(lineup.length?(lineup[(lineup.indexOf(index)+1)%lineup.length]??index):index);
@@ -43,11 +45,12 @@ export function FeedScreen({initialTrack}:{initialTrack?:number|undefined}) {
 {artist.video?<video key={artist.video} ref={clip} className="feed-video" poster={artist.poster??artist.image} autoPlay={!openingActive} muted loop playsInline preload="auto" onClick={e=>{const v=e.currentTarget;if(v.paused){v.muted=false;v.play().catch(()=>{v.muted=true;v.play().catch(()=>{});});}else v.pause();}} aria-label={`${artist.name} performing ${artist.song}`}><source src={artist.video} type="video/mp4"/>{artist.videoWebm&&<source src={artist.videoWebm} type="video/webm"/>}</video>:<img key={artist.image} className="feed-photo" src={artist.image} alt={`${artist.name} performing ${artist.song}`}/>}<div className="feed-shade"/>
   {nextArtist.video&&nextArtist.video!==artist.video&&<video key={`preload-${nextArtist.video}`} className="feed-preload" preload="auto" muted playsInline aria-hidden="true"><source src={nextArtist.video} type="video/mp4"/>{nextArtist.videoWebm&&<source src={nextArtist.videoWebm} type="video/webm"/>}</video>}
   <div className="feed-top"><div className="feed-tabs">
-   <button type="button" className={`feed-mode ${tab==='foryou'?'selected':''}`} onClick={()=>setTab('foryou')}>TOP 100</button>
+   <button type="button" className={`feed-mode ${tab==='discovery'?'selected':''}`} onClick={()=>setTab('discovery')}>Discovery</button>
+   <button type="button" className={`feed-mode ${tab==='top100'?'selected':''}`} onClick={()=>setTab('top100')}>TOP 100</button>
    <button type="button" className={`feed-mode ${tab==='following'?'selected':''}`} onClick={()=>{setTab('following');if(following.length){if(!following.includes(index))setIndex(following[0]!);}else setNote('Follow an artist to fill this tab.');}}>Following</button>
    <button type="button" className="feed-search-glass" aria-label="Search" onClick={()=>setSearchOpen(true)}><Search size={18}/></button>
   </div></div>
-  <span className="rank-chip">#{index+1} this hour</span>
+  <span className="rank-chip">{rank} this hour</span>
   <div className="feed-actions">
    <div className="feed-action avatar-follow"><Link to="/profile" search={{artist:index}} aria-label={`View ${artist.name}'s profile`}><img src={artist.image} className="feed-avatar" alt={artist.name}/></Link><Button className="follow-plus" aria-label={isFollowing?'Unfollow artist':'Follow artist'} onClick={()=>gate('follow',()=>setFollowing(v=>v.includes(index)?v.filter(i=>i!==index):[...v,index]))}>{isFollowing?<Check/>:<Plus/>}</Button></div>
    <div className="feed-action"><Button variant="ghost" className={`action-button ${isLiked?'text-primary':''}`} aria-label={isLiked?'Unlike video':'Heart video'} onClick={()=>gate('heart',()=>setLiked(v=>v.includes(index)?v.filter(i=>i!==index):[...v,index]))}><Heart fill={isLiked?'currentColor':'none'}/></Button><small className="vote-line">Your heart is a vote.</small></div>
