@@ -16,10 +16,10 @@
   --radius-md: 8px; --radius-lg: 8px;
 }
 :root {
- --background: oklch(.13 .016 158); --foreground: oklch(.97 .002 158); --card: oklch(.18 .018 158);
+ --background: oklch(.13 .03 158); --foreground: oklch(.97 .002 158); --card: oklch(.18 .032 158);
  --primary: oklch(.72 .17 55); --primary-foreground: oklch(.15 .03 55);
- --secondary: oklch(.235 .018 158); --muted-foreground: oklch(.63 .012 158); --border: oklch(.28 .015 158);
- --destructive: oklch(.7 .2 25); --stage: oklch(.105 .012 158); --overlay: oklch(.08 .012 158 / .9);
+ --secondary: oklch(.235 .032 158); --muted-foreground: oklch(.63 .012 158); --border: oklch(.28 .028 158);
+ --destructive: oklch(.7 .2 25); --stage: oklch(.105 .024 158); --overlay: oklch(.08 .02 158 / .9);
  --phone-shadow: 0 28px 100px oklch(0 0 0 / .55); --radius: 8px;
  --floating-mcgee-background: oklch(0 0 0);
 }
