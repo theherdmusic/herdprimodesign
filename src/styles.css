@@ -74,7 +74,7 @@
 .feed-search-hit span { font-size:10px;font-weight:400;color:var(--muted-foreground); }
 .feed-search-empty { padding:8px 9px;font-size:11px;color:var(--muted-foreground); }
 .feed-tabs { display:flex;align-items:center;gap:24px; }
-.feed-mode { position:relative; opacity:.65; font-size:13px; padding:0 0 9px; height:auto; } .feed-mode.selected { opacity:1; } .feed-mode.selected::after { content:'';position:absolute;bottom:0;left:25%;right:25%;height:2px;background:var(--primary); }
+.feed-mode { position:relative; opacity:.65; font-size:13px; padding:0 0 9px; height:auto; white-space:nowrap; } .feed-mode.selected { opacity:1; } .feed-mode.selected::after { content:'';position:absolute;bottom:0;left:25%;right:25%;height:2px;background:var(--primary); }
 .feed-genre-panel { width:100%;max-width:206px;max-height:158px;overflow-y:auto;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;background:color-mix(in oklab,var(--card) 90%,transparent);border:1px solid var(--border);border-radius:12px;padding:8px;backdrop-filter:blur(10px); }
 .feed-genre-panel .genre-chip { height:auto;padding:5px 10px;font-size:11px; }
 .feed-actions { position:absolute;right:15px;bottom:112px;display:flex; flex-direction:column;align-items:center;gap:23px; }
