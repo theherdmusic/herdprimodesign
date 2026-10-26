@@ -26,7 +26,7 @@ export function monthTopGenre(month: number): string {
   const rows = getChartRows('All', month);
   const totals = new Map<string, number>();
   rows.forEach((row, rank) => {
-    const drift = 1 + (((row.i * 7 + month * 3 + rank) % 11) - 5) * 0.04;
+    const drift = 1 + (((row.i * 7 + month * 3 + rank) % 11) - 5) * 0.35;
     totals.set(row.a.genre, (totals.get(row.a.genre) ?? 0) + parseHearts(row.a.hearts) * drift);
   });
   let best = 'All';
