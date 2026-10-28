@@ -9,7 +9,11 @@ import { needsSignIn, type GatedAction } from '@/lib/herd-entry';
 import { feedRankedIndexes } from '@/lib/herd-charts';
 import { useOpeningVideo } from './opening-video';
 import { REPORT_REASONS, useMe } from './me';
-let feedIndex=0; let soundOn=false; let justUnlocked=0;
+let feedIndex=0; let soundOn=false; let justUnlocked=0; let mp4Ok:boolean|null=null;
+// Pick one file per clip: iPhones get the MP4, browsers without H.264 get the WebM.
+function clipSrc(a:HerdArtist){ if(mp4Ok===null&&typeof document!=='undefined')mp4Ok=document.createElement('video').canPlayType('video/mp4; codecs="avc1.64001F"')!==''; return (mp4Ok!==false||!a.videoWebm)?a.video:a.videoWebm; }
+// User-activation events: phones only let a video play with sound inside one of these, never on pointerdown/touchstart.
+const ACTIVATION=['touchend','pointerup','click','keydown'] as const;
 type Sheet = null|'share'|'comments'|'more'|'report'|'signin';
 type FeedTab = 'discovery'|'top100'|'following';
 export function FeedScreen({initialTrack}:{initialTrack?:number|undefined}) {
@@ -19,19 +23,34 @@ export function FeedScreen({initialTrack}:{initialTrack?:number|undefined}) {
  const [searchOpen,setSearchOpen]=useState(false); const [query,setQuery]=useState(''); const [genre,setGenre]=useState('All');
  const [note,setNote]=useState(''); const [draft,setDraft]=useState(''); const [comments,setComments]=useState<Record<number,{user:string;text:string}[]>>({});
  const {open:adOpen}=useReactAd();
- const touch=useRef(0); const wheel=useRef(0); const clip=useRef<HTMLVideoElement|null>(null); useKeyboardInset();
+ const touch=useRef(0); const wheel=useRef(0); const clip=useRef<HTMLVideoElement|null>(null); const userPaused=useRef(false); useKeyboardInset();
+ const blocked=useRef(false); blocked.current=openingActive||adOpen;
  useEffect(()=>{if(initialTrack!==undefined)setIndex(initialTrack%artists.length);},[initialTrack]);
  useEffect(()=>{feedIndex=index;},[index]);
  useEffect(()=>{ if(!note)return;const t=setTimeout(()=>setNote(''),2200);return()=>clearTimeout(t); },[note]);
-  useEffect(()=>{const v=clip.current;if(!v)return;if(openingActive||adOpen){v.pause();return;}
-    // Phones only allow silent autoplay until the visitor touches the page, so start muted unless sound was already unlocked.
-    const start=()=>{if(!v.paused)return;v.defaultMuted=!soundOn;v.muted=!soundOn;v.play().catch(()=>{v.muted=true;v.play().catch(()=>{});});};
-    const unlock=()=>{if(!soundOn)justUnlocked=Date.now();soundOn=true;v.muted=false;if(v.paused)v.play().catch(()=>{});};
-    v.setAttribute('muted','');start();const evs=['loadedmetadata','loadeddata','canplay','canplaythrough'];evs.forEach(e=>v.addEventListener(e,start));
-    const retry=setInterval(()=>{if(v.paused&&v.readyState>=2)start();else if(!v.paused)clearInterval(retry);},400);
-    window.addEventListener('pointerdown',unlock,{once:true}); window.addEventListener('touchstart',unlock,{once:true});
-    return()=>{clearInterval(retry);evs.forEach(e=>v.removeEventListener(e,start));window.removeEventListener('pointerdown',unlock);window.removeEventListener('touchstart',unlock);};
-   },[index,openingActive,adOpen]);
+ // One video element is reused for every clip. Phones "bless" an element after a tap, so keeping the same
+ // element (and swapping its file during the swipe itself) lets every next clip autoplay, with sound once unlocked.
+ const playClip=(i:number)=>{const v=clip.current;const a=getArtist(i);if(!v||!a.video)return;const src=clipSrc(a)!;
+  if(v.dataset['src']!==src){v.dataset['src']=src;v.src=src;}
+  if(blocked.current)return;
+  v.defaultMuted=!soundOn;v.muted=!soundOn;
+  const p=v.play() as Promise<void>|undefined;
+  p?.catch?.((err:unknown)=>{if((err as {name?:string})?.name==='NotAllowedError'){soundOn=false;v.muted=true;v.play()?.catch?.(()=>{});}});};
+ useEffect(()=>{const v=clip.current;if(!v)return;if(openingActive||adOpen){v.pause();return;}
+   playClip(index);
+   const kick=()=>{if(v.paused&&!userPaused.current)playClip(index);};
+   const evs=['loadedmetadata','loadeddata','canplay','canplaythrough','stalled','suspend'];evs.forEach(e=>v.addEventListener(e,kick));
+   const retry=setInterval(kick,500);
+   return()=>{clearInterval(retry);evs.forEach(e=>v.removeEventListener(e,kick));};
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[index,openingActive,adOpen]);
+ useEffect(()=>{
+   const unlock=()=>{if(soundOn||blocked.current)return;const v=clip.current;if(!v)return;justUnlocked=Date.now();soundOn=true;v.muted=false;
+     v.play()?.catch?.(()=>{soundOn=false;v.muted=true;v.play()?.catch?.(()=>{});});};
+   ACTIVATION.forEach(e=>window.addEventListener(e,unlock));
+   return()=>ACTIVATION.forEach(e=>window.removeEventListener(e,unlock));
+  },[]);
+ const go=(i:number)=>{userPaused.current=false;setIndex(i);playClip(i);};
  const artist=getArtist(index); const isLiked=liked.includes(index); const isFollowing=following.includes(index);
  const sample=[{user:'@riffqueen',text:'This chorus lives in my head now 🔥'},{user:'@backroadkid',text:'Finally real indie music on my feed.'},{user:'@nightowl',text:'Need the full song ASAP'}]; const currentComments=[...sample,...(comments[index]??[])];
  const gate=(a:GatedAction,run:()=>void)=>{ if(needsSignIn(a,me!==null)){setGateFor(a);setSheet('signin');return;} run(); };
