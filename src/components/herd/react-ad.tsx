@@ -64,7 +64,7 @@ export function ReactAd({ onClose }: { onClose: () => void }) {
   const reset = () => { started.current = false; setPick(null); setBlocked(false); setStep('start'); };
   const src = step === 'intro' && INTRO ? INTRO : { mp4: adMp4.url, webm: adWebm.url };
 
-  return <div className="react-ad" role="dialog" aria-label={`Sponsored by ${SPONSOR}`}>
+  return <div className={"react-ad" + ((step === 'intro' || step === 'ad') ? ' react-ad-playing' : '')} role="dialog" aria-label={`Sponsored by ${SPONSOR}`}>
     <audio ref={bg} src={music.url} loop preload="auto" />
     <audio ref={cheer} src={winSound.url} preload="auto" />
     <audio ref={deny} src={denySound.url} preload="auto" />
@@ -81,7 +81,7 @@ export function ReactAd({ onClose }: { onClose: () => void }) {
         onEnded={() => step === 'intro' ? afterIntro() : setStep('ask')}>
         <source src={src.mp4} type="video/mp4" /><source src={src.webm} type="video/webm" />
       </video>
-      {blocked && <Button onClick={playCurrent}>Tap to play</Button>}
+      {blocked && <Button className="trivia-tap" onClick={playCurrent}>Tap to play</Button>}
     </>}
     {step === 'countdown' && <div className="trivia-count" role="status"><span>Get ready</span><b key={count}>{count || 1}</b></div>}
     {step === 'ask' && <div className="react-ad-card">
