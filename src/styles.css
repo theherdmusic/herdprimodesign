@@ -234,6 +234,20 @@
 .react-ad-card { width:100%; max-width:320px; display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center; background:var(--card); border-radius:20px; padding:24px 18px; }
 .react-ad-card strong { font-size:20px; font-weight:800; margin-bottom:6px; }
 .react-ad-answer { width:100%; height:50px; font-size:15px; font-weight:700; }
+.trivia-video { aspect-ratio:9/16; max-height:70vh; width:auto; max-width:100%; }
+.trivia-demo { font-size:14px; font-weight:800; color:var(--primary); border:2px solid var(--primary); border-radius:12px; padding:8px 10px; }
+.trivia-start { width:72px; height:72px; border-radius:50%; border:3px solid var(--foreground); background:var(--card); display:grid; place-items:center; cursor:pointer; }
+.trivia-start span { width:30px; height:30px; border-radius:50%; background:var(--destructive); }
+.trivia-count { display:flex; flex-direction:column; align-items:center; gap:8px; font-weight:700; }
+.trivia-count b { font-size:96px; line-height:1; color:var(--primary); animation:reveal .3s ease; }
+.trivia-win { position:relative; overflow:visible; }
+.trivia-big { font-size:40px !important; color:var(--primary); }
+.trivia-prize { font-size:48px; font-weight:900; }
+.trivia-fireworks { position:absolute; left:50%; top:30px; pointer-events:none; }
+.trivia-fireworks i { position:absolute; width:8px; height:8px; border-radius:50%; background:var(--primary); transform:rotate(var(--a)) translateY(0); animation:trivia-burst 1.2s ease-out infinite; }
+.trivia-fireworks i:nth-child(odd) { background:var(--destructive); }
+@keyframes trivia-burst { 0% { transform:rotate(var(--a)) translateY(0); opacity:1; } 100% { transform:rotate(var(--a)) translateY(-110px); opacity:0; } }
+@media (prefers-reduced-motion: reduce) { .trivia-fireworks i { animation:none; transform:rotate(var(--a)) translateY(-70px); } .trivia-count b { animation:none; } }
 .charts .page-subtitle { margin:2px 0 12px; }
 .month-top-genre { display:inline-flex; align-items:center; gap:6px; margin:-4px 0 14px; padding:5px 12px; border:1px solid color-mix(in srgb, var(--primary) 40%, transparent); color:var(--primary); border-radius:999px; font-size:11px; font-weight:700; }
 .month-top-genre svg { width:13px; height:13px; }
