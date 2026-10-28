@@ -13,9 +13,9 @@ const SPONSOR = 'American Stock';
 const QUESTION = 'What number is Brittany Elise\'s "Backroad Story" on the music chart shown in the ad?';
 const ANSWERS = [{ k: 'A', v: '5' }, { k: 'B', v: '2' }, { k: 'C', v: '3' }, { k: 'D', v: '7' }];
 const CORRECT = 'A';
-// The pre-ad clip has no built-in countdown, so a "Get ready" 3-2-1 runs before the commercial.
+// The pre-ad clip leads straight into the commercial.
 const INTRO: { mp4: string; webm: string } | null = { mp4: introMp4.url, webm: introWebm.url };
-const INTRO_HAS_COUNTDOWN = false;
+const INTRO_HAS_COUNTDOWN = true; // No countdown between the pre-ad clip and the commercial.
 
 type Step = 'start' | 'intro' | 'countdown' | 'ad' | 'ask' | 'win' | 'lose';
 
