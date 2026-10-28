@@ -32,6 +32,10 @@ export function ReactAd({ onClose }: { onClose: () => void }) {
   useEffect(() => { const a = bg.current; if (!a) return; a.volume = 0.35;
     if (step === 'start' || step === 'countdown' || step === 'ask') a.play().catch(() => {}); else a.pause(); }, [step]);
 
+  // "Freaking awesome, dude!" plays when the answer is right.
+  const cheer = useRef<HTMLAudioElement>(null);
+  useEffect(() => { if (step === 'win') { const a = cheer.current; if (a) { a.currentTime = 0; a.play().catch(() => {}); } } }, [step]);
+
   useEffect(() => { document.querySelectorAll('video').forEach(el => { if (el !== v.current) el.pause(); }); }, []);
 
   const playCurrent = () => {
