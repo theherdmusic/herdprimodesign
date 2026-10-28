@@ -3,7 +3,7 @@ import { Heart, Plus, Check, Send, X, Link2, MessageCircle, Flag, Search, MoreHo
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { PhoneShell, useReactAd } from './phone-shell';
-import { artists, getArtist, genres } from './data';
+import { artists, getArtist, genres, type HerdArtist } from './data';
 import { useKeyboardInset } from '@/lib/herd-keyboard';
 import { needsSignIn, type GatedAction } from '@/lib/herd-entry';
 import { feedRankedIndexes } from '@/lib/herd-charts';
@@ -55,15 +55,13 @@ export function FeedScreen({initialTrack}:{initialTrack?:number|undefined}) {
  const sample=[{user:'@riffqueen',text:'This chorus lives in my head now 🔥'},{user:'@backroadkid',text:'Finally real indie music on my feed.'},{user:'@nightowl',text:'Need the full song ASAP'}]; const currentComments=[...sample,...(comments[index]??[])];
  const gate=(a:GatedAction,run:()=>void)=>{ if(needsSignIn(a,me!==null)){setGateFor(a);setSheet('signin');return;} run(); };
  const lineup=tab==='following'?following:tab==='top100'?feedRankedIndexes():artists.map((_,i)=>i); const rank=tab==='top100'?(lineup.indexOf(index)+1):index+1;
-  const next=()=>{ if(!lineup.length)return; const pos=lineup.indexOf(index); setIndex(lineup[(pos+1)%lineup.length]??0); };
-  const prev=()=>{ if(!lineup.length)return; const pos=lineup.indexOf(index); if(pos<=0)return; setIndex(lineup[pos-1]??0); };
- const nextArtist=getArtist(lineup.length?(lineup[(lineup.indexOf(index)+1)%lineup.length]??index):index);
+  const next=()=>{ if(!lineup.length)return; const pos=lineup.indexOf(index); go(lineup[(pos+1)%lineup.length]??0); };
+  const prev=()=>{ if(!lineup.length)return; const pos=lineup.indexOf(index); if(pos<=0)return; go(lineup[pos-1]??0); };
  const q=query.trim().toLowerCase();
  const hits=artists.map((a,i)=>({a,i})).filter(({a})=>(genre==='All'||a.genre===genre)&&(!q||`${a.name} ${a.song}`.toLowerCase().includes(q)));
  const busy=!!sheet||searchOpen||adOpen;
  return <PhoneShell><div className="feed" onTouchStart={e=>{touch.current=(e.touches[0]?.clientY??0);}} onTouchEnd={e=>{if(busy)return;const d=touch.current-(e.changedTouches[0]?.clientY??0);if(d>45)next();else if(d<-45)prev();}} onWheel={e=>{if(busy)return;const now=Date.now();if(now-wheel.current<700)return;if(e.deltaY>20){wheel.current=now;next();}else if(e.deltaY<-20){wheel.current=now;prev();}}}>
-{artist.video?<video key={artist.video} ref={clip} className="feed-video" poster={artist.poster??artist.image} autoPlay={!openingActive} muted loop playsInline preload="auto" onClick={e=>{const v=e.currentTarget;if(Date.now()-justUnlocked<800)return;if(v.muted){soundOn=true;v.muted=false;if(v.paused)v.play().catch(()=>{});}else if(v.paused){v.play().catch(()=>{});}else v.pause();}} aria-label={`${artist.name} performing ${artist.song}`}><source src={artist.video} type="video/mp4"/>{artist.videoWebm&&<source src={artist.videoWebm} type="video/webm"/>}</video>:<img key={artist.image} className="feed-photo" src={artist.image} alt={`${artist.name} performing ${artist.song}`}/>}<div className="feed-shade"/>
-  {nextArtist.video&&nextArtist.video!==artist.video&&<video key={`preload-${nextArtist.video}`} className="feed-preload" preload="auto" muted playsInline aria-hidden="true"><source src={nextArtist.video} type="video/mp4"/>{nextArtist.videoWebm&&<source src={nextArtist.videoWebm} type="video/webm"/>}</video>}
+<video ref={clip} className="feed-video" poster={artist.poster??artist.image} autoPlay muted loop playsInline preload="auto" onError={()=>{const a=getArtist(index);if(a.videoWebm&&clip.current?.dataset['src']===a.video){mp4Ok=false;playClip(index);}}} onClick={e=>{const v=e.currentTarget;if(Date.now()-justUnlocked<800)return;if(v.muted){soundOn=true;v.muted=false;userPaused.current=false;if(v.paused)v.play()?.catch?.(()=>{});}else if(v.paused){userPaused.current=false;v.play()?.catch?.(()=>{});}else{userPaused.current=true;v.pause();}}} aria-label={`${artist.name} performing ${artist.song}`}/>{!artist.video&&<img key={artist.image} className="feed-photo" src={artist.image} alt={`${artist.name} performing ${artist.song}`}/>}<div className="feed-shade"/>
   <div className="feed-top"><div className="feed-tabs">
    <button type="button" className={`feed-mode ${tab==='discovery'?'selected':''}`} onClick={()=>setTab('discovery')}>Discovery</button>
    <button type="button" className={`feed-mode ${tab==='top100'?'selected':''}`} onClick={()=>{setTab('top100');setIndex(feedRankedIndexes()[0]??index);}}>TOP 100</button>
