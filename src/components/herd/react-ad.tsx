@@ -8,6 +8,7 @@ import introMp4 from '@/assets/pre-ad.mp4.asset.json';
 import introWebm from '@/assets/pre-ad.webm.asset.json';
 import music from '@/assets/quiz-game.wav.asset.json';
 import winSound from '@/assets/freaking-awesome-dude.wav.asset.json';
+import denySound from '@/assets/rude-deny.wav.asset.json';
 
 // DEMO ONLY: simulated trivia prize. No payments, no saved state.
 const SPONSOR = 'American Stock';
@@ -35,6 +36,9 @@ export function ReactAd({ onClose }: { onClose: () => void }) {
   // "Freaking awesome, dude!" plays when the answer is right.
   const cheer = useRef<HTMLAudioElement>(null);
   useEffect(() => { if (step === 'win') { const a = cheer.current; if (a) { a.currentTime = 0; a.play().catch(() => {}); } } }, [step]);
+  // The deny voice clip plays when the answer is wrong.
+  const deny = useRef<HTMLAudioElement>(null);
+  useEffect(() => { if (step === 'lose') { const a = deny.current; if (a) { a.currentTime = 0; a.play().catch(() => {}); } } }, [step]);
 
   useEffect(() => { document.querySelectorAll('video').forEach(el => { if (el !== v.current) el.pause(); }); }, []);
 
@@ -63,6 +67,7 @@ export function ReactAd({ onClose }: { onClose: () => void }) {
   return <div className="react-ad" role="dialog" aria-label={`Sponsored by ${SPONSOR}`}>
     <audio ref={bg} src={music.url} loop preload="auto" />
     <audio ref={cheer} src={winSound.url} preload="auto" />
+    <audio ref={deny} src={denySound.url} preload="auto" />
     <button className="react-ad-close" aria-label="Close" onClick={onClose}><X size={20} /></button>
     {step === 'start' && <div className="react-ad-card">
       <strong>Choose correctly and win $20 sent to your Venmo right now.</strong>
