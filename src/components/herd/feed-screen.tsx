@@ -9,7 +9,7 @@ import { needsSignIn, type GatedAction } from '@/lib/herd-entry';
 import { feedRankedIndexes } from '@/lib/herd-charts';
 import { useOpeningVideo } from './opening-video';
 import { REPORT_REASONS, useMe } from './me';
-let feedIndex=0; let soundOn=false;
+let feedIndex=0; let soundOn=false; let justUnlocked=0;
 type Sheet = null|'share'|'comments'|'more'|'report'|'signin';
 type FeedTab = 'discovery'|'top100'|'following';
 export function FeedScreen({initialTrack}:{initialTrack?:number|undefined}) {
@@ -26,7 +26,7 @@ export function FeedScreen({initialTrack}:{initialTrack?:number|undefined}) {
   useEffect(()=>{const v=clip.current;if(!v)return;if(openingActive||adOpen){v.pause();return;}
     // Phones only allow silent autoplay until the visitor touches the page, so start muted unless sound was already unlocked.
     const start=()=>{if(!v.paused)return;v.defaultMuted=!soundOn;v.muted=!soundOn;v.play().catch(()=>{v.muted=true;v.play().catch(()=>{});});};
-    const unlock=()=>{soundOn=true;v.muted=false;if(v.paused)v.play().catch(()=>{});};
+    const unlock=()=>{if(!soundOn)justUnlocked=Date.now();soundOn=true;v.muted=false;if(v.paused)v.play().catch(()=>{});};
     v.setAttribute('muted','');start();const evs=['loadedmetadata','loadeddata','canplay','canplaythrough'];evs.forEach(e=>v.addEventListener(e,start));
     const retry=setInterval(()=>{if(v.paused&&v.readyState>=2)start();else if(!v.paused)clearInterval(retry);},400);
     window.addEventListener('pointerdown',unlock,{once:true}); window.addEventListener('touchstart',unlock,{once:true});
@@ -43,7 +43,7 @@ export function FeedScreen({initialTrack}:{initialTrack?:number|undefined}) {
  const hits=artists.map((a,i)=>({a,i})).filter(({a})=>(genre==='All'||a.genre===genre)&&(!q||`${a.name} ${a.song}`.toLowerCase().includes(q)));
  const busy=!!sheet||searchOpen||adOpen;
  return <PhoneShell><div className="feed" onTouchStart={e=>{touch.current=(e.touches[0]?.clientY??0);}} onTouchEnd={e=>{if(busy)return;const d=touch.current-(e.changedTouches[0]?.clientY??0);if(d>45)next();else if(d<-45)prev();}} onWheel={e=>{if(busy)return;const now=Date.now();if(now-wheel.current<700)return;if(e.deltaY>20){wheel.current=now;next();}else if(e.deltaY<-20){wheel.current=now;prev();}}}>
-{artist.video?<video key={artist.video} ref={clip} className="feed-video" poster={artist.poster??artist.image} autoPlay={!openingActive} muted loop playsInline preload="auto" onClick={e=>{const v=e.currentTarget;if(v.muted){soundOn=true;v.muted=false;if(v.paused)v.play().catch(()=>{});}else if(v.paused){v.play().catch(()=>{});}else v.pause();}} aria-label={`${artist.name} performing ${artist.song}`}><source src={artist.video} type="video/mp4"/>{artist.videoWebm&&<source src={artist.videoWebm} type="video/webm"/>}</video>:<img key={artist.image} className="feed-photo" src={artist.image} alt={`${artist.name} performing ${artist.song}`}/>}<div className="feed-shade"/>
+{artist.video?<video key={artist.video} ref={clip} className="feed-video" poster={artist.poster??artist.image} autoPlay={!openingActive} muted loop playsInline preload="auto" onClick={e=>{const v=e.currentTarget;if(Date.now()-justUnlocked<800)return;if(v.muted){soundOn=true;v.muted=false;if(v.paused)v.play().catch(()=>{});}else if(v.paused){v.play().catch(()=>{});}else v.pause();}} aria-label={`${artist.name} performing ${artist.song}`}><source src={artist.video} type="video/mp4"/>{artist.videoWebm&&<source src={artist.videoWebm} type="video/webm"/>}</video>:<img key={artist.image} className="feed-photo" src={artist.image} alt={`${artist.name} performing ${artist.song}`}/>}<div className="feed-shade"/>
   {nextArtist.video&&nextArtist.video!==artist.video&&<video key={`preload-${nextArtist.video}`} className="feed-preload" preload="auto" muted playsInline aria-hidden="true"><source src={nextArtist.video} type="video/mp4"/>{nextArtist.videoWebm&&<source src={nextArtist.videoWebm} type="video/webm"/>}</video>}
   <div className="feed-top"><div className="feed-tabs">
    <button type="button" className={`feed-mode ${tab==='discovery'?'selected':''}`} onClick={()=>setTab('discovery')}>Discovery</button>
