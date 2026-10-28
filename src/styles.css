@@ -49,6 +49,9 @@
 .tab-link.active { color:var(--primary); } .tab-link svg { width:21px; height:21px; } .tab-link.active::after { content:''; width:4px; height:4px; background:var(--primary); border-radius:50%; position:absolute; bottom:13px; }
 .tab-logo { width:21px; height:21px; object-fit:contain; opacity:.55; transition:opacity .2s; } .tab-link.active .tab-logo { opacity:1; }
 .tab-react-img { width:26px; height:26px; object-fit:contain; } .tab-react:active .tab-react-img { transform:scale(.92); }
+.tab-react-glow { position:relative; display:inline-flex; }
+.tab-react-glow::after { content:""; position:absolute; left:50%; top:50%; width:13px; height:13px; border-radius:50%; background:radial-gradient(circle, rgba(255,59,48,.65) 0%, rgba(255,59,48,0) 72%); transform:translate(-50%,-52%); animation:react-dot-glow 2.4s ease-in-out infinite; pointer-events:none; }
+@keyframes react-dot-glow { 0%,100% { opacity:.25; transform:translate(-50%,-52%) scale(.85); } 50% { opacity:1; transform:translate(-50%,-52%) scale(1.2); } }
 .feed { height:100%; position:relative; touch-action:pan-x; overflow:hidden; background:var(--card); }
 .feed-full .brand-header { position:absolute; top:37px; left:0; right:0; z-index:30; }
 .feed-full .feed-top { top:12px; left:60px; }
