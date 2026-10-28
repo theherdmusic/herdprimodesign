@@ -1,3 +1,6 @@
+import mattieClip from '@/assets/mattie.mp4.asset.json';
+import mattieClipWebm from '@/assets/mattie.webm.asset.json';
+import mattiePoster from '@/assets/mattie.jpg.asset.json';
 import live from '@/assets/indie-live.jpg';
 import studio from '@/assets/artist-studio.jpg';
 import runningClip from '@/assets/herd-video.mp4.asset.json';
@@ -39,7 +42,7 @@ export const artists: HerdArtist[] = [
  { name:'Hobbs', song:'SGL', genre:'Country', image:hobbsCover.url, poster:hobbsCover.url, video:hobbsClip.url, videoWebm:hobbsClipWebm.url, hearts:'3.9K', bio:'Meadow sunsets and honest hooks. Country made for front-porch evenings. Austin, TX.', handle:'@hobbs', newArtist:true },
  { name:'Big Vinni', song:'Walmart Pool', genre:'Country', image:vinniCover.url, poster:vinniCover.url, video:vinniClip.url, videoWebm:vinniClipWebm.url, hearts:'2.7K', bio:'Full send, no brakes. Songs for the last day of summer. Nashville, TN.', handle:'@bigvinni', newArtist:true },
  { name:'RR', song:'Untitled', genre:'Country', image:rrCover.url, poster:rrCover.url, video:rrClip.url, videoWebm:rrClipWebm.url, hearts:'1.9K', bio:'New to the Herd. First video just dropped.', handle:'@rr', newArtist:true },
- { name:'Jade Rivers', song:'Neon Nights', genre:'Pop', image:studio, hearts:'15.2K', bio:'Arena-ready pop with a streetwise edge. Los Angeles, CA.', handle:'@jaderivers', newArtist:true },
+ { name:'Jade Rivers', song:'Neon Nights', genre:'Pop', image:mattiePoster.url, poster:mattiePoster.url, video:mattieClip.url, videoWebm:mattieClipWebm.url, hearts:'15.2K', bio:'Arena-ready pop with a streetwise edge. Los Angeles, CA.', handle:'@jaderivers', newArtist:true },
 ];
 export const songs = ['Running out of daylight','Something real','Backroad summer','Velvet skies','Nothing to lose','After hours','Wildflower','Slow motion','Stay a little longer','City lights','Good enough','Golden hour','Home again','No apologies','Between the lines','Headlights','On my own','Midnight drive','Let it go','Blue Sunday','All we know','Easy days','Break the silence','Tomorrow','One more time'];
 export const genres = ['All','Pop','Rock','Country','Hip Hop/Rap','EDM'];
