@@ -4,15 +4,16 @@ import { Button } from '@/components/ui/button';
 import adMp4 from '@/assets/britt-ad.mp4.asset.json';
 import adWebm from '@/assets/britt-ad.webm.asset.json';
 import adPoster from '@/assets/britt-ad.jpg.asset.json';
-import introMp4 from '@/assets/herdtv-intro.mp4.asset.json';
-import introWebm from '@/assets/herdtv-intro.webm.asset.json';
+import introMp4 from '@/assets/pre-ad.mp4.asset.json';
+import introWebm from '@/assets/pre-ad.webm.asset.json';
+import music from '@/assets/suspense.m4a.asset.json';
 
 // DEMO ONLY: simulated trivia prize. No payments, no saved state.
 const SPONSOR = 'American Stock';
 const QUESTION = 'What number is Brittany Elise\'s "Backroad Story" on the music chart shown in the ad?';
 const ANSWERS = [{ k: 'A', v: '5' }, { k: 'B', v: '2' }, { k: 'C', v: '3' }, { k: 'D', v: '7' }];
 const CORRECT = 'A';
-// The sheep intro has no built-in countdown, so a "Get ready" 3-2-1 runs before the commercial.
+// The pre-ad clip has no built-in countdown, so a "Get ready" 3-2-1 runs before the commercial.
 const INTRO: { mp4: string; webm: string } | null = { mp4: introMp4.url, webm: introWebm.url };
 const INTRO_HAS_COUNTDOWN = false;
 
@@ -25,6 +26,10 @@ export function ReactAd({ onClose }: { onClose: () => void }) {
   const [count, setCount] = useState(3);
   const [blocked, setBlocked] = useState(false);
   const [pick, setPick] = useState<string | null>(null);
+  const bg = useRef<HTMLAudioElement>(null);
+  // Light game-show music plays under the start screen, countdown and question, never over the videos.
+  useEffect(() => { const a = bg.current; if (!a) return; a.volume = 0.35;
+    if (step === 'start' || step === 'countdown' || step === 'ask') a.play().catch(() => {}); else a.pause(); }, [step]);
 
   useEffect(() => { document.querySelectorAll('video').forEach(el => { if (el !== v.current) el.pause(); }); }, []);
 
@@ -51,6 +56,7 @@ export function ReactAd({ onClose }: { onClose: () => void }) {
   const src = step === 'intro' && INTRO ? INTRO : { mp4: adMp4.url, webm: adWebm.url };
 
   return <div className="react-ad" role="dialog" aria-label={`Sponsored by ${SPONSOR}`}>
+    <audio ref={bg} src={music.url} loop preload="auto" />
     <button className="react-ad-close" aria-label="Close" onClick={onClose}><X size={20} /></button>
     {step === 'start' && <div className="react-ad-card">
       <strong>Choose correctly and win $20 sent to your Venmo right now.</strong>
