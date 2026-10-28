@@ -6,7 +6,7 @@ import adWebm from '@/assets/britt-ad.webm.asset.json';
 import adPoster from '@/assets/britt-ad.jpg.asset.json';
 import introMp4 from '@/assets/pre-ad.mp4.asset.json';
 import introWebm from '@/assets/pre-ad.webm.asset.json';
-import music from '@/assets/suspense.m4a.asset.json';
+import music from '@/assets/quiz-game.wav.asset.json';
 
 // DEMO ONLY: simulated trivia prize. No payments, no saved state.
 const SPONSOR = 'American Stock';
