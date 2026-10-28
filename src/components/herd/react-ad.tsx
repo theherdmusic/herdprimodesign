@@ -67,6 +67,7 @@ export function ReactAd({ onClose }: { onClose: () => void }) {
   return <div className="react-ad" role="dialog" aria-label={`Sponsored by ${SPONSOR}`}>
     <audio ref={bg} src={music.url} loop preload="auto" />
     <audio ref={cheer} src={winSound.url} preload="auto" />
+    <audio ref={deny} src={denySound.url} preload="auto" />
     <button className="react-ad-close" aria-label="Close" onClick={onClose}><X size={20} /></button>
     {step === 'start' && <div className="react-ad-card">
       <strong>Choose correctly and win $20 sent to your Venmo right now.</strong>
