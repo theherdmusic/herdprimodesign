@@ -41,20 +41,20 @@ function hearts(artist: (typeof artists)[number]) {
 describe('Feed tabs', () => {
   it('lists Discovery first, then TOP 100, then Following', async () => {
     await renderFeed();
-    expect(tabLabels()).toEqual(['Discovery', 'TOP 100', 'Following']);
-    expect(tabByName('Discovery')).toBe(0);
+    expect(tabLabels()).toEqual(['For You', 'Top 25', 'Following']);
+    expect(tabByName('For You')).toBe(0);
   });
 
   it('opens on Discovery', async () => {
     await renderFeed();
-    expect(document.querySelector('.feed-mode.selected')?.textContent).toBe('Discovery');
+    expect(document.querySelector('.feed-mode.selected')?.textContent).toBe('For You');
   });
 
   it('moves the highlight to TOP 100 when it is tapped', async () => {
     await renderFeed();
-    const top100 = Array.from(document.querySelectorAll('.feed-mode')).find((b) => b.textContent === 'TOP 100');
+    const top100 = Array.from(document.querySelectorAll('.feed-mode')).find((b) => b.textContent === 'Top 25');
     fireEvent.click(top100!);
-    expect(document.querySelector('.feed-mode.selected')?.textContent).toBe('TOP 100');
+    expect(document.querySelector('.feed-mode.selected')?.textContent).toBe('Top 25');
   });
 });
 

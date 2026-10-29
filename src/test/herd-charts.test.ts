@@ -35,3 +35,8 @@ describe('month top genre by hearts', () => {
     expect(monthTopGenre(4)).toBe(monthTopGenre(4));
   });
 });
+import { chartMove as move2, formatHearts as fmt2 } from '@/lib/herd-charts';
+describe('feed chart extras', () => {
+  it('never reports zero movement', () => { for (let i = 0; i < 30; i++) expect(move2(i)).not.toBe(0); });
+  it('adds one heart to 12.8K without changing the display', () => { expect(fmt2(12801)).toBe('12.8K'); expect(fmt2(999)).toBe('999'); });
+});
