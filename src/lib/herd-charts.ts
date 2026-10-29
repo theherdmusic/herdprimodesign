@@ -39,3 +39,17 @@ export function monthTopGenre(month: number): string {
 export function feedRankedIndexes(): number[] {
   return artists.map((_, i) => i).sort((a, b) => parseHearts(getArtist(b).hearts) - parseHearts(getArtist(a).hearts));
 }
+export { parseHearts };
+
+// Compact heart counts the way the sample data writes them ("12.8K").
+export function formatHearts(n: number): string {
+  if (n >= 1_000_000) return `${+(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `${+(n / 1_000).toFixed(1)}K`;
+  return String(Math.round(n));
+}
+
+// Deterministic sample chart movement for today: positive climbs, negative drops, never zero.
+export function chartMove(i: number): number {
+  const v = ((i * 5 + 3) % 9) - 4;
+  return v === 0 ? 1 : v;
+}
