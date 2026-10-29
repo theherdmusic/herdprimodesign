@@ -81,7 +81,7 @@ export function ReactAd({ onClose }: { onClose: () => void }) {
       <span className="trivia-prize"><CountUp to={20} /></span>
       <strong>Choose correctly and win $20 sent to your Venmo right now.</strong>
       <p className="trivia-demo">DEMO ONLY - simulated prize. No real money will be sent.</p>
-      <div className="trivia-ring"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" /></svg><button type="button" className="trivia-start" aria-label="Start trivia" onClick={start}><span /></button></div>
+      <div className="trivia-ring"><svg viewBox="0 0 100 100" aria-hidden="true" style={{ pointerEvents: 'none' }}><circle cx="50" cy="50" r="46" /></svg><button type="button" className="trivia-start" aria-label="Start trivia" onClick={start}><span /></button></div>
       <span className="react-ad-by">Tap the red dot to start</span>
     </div>}
     {(step === 'intro' || step === 'ad') && <>
