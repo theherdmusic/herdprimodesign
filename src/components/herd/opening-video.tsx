@@ -3,9 +3,9 @@ import { useNavigate } from '@tanstack/react-router';
 import { Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { nextIntroStage } from '@/lib/herd-intro';
-import filmMp4 from '@/assets/herd-opening.mp4.asset.json';
-import filmWebm from '@/assets/herd-opening.webm.asset.json';
-import filmPoster from '@/assets/herd-opening.jpg.asset.json';
+import filmMp4 from '@/assets/app-intro.mp4.asset.json';
+import filmWebm from '@/assets/app-intro.webm.asset.json';
+import filmPoster from '@/assets/app-intro.jpg.asset.json';
 
 type Phase = 'checking' | 'play' | 'done';
 const OpeningContext = createContext({ active: true, playing: false, finish: () => {} });
