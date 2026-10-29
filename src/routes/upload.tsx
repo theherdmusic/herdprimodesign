@@ -57,7 +57,7 @@ function HerdTv() {
       <div className="tvm">
         <button className="tvm-hero" onClick={() => setWatching('always')} style={{ backgroundImage: `url(${mattiePoster.url})` }}>
           <span className="tvm-live">● Live</span>
-          <span className="tvm-hero-title">HERD TV<br /><small>Always On</small></span>
+          <span className="tvm-hero-title">HERD TV<br /><small>ALWAYS ON. STREAM ON ROKU TV</small></span>
           <span className="tvm-play"><Play size={16} fill="currentColor" /> Watch now</span>
         </button>
         <h3 className="tvm-row-title">HERD Originals</h3>
