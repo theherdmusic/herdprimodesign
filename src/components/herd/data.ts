@@ -30,6 +30,12 @@ import rrCover from '@/assets/rr-poster.jpg.asset.json';
 import moreno2Clip from '@/assets/moreno2.mp4.asset.json';
 import moreno2ClipWebm from '@/assets/moreno2.webm.asset.json';
 import moreno2Cover from '@/assets/moreno2-poster.jpg.asset.json';
+import drClip from '@/assets/dr.mp4.asset.json';
+import drClipWebm from '@/assets/dr.webm.asset.json';
+import drCover from '@/assets/dr-poster.jpg.asset.json';
+import katClip from '@/assets/kat.mp4.asset.json';
+import katClipWebm from '@/assets/kat.webm.asset.json';
+import katCover from '@/assets/kat-poster.jpg.asset.json';
 export { live, studio };
 export type HerdArtist = { name: string; song: string; genre: string; image: string; hearts: string; bio: string; handle: string; video?: string; videoWebm?: string; poster?: string; newArtist?: boolean };
 export const artists: HerdArtist[] = [
@@ -42,6 +48,8 @@ export const artists: HerdArtist[] = [
  { name:'Hobb Sisters', song:'SGL', genre:'Country', image:hobbsCover.url, poster:hobbsCover.url, video:hobbsClip.url, videoWebm:hobbsClipWebm.url, hearts:'3.9K', bio:'Meadow sunsets and honest hooks. Country made for front-porch evenings. Austin, TX.', handle:'@hobbs', newArtist:true },
  { name:'Bigg Vinny', song:'Walmart Pool', genre:'Country', image:vinniCover.url, poster:vinniCover.url, video:vinniClip.url, videoWebm:vinniClipWebm.url, hearts:'2.7K', bio:'Full send, no brakes. Songs for the last day of summer. Nashville, TN.', handle:'@bigvinni', newArtist:true },
  { name:'RR', song:'Untitled', genre:'Country', image:rrCover.url, poster:rrCover.url, video:rrClip.url, videoWebm:rrClipWebm.url, hearts:'1.9K', bio:'New to the Herd. First video just dropped.', handle:'@rr', newArtist:true },
+ { name:'DR', song:'Blackberry', genre:'Country', image:drCover.url, poster:drCover.url, video:drClip.url, videoWebm:drClipWebm.url, hearts:'1.6K', bio:'New to the Herd. First video just dropped.', handle:'@dr', newArtist:true },
+ { name:'Kat', song:'Untitled', genre:'Pop', image:katCover.url, poster:katCover.url, video:katClip.url, videoWebm:katClipWebm.url, hearts:'1.4K', bio:'New to the Herd. First video just dropped.', handle:'@kat', newArtist:true },
  { name:'Matti', song:'Neon Nights', genre:'Pop', image:mattiePoster.url, poster:mattiePoster.url, video:mattieClip.url, videoWebm:mattieClipWebm.url, hearts:'15.2K', bio:'Arena-ready pop with a streetwise edge. Los Angeles, CA.', handle:'@jaderivers', newArtist:true },
 ];
 export const songs = ['Running out of daylight','Something real','Backroad summer','Velvet skies','Nothing to lose','After hours','Wildflower','Slow motion','Stay a little longer','City lights','Good enough','Golden hour','Home again','No apologies','Between the lines','Headlights','On my own','Midnight drive','Let it go','Blue Sunday','All we know','Easy days','Break the silence','Tomorrow','One more time'];
