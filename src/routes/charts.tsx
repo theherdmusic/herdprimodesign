@@ -24,7 +24,7 @@ function Charts(){
     <div className="grid grid-cols-3 gap-1">{CHART_MONTHS.map((label,i)=><Button key={label} variant={month===i?'default':'ghost'} className="h-11 px-1 text-xs" aria-pressed={month===i} onClick={()=>{setMonth(i);setGenre('All');setMonthsOpen(false);}}>{label}</Button>)}</div>
    </PopoverContent>
   </Popover>:<Button variant="ghost" key={g} type="button" className={`genre-chip ${genre===g?'selected':''}`} onClick={()=>setGenre(g)}>{g}</Button>)}</div>
-  <Link className="chart-hero" to="/" search={{track:top.i%artists.length}} style={{backgroundImage:`url(${top.a.image})`}}><span className="chart-hero-rank">#1</span><span className="chart-hero-text"><b>{top.title}</b><small>{top.name}</small></span></Link>
-  <div>{rows.slice(1).map((r,rank)=><Link className="chart-row" key={r.i} to="/" search={{track:r.i%artists.length}}><span className="rank">{rank+2}</span><img className="track-thumb" src={r.a.image} alt="" loading="lazy"/><div className="min-w-0"><div className="track-name">{r.title}</div><div className="track-artist">{r.name}</div></div></Link>)}</div>
+  <Link key={`${month}-${genre}`} className="chart-hero chart-in" to="/" search={{track:top.i%artists.length}} style={{backgroundImage:`url(${top.a.image})`}}><span className="chart-hero-rank">#1</span><span className="chart-hero-text"><b>{top.title}</b><small>{top.name}</small></span></Link>
+  <div>{rows.slice(1).map((r,rank)=><Link className="chart-row chart-in" style={{animationDelay:`${Math.min(rank,12)*35}ms`}} key={`${month}-${genre}-${r.i}`} to="/" search={{track:r.i%artists.length}}><span className="rank rank-pop">{rank+2}</span><img className="track-thumb" src={r.a.image} alt="" loading="lazy"/><div className="min-w-0"><div className="track-name">{r.title}</div><div className="track-artist">{r.name}</div></div></Link>)}</div>
  </div></PhoneShell>;
 }

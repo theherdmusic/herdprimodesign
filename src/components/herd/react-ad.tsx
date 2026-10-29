@@ -1,4 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
+
+// Counts the prize up from $0 for the game-show reveal; jumps straight to the total for reduced motion.
+function CountUp({ to }: { to: number }) {
+  const [n, setN] = useState(0);
+  useEffect(() => { if (matchMedia('(prefers-reduced-motion: reduce)').matches) { setN(to); return; }
+    let f = 0; const t0 = performance.now(); const tick = (t: number) => { const p = Math.min(1, (t - t0) / 1200); setN(Math.round(to * (1 - (1 - p) ** 3))); if (p < 1) f = requestAnimationFrame(tick); }; f = requestAnimationFrame(tick); return () => cancelAnimationFrame(f); }, [to]);
+  return <>${n}</>;
+}
 import { X, Trophy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import adMp4 from '@/assets/britt-ad.mp4.asset.json';
@@ -69,10 +77,11 @@ export function ReactAd({ onClose }: { onClose: () => void }) {
     <audio ref={cheer} src={winSound.url} preload="auto" />
     <audio ref={deny} src={denySound.url} preload="auto" />
     <button className="react-ad-close" aria-label="Close" onClick={onClose}><X size={20} /></button>
-    {step === 'start' && <div className="react-ad-card">
+    {step === 'start' && <div className="react-ad-card trivia-gold">
+      <span className="trivia-prize"><CountUp to={20} /></span>
       <strong>Choose correctly and win $20 sent to your Venmo right now.</strong>
       <p className="trivia-demo">DEMO ONLY - simulated prize. No real money will be sent.</p>
-      <button type="button" className="trivia-start" aria-label="Start trivia" onClick={start}><span /></button>
+      <div className="trivia-ring"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" /></svg><button type="button" className="trivia-start" aria-label="Start trivia" onClick={start}><span /></button></div>
       <span className="react-ad-by">Tap the red dot to start</span>
     </div>}
     {(step === 'intro' || step === 'ad') && <>
@@ -84,21 +93,21 @@ export function ReactAd({ onClose }: { onClose: () => void }) {
       {blocked && <Button className="trivia-tap" onClick={playCurrent}>Tap to play</Button>}
     </>}
     {step === 'countdown' && <div className="trivia-count" role="status"><span>Get ready</span><b key={count}>{count || 1}</b></div>}
-    {step === 'ask' && <div className="react-ad-card">
+    {step === 'ask' && <div className="react-ad-card trivia-gold">
       <strong>{QUESTION}</strong>
       {ANSWERS.map(a => <Button key={a.k} variant={pick === a.k ? 'default' : 'secondary'} aria-pressed={pick === a.k} className="react-ad-answer" onClick={() => setPick(a.k)}>{a.k}. {a.v}</Button>)}
       <Button className="react-ad-answer" disabled={!pick} onClick={() => setStep(pick === CORRECT ? 'win' : 'lose')}>Submit answer</Button>
     </div>}
-    {step === 'win' && <div className="react-ad-card trivia-win" role="status">
-      <div className="trivia-fireworks" aria-hidden="true">{Array.from({ length: 12 }, (_, i) => <i key={i} style={{ ['--a' as string]: `${i * 30}deg` }} />)}</div>
+    {step === 'win' && <div className="react-ad-card trivia-gold trivia-win" role="status">
+      <div className="trivia-confetti" aria-hidden="true">{Array.from({ length: 28 }, (_, i) => <i key={i} style={{ left: `${(i * 37) % 100}%`, animationDelay: `${(i % 7) * 0.15}s`, ['--r' as string]: `${(i * 53) % 360}deg` }} />)}</div>
       <strong className="trivia-big">YOU WIN!!</strong>
-      <Trophy className="text-primary" size={40} />
-      <span className="trivia-prize">$20</span>
+      <Trophy className="text-amber" size={40} />
+      <span className="trivia-prize"><CountUp to={20} /></span>
       <span>Simulated Venmo payout: $20</span>
       <p className="trivia-demo">DEMO ONLY - no money was sent.</p>
       <Button variant="secondary" onClick={onClose}>Done</Button>
     </div>}
-    {step === 'lose' && <div className="react-ad-card" role="status">
+    {step === 'lose' && <div className="react-ad-card trivia-gold" role="status">
       <strong>Not this time! The correct answer is 5.</strong>
       <Button className="react-ad-answer" onClick={reset}>Play again</Button>
     </div>}
