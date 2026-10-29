@@ -343,7 +343,8 @@
 .trivia-gold .trivia-big { color:var(--amber-foreground); }
 .trivia-gold .react-ad-by { color:var(--amber-foreground); opacity:.8; }
 .trivia-ring { position:relative; width:96px; height:96px; display:grid; place-items:center; }
-.trivia-ring svg { position:absolute; inset:0; transform:rotate(-90deg); }
+.trivia-ring svg { position:absolute; inset:0; transform:rotate(-90deg); pointer-events:none; }
+.trivia-ring .trivia-start { position:relative; z-index:1; }
 .trivia-ring circle { fill:none; stroke:var(--amber-foreground); stroke-width:5; stroke-linecap:round; stroke-dasharray:289; animation:ring 3s linear infinite; }
 @keyframes ring { from { stroke-dashoffset:289; } to { stroke-dashoffset:0; } }
 .trivia-confetti { position:absolute; inset:0; overflow:hidden; pointer-events:none; border-radius:inherit; }

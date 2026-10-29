@@ -24,7 +24,7 @@ export function FeedScreen({initialTrack}:{initialTrack?:number|undefined}) {
  const [note,setNote]=useState(''); const [draft,setDraft]=useState(''); const [comments,setComments]=useState<Record<number,{user:string;text:string}[]>>({});
   const {open:adOpen}=useReactAd();
   const [burst,setBurst]=useState(0); const [tip,setTip]=useState(false); const bar=useRef<HTMLDivElement|null>(null);
-  useEffect(()=>{try{if(!localStorage.getItem('herd-vote-tip')){setTip(true);localStorage.setItem('herd-vote-tip','1');const t=setTimeout(()=>setTip(false),5000);return()=>clearTimeout(t);}}catch{/* storage blocked */}},[]);
+  useEffect(()=>{try{if(!localStorage.getItem('herd-vote-tip')){setTip(true);localStorage.setItem('herd-vote-tip','1');const t=setTimeout(()=>setTip(false),5000);return()=>clearTimeout(t);}}catch{/* storage blocked */}return undefined;},[]);
   const touch=useRef(0); const wheel=useRef(0); const clip=useRef<HTMLVideoElement|null>(null); const userPaused=useRef(false); useKeyboardInset();
  const blocked=useRef(false); blocked.current=openingActive||adOpen;
  useEffect(()=>{if(initialTrack!==undefined)setIndex(initialTrack%artists.length);},[initialTrack]);
